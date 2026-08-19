@@ -47,23 +47,20 @@ export default function StudentSidebar() {
     const { url } = usePage();
 
     return (
-        <aside className="fixed inset-y-0 left-0 z-40 flex w-[280px] flex-col border-r border-[#C3C6D7] bg-white shadow-[0_1px_1px_rgba(0,0,0,0.05)]">
+        <aside className="fixed inset-y-0 left-0 z-40 flex w-[280px] flex-col border-r border-sale-border bg-sale-white">
             {/* Brand */}
             <div className="px-6 py-6">
                 <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center">
-                        <div className="flex h-10 w-10 items-center justify-center text-[#004AC6]">
-                            <span className="text-2xl font-extrabold">
-                                S
-                            </span>
-                        </div>
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-sale-blue text-white">
+                        <span className="text-xl font-extrabold">S</span>
                     </div>
 
                     <div>
-                        <div className="font-poppins text-2xl font-extrabold leading-6 tracking-tight text-[#004AC6]">
+                        <div className="font-poppins text-2xl leading-6 font-extrabold tracking-tight text-sale-blue">
                             SALE
                         </div>
-                        <div className="mt-1 text-xs font-semibold text-[#8E3C00]">
+
+                        <div className="mt-1 text-xs font-semibold text-sale-orange">
                             Academic Ecosystem
                         </div>
                     </div>
@@ -71,52 +68,60 @@ export default function StudentSidebar() {
             </div>
 
             {/* Navigation */}
-            <nav className="flex-1 space-y-2 px-4">
-                {navigation.map((item) => {
-                    const Icon = item.icon;
+            <nav className="flex-1 px-4">
+                <div className="space-y-1">
+                    {navigation.map((item) => {
+                        const Icon = item.icon;
 
-                    const active =
-                        url === item.href ||
-                        url.startsWith(`${item.href}/`);
+                        const active =
+                            url === item.href ||
+                            url.startsWith(`${item.href}/`);
 
-                    return (
-                        <Link
-                            key={item.label}
-                            href={item.href}
-                            className={[
-                                'flex h-12 items-center gap-4 border-l-4 px-6 transition-colors',
-                                active
-                                    ? 'border-[#004AC6] bg-[#EFF4FF] text-[#004AC6]'
-                                    : 'border-transparent text-[#434655] hover:bg-[#F8F9FF]',
-                            ].join(' ')}
-                        >
-                            <Icon
-                                className="h-[18px] w-[18px] shrink-0"
-                                strokeWidth={active ? 2.3 : 1.8}
-                            />
-
-                            <span
-                                className={
+                        return (
+                            <Link
+                                key={item.label}
+                                href={item.href}
+                                className={[
+                                    'flex h-12 items-center gap-4 rounded-lg px-4 transition-colors',
                                     active
-                                        ? 'text-base font-semibold'
-                                        : 'text-base'
-                                }
+                                        ? 'bg-blue-50 text-sale-blue'
+                                        : 'text-sale-muted hover:bg-slate-50 hover:text-sale-dark',
+                                ].join(' ')}
                             >
-                                {item.label}
-                            </span>
-                        </Link>
-                    );
-                })}
+                                <Icon
+                                    className="h-[18px] w-[18px] shrink-0"
+                                    strokeWidth={active ? 2.2 : 1.8}
+                                />
+
+                                <span
+                                    className={
+                                        active
+                                            ? 'text-sm font-semibold'
+                                            : 'text-sm font-medium'
+                                    }
+                                >
+                                    {item.label}
+                                </span>
+                            </Link>
+                        );
+                    })}
+                </div>
             </nav>
 
             {/* Footer */}
-            <div className="space-y-2 px-6 pb-6">
-                <button className="flex w-full items-center gap-4 px-6 py-3 text-left text-base text-[#434655] hover:bg-[#F8F9FF]">
+            <div className="space-y-1 border-t border-sale-border px-4 py-4">
+                <button
+                    type="button"
+                    className="flex h-11 w-full items-center gap-4 rounded-lg px-4 text-left text-sm font-medium text-sale-muted transition-colors hover:bg-slate-50 hover:text-sale-dark"
+                >
                     <CircleHelp className="h-5 w-5" strokeWidth={1.8} />
                     Bantuan
                 </button>
 
-                <button className="flex w-full items-center gap-4 px-6 py-3 text-left text-base text-[#BA1A1A] hover:bg-[#FFF4F3]">
+                <button
+                    type="button"
+                    className="text-sale-danger flex h-11 w-full items-center gap-4 rounded-lg px-4 text-left text-sm font-medium transition-colors hover:bg-red-50"
+                >
                     <LogOut className="h-[18px] w-[18px]" strokeWidth={1.8} />
                     Keluar
                 </button>
