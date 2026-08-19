@@ -22,17 +22,6 @@
     --font-poppins: 'Poppins', ui-sans-serif, system-ui, sans-serif;
     --font-inter: 'Inter', ui-sans-serif, system-ui, sans-serif;
 
-    /* SALE Design Tokens */
-    --sale-blue: #2563eb;
-    --sale-green: #22c55e;
-    --sale-orange: #f97316;
-    --sale-dark: #1f2937;
-    --sale-muted: #64748b;
-    --sale-border: #e2e8f0;
-    --sale-background: #f8fafc;
-    --sale-surface: #ffffff;
-    --sale-danger: #ef4444;
-
     /* Radius */
     --radius-lg: 0.75rem;
     --radius-md: 0.625rem;
