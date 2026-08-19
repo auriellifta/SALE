@@ -1,13 +1,37 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::inertia('/', 'welcome')->name('home');
 
-Route::get('/student/dashboard', function () {
-    return Inertia::render('student/Dashboard');
-})->name('student.dashboard');
+Route::prefix('student')->name('student.')->group(function () {
+    Route::inertia('dashboard', 'student/Dashboard')->name('dashboard');
+    Route::inertia('courses', 'student/Courses')->name('courses');
+    Route::get('courses/{course}', function (string $course) {
+        return \Inertia\Inertia::render('student/CourseDetail', [
+            'courseId' => $course,
+        ]);
+    })->name('courses.show');
+    Route::inertia('assignments', 'student/Assignments')->name('assignments');
+    Route::get('assignments/{assignment}', function (string $assignment) {
+        return \Inertia\Inertia::render('student/AssignmentDetail', [
+            'assignmentId' => $assignment,
+        ]);
+    })->name('assignments.show');
+    Route::get('quiz/{quiz}', function (string $quiz) {
+        return \Inertia\Inertia::render('student/Quiz', [
+            'quizId' => $quiz,
+        ]);
+    })->name('quiz.show');
+    Route::get('programming-task/{task}', function (string $task) {
+        return \Inertia\Inertia::render('student/ProgrammingTask', [
+            'taskId' => $task,
+        ]);
+    })->name('programming-task.show');
+    Route::inertia('forum', 'student/Forum')->name('forum');
+    Route::inertia('notifications', 'student/Notifications')->name('notifications');
+    Route::inertia('profile', 'student/Profile')->name('profile');
+});
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'dashboard')->name('dashboard');
