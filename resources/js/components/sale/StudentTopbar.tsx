@@ -2,31 +2,51 @@ import { Bell, Moon } from 'lucide-react';
 
 export default function StudentTopbar() {
     return (
-        <header className="fixed left-[280px] right-0 top-0 z-30 flex h-20 items-center justify-end border-b border-[#C3C6D7] bg-[#F8F9FF] px-8">
-            <div className="flex items-center gap-4">
+        <header className="bg-sale-surface fixed top-0 right-0 left-[280px] z-30 flex h-16 items-center justify-between border-b border-sale-border px-8">
+            {/* Page Context */}
+            <div className="flex items-center">
+                <span className="text-sm font-medium text-sale-muted">
+                    Dashboard
+                </span>
+            </div>
+
+            {/* Actions */}
+            <div className="flex items-center gap-2">
                 <button
                     type="button"
-                    className="flex h-10 w-10 items-center justify-center rounded-full text-[#434655] hover:bg-white"
+                    className="relative flex h-10 w-10 items-center justify-center rounded-full text-sale-muted transition-colors hover:bg-slate-100 hover:text-sale-dark"
                     aria-label="Notifikasi"
                 >
                     <Bell className="h-5 w-5" strokeWidth={1.8} />
+
+                    <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-sale-orange" />
                 </button>
 
                 <button
                     type="button"
-                    className="flex h-10 w-10 items-center justify-center rounded-full text-[#434655] hover:bg-white"
+                    className="flex h-10 w-10 items-center justify-center rounded-full text-sale-muted transition-colors hover:bg-slate-100 hover:text-sale-dark"
                     aria-label="Ubah tema"
                 >
                     <Moon className="h-[18px] w-[18px]" strokeWidth={1.8} />
                 </button>
 
+                <div className="ml-2 h-8 w-px bg-sale-border" />
+
                 <button
                     type="button"
-                    className="h-10 w-10 overflow-hidden rounded-full border border-[#C3C6D7]"
-                    aria-label="Profil"
+                    className="flex items-center gap-3 rounded-lg px-2 py-1.5 transition-colors hover:bg-slate-50"
+                    aria-label="Profil pengguna"
                 >
-                    <div className="flex h-full w-full items-center justify-center bg-[#DCE9FF] text-sm font-semibold text-[#004AC6]">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-50 text-sm font-semibold text-sale-blue">
                         A
+                    </div>
+
+                    <div className="hidden text-left md:block">
+                        <p className="text-sm font-semibold text-sale-dark">
+                            Auriel Lifta
+                        </p>
+
+                        <p className="text-xs text-sale-muted">Mahasiswa</p>
                     </div>
                 </button>
             </div>
