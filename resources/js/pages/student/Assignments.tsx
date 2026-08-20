@@ -1,17 +1,23 @@
 import { Head, Link } from '@inertiajs/react';
-import { AlertTriangle, CheckCircle2, Clock, HelpCircle } from 'lucide-react';
+import { AlertTriangle, CheckCircle2, Clock, Code2, HelpCircle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { getAssignmentHref  } from '@/lib/assignment-routing';
+import type {SubmissionMode} from '@/lib/assignment-routing';
 import StudentLayout from '@/layouts/student-layout';
 
-type AssignmentType = 'mandiri' | 'kuis' | 'kelompok';
+// Kategori tampilan (badge) — bebas ditambah, TIDAK menentukan routing
+type AssignmentType = 'mandiri' | 'kuis' | 'kelompok' | 'pemrograman';
 type AssignmentStatus = 'belum-dikerjakan' | 'belum-dimulai' | 'sudah-dikumpulkan';
 
 type Assignment = {
     id: number;
     type: AssignmentType;
     typeLabel: string;
+    // submissionMode = SATU-SATUNYA sumber kebenaran untuk menentukan halaman
+    // tujuan saat item ini diklik. Lihat lib/assignment-routing.ts.
+    submissionMode: SubmissionMode;
     title: string;
     course: string;
     deadlineLabel: string;
@@ -19,45 +25,46 @@ type Assignment = {
     deadlineStrikethrough?: boolean;
     status: AssignmentStatus;
     statusLabel: string;
-    href: string;
 };
 
-// Dummy data — nanti diganti fetch/props Inertia dari controller
+// Dummy data — nanti diganti fetch/props Inertia dari controller.
+// submissionMode idealnya datang langsung dari kolom database (mis. enum
+// `submission_mode` di tabel assignments), bukan disimpulkan di frontend.
 const activeAssignments: Assignment[] = [
     {
         id: 1,
-        type: 'mandiri',
+        type: 'pemrograman',
         typeLabel: 'Tugas Pemrograman',
+        submissionMode: 'programming',
         title: 'Implementasi Algoritma Sorting (Bubble Sort)',
         course: 'Struktur Data & Algoritma',
         deadlineLabel: 'Hari ini, 23:59 WIB',
         deadlineUrgent: true,
         status: 'belum-dikerjakan',
         statusLabel: 'Belum Dikerjakan',
-        href: '/student/programming-task/1', // Mengarah ke Code Editor
     },
     {
         id: 2,
         type: 'kuis',
         typeLabel: 'Kuis Online',
+        submissionMode: 'quiz',
         title: 'Kuis 2: Manajemen Memori',
         course: 'Sistem Operasi',
         deadlineLabel: 'Jum, 24 Okt • 10:00 WIB',
         status: 'belum-dimulai',
         statusLabel: 'Belum Dimulai',
-        href: '/student/quiz/2', // Mengarah ke Kuis Pilihan Ganda
     },
     {
         id: 3,
         type: 'kelompok',
         typeLabel: 'Tugas Kelompok',
+        submissionMode: 'classroom',
         title: 'Implementasi UI/UX Prototype',
         course: 'Desain Antarmuka Pengguna',
         deadlineLabel: 'Rab, 22 Okt • 23:59 WIB',
         deadlineStrikethrough: true,
         status: 'sudah-dikumpulkan',
         statusLabel: 'Sudah Dikumpulkan',
-        href: '/student/assignments/3',
     },
 ];
 
@@ -79,6 +86,10 @@ const typeIconMap: Record<
         icon: CheckCircle2,
         wrapClass: 'bg-green-50 text-sale-green',
     },
+    pemrograman: {
+        icon: Code2,
+        wrapClass: 'bg-orange-50 text-sale-orange',
+    },
 };
 
 const statusBadgeClass: Record<AssignmentStatus, string> = {
@@ -92,10 +103,11 @@ const statusBadgeClass: Record<AssignmentStatus, string> = {
 
 function AssignmentRow({ item }: { item: Assignment }) {
     const { icon: Icon, wrapClass } = typeIconMap[item.type];
+    const href = getAssignmentHref(item.id, item.submissionMode);
 
     return (
         <Link
-            href={item.href}
+            href={href}
             className="flex items-center gap-4 border-t border-sale-border px-6 py-5 first:border-t-0 hover:bg-muted/30"
         >
             <span
