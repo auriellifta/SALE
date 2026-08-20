@@ -3,8 +3,10 @@ import {
     Calendar,
     CheckCircle2,
     ChevronDown,
+    ExternalLink,
     FileText,
     Info,
+    Link as LinkIcon,
     MessageSquare,
     PlayCircle,
 } from 'lucide-react';
@@ -17,6 +19,12 @@ import {
     CollapsibleContent,
     CollapsibleTrigger,
 } from '@/components/ui/collapsible';
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import StudentLayout from '@/layouts/student-layout';
 
@@ -44,8 +52,9 @@ const video = {
 type ModuleItem = {
     id: string;
     label: string;
-    icon: 'pdf' | 'video' | 'task';
+    icon: 'pdf' | 'video' | 'link' | 'task';
     meta: string;
+    url?: string;
     score?: string;
     highlighted?: boolean;
 };
@@ -72,12 +81,21 @@ const modules: ModuleWeek[] = [
                 label: 'Slide Kuliah: Representasi Graf.pdf',
                 icon: 'pdf',
                 meta: 'Materi • 2.4 MB',
+                url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
             },
             {
                 id: 'w1-video',
                 label: 'Rekaman Sesi Sinkron',
                 icon: 'video',
                 meta: 'Materi • 45 Menit',
+                url: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
+            },
+            {
+                id: 'w1-link',
+                label: 'Artikel Referensi: Graph Theory Basics',
+                icon: 'link',
+                meta: 'Materi • Tautan Eksternal',
+                url: 'https://en.wikipedia.org/wiki/Graph_theory',
             },
             {
                 id: 'w1-task',
@@ -171,28 +189,33 @@ function moduleIcon(icon: ModuleItem['icon']) {
             return <FileText className="size-4" />;
         case 'video':
             return <PlayCircle className="size-4" />;
+        case 'link':
+            return <LinkIcon className="size-4" />;
         case 'task':
             return <FileText className="size-4" />;
     }
 }
 
-function ModuleItemRow({ item }: { item: ModuleItem }) {
-    return (
-        <div
-            className={[
-                'flex items-center gap-3 rounded-lg px-3 py-3',
-                item.highlighted ? 'bg-blue-50' : '',
-            ].join(' ')}
-        >
+function ModuleItemRow({
+    item,
+    onOpenViewer,
+}: {
+    item: ModuleItem;
+    onOpenViewer: (item: ModuleItem) => void;
+}) {
+    const iconWrapClass =
+        item.icon === 'pdf'
+            ? 'bg-orange-50 text-sale-orange'
+            : item.icon === 'video'
+              ? 'bg-blue-50 text-sale-blue'
+              : item.icon === 'link'
+                ? 'bg-green-50 text-sale-green'
+                : 'bg-blue-50 text-sale-blue';
+
+    const content = (
+        <>
             <span
-                className={[
-                    'flex size-9 shrink-0 items-center justify-center rounded-lg',
-                    item.icon === 'pdf'
-                        ? 'bg-orange-50 text-sale-orange'
-                        : item.icon === 'video'
-                          ? 'bg-blue-50 text-sale-blue'
-                          : 'bg-blue-50 text-sale-blue',
-                ].join(' ')}
+                className={`flex size-9 shrink-0 items-center justify-center rounded-lg ${iconWrapClass}`}
             >
                 {moduleIcon(item.icon)}
             </span>
@@ -222,14 +245,58 @@ function ModuleItemRow({ item }: { item: ModuleItem }) {
                 </span>
             )}
 
-            {!item.score && !item.highlighted && (
+            {item.icon === 'link' && (
+                <ExternalLink className="size-4 shrink-0 text-sale-muted" />
+            )}
+
+            {!item.score && !item.highlighted && item.icon !== 'link' && (
                 <CheckCircle2 className="size-5 shrink-0 text-sale-green" />
             )}
-        </div>
+        </>
     );
+
+    const rowClass = [
+        'flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left',
+        item.highlighted ? 'bg-blue-50' : '',
+        item.icon === 'pdf' || item.icon === 'video' || item.icon === 'link'
+            ? 'hover:bg-muted/50'
+            : '',
+    ].join(' ');
+
+    // Link materi: buka tab baru langsung, tidak perlu viewer in-app
+    if (item.icon === 'link') {
+        return (
+            <a
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={rowClass}
+            >
+                {content}
+            </a>
+        );
+    }
+
+    // PDF & video: buka viewer in-app (Dialog)
+    if (item.icon === 'pdf' || item.icon === 'video') {
+        return (
+            <button type="button" onClick={() => onOpenViewer(item)} className={rowClass}>
+                {content}
+            </button>
+        );
+    }
+
+    // Task / lainnya: baris statis, tidak diklik di sini
+    return <div className={rowClass}>{content}</div>;
 }
 
-function ModuleWeekCard({ week }: { week: ModuleWeek }) {
+function ModuleWeekCard({
+    week,
+    onOpenViewer,
+}: {
+    week: ModuleWeek;
+    onOpenViewer: (item: ModuleItem) => void;
+}) {
     const [open, setOpen] = useState(week.defaultOpen ?? false);
     const hasItems = week.items.length > 0;
 
@@ -267,7 +334,11 @@ function ModuleWeekCard({ week }: { week: ModuleWeek }) {
                     <CollapsibleContent className="space-y-1 border-t border-sale-border px-3 pb-3">
                         <div className="pt-2" />
                         {week.items.map((item) => (
-                            <ModuleItemRow key={item.id} item={item} />
+                            <ModuleItemRow
+                                key={item.id}
+                                item={item}
+                                onOpenViewer={onOpenViewer}
+                            />
                         ))}
                     </CollapsibleContent>
                 )}
@@ -480,9 +551,57 @@ function RpsTab() {
     );
 }
 
+function MaterialViewerDialog({
+    item,
+    open,
+    onOpenChange,
+}: {
+    item: ModuleItem | null;
+    open: boolean;
+    onOpenChange: (open: boolean) => void;
+}) {
+    return (
+        <Dialog open={open} onOpenChange={onOpenChange}>
+            <DialogContent className="max-h-[85vh] max-w-4xl gap-4 overflow-hidden p-0">
+                <DialogHeader className="border-b border-sale-border px-6 py-4 pr-12">
+                    <DialogTitle className="font-poppins text-sale-dark">
+                        {item?.label}
+                    </DialogTitle>
+                </DialogHeader>
+
+                <div className="px-6 pb-6">
+                    {item?.icon === 'pdf' && item.url && (
+                        <iframe
+                            src={item.url}
+                            title={item.label}
+                            className="h-[65vh] w-full rounded-lg border border-sale-border"
+                        />
+                    )}
+
+                    {item?.icon === 'video' && item.url && (
+                        <video
+                            src={item.url}
+                            controls
+                            className="max-h-[65vh] w-full rounded-lg bg-black"
+                        />
+                    )}
+                </div>
+            </DialogContent>
+        </Dialog>
+    );
+}
+
 // ============ Page ============
 
 export default function CourseDetail() {
+    const [viewerItem, setViewerItem] = useState<ModuleItem | null>(null);
+    const [viewerOpen, setViewerOpen] = useState(false);
+
+    function handleOpenViewer(item: ModuleItem) {
+        setViewerItem(item);
+        setViewerOpen(true);
+    }
+
     return (
         <StudentLayout>
             <Head title={course.title} />
@@ -578,7 +697,11 @@ export default function CourseDetail() {
 
                     <TabsContent value="modules" className="mt-6 space-y-4">
                         {modules.map((week) => (
-                            <ModuleWeekCard key={week.id} week={week} />
+                            <ModuleWeekCard
+                                key={week.id}
+                                week={week}
+                                onOpenViewer={handleOpenViewer}
+                            />
                         ))}
                     </TabsContent>
 
@@ -590,6 +713,12 @@ export default function CourseDetail() {
                         <GradingTab />
                     </TabsContent>
                 </Tabs>
+
+                <MaterialViewerDialog
+                    item={viewerItem}
+                    open={viewerOpen}
+                    onOpenChange={setViewerOpen}
+                />
             </div>
         </StudentLayout>
     );
