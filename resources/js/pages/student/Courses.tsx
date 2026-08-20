@@ -26,17 +26,16 @@ type CourseClass = {
     lecturerAvatar?: string;
 };
 
-// Dummy data — nanti diganti fetch dari controller Laravel (props Inertia)
 const courses: CourseClass[] = [
     {
         id: 1,
-        classCode: 'IF-A',
-        title: 'Algoritma & Pemrograman...',
+        classCode: 'INF-A',
+        title: 'Interaksi Manusia & Komputer',
         lecturer: 'Dr. Budi Santoso, M.Kom',
     },
     {
         id: 2,
-        classCode: 'IF-B',
+        classCode: 'INF-B',
         title: 'Struktur Data Terapan',
         lecturer: 'Siti Rahmawati, M.T.',
     },
@@ -48,7 +47,7 @@ const courses: CourseClass[] = [
     },
     {
         id: 4,
-        classCode: 'IF-A',
+        classCode: 'INF-A',
         title: 'Sistem Operasi Lanjut',
         lecturer: 'Prof. Dr. Hendra Wijaya',
     },
