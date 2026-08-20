@@ -7,6 +7,13 @@ import { Card } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import StudentLayout from '@/layouts/student-layout';
 
+// Halaman ini KHUSUS untuk assignment dengan submissionMode === 'classroom'
+// (tugas laporan/file biasa — individu maupun kelompok).
+// Untuk submissionMode 'quiz' → lihat pages/student/Quiz.tsx
+// Untuk submissionMode 'programming' → lihat pages/student/ProgrammingTask.tsx
+// Routing ke ketiganya diatur terpusat di lib/assignment-routing.ts,
+// jangan buat link manual ke halaman ini dari luar helper tsb.
+
 // Dummy data — nanti diganti props Inertia dari controller (by assignment id)
 const assignment = {
     course: 'Interaksi Manusia & Komputer',
