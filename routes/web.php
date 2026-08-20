@@ -18,21 +18,22 @@ Route::prefix('student')->name('student.')->group(function () {
         ]);
     })->name('courses.show');
     Route::inertia('assignments', 'student/Assignments')->name('assignments');
+
     Route::get('assignments/{assignment}', function (string $assignment) {
         return \Inertia\Inertia::render('student/AssignmentDetail', [
             'assignmentId' => $assignment,
         ]);
-    })->name('assignments.show');
+    })->name('assignments.show'); // submissionMode: 'classroom'
     Route::get('quiz/{quiz}', function (string $quiz) {
         return \Inertia\Inertia::render('student/Quiz', [
             'quizId' => $quiz,
         ]);
-    })->name('quiz.show');
+    })->name('quiz.show'); // submissionMode: 'quiz'
     Route::get('programming-task/{task}', function (string $task) {
         return \Inertia\Inertia::render('student/ProgrammingTask', [
             'taskId' => $task,
         ]);
-    })->name('programming-task.show');
+    })->name('programming-task.show'); // submissionMode: 'programming'
     Route::inertia('forum', 'student/Forum')->name('forum');
     Route::inertia('notifications', 'student/Notifications')->name('notifications');
     Route::inertia('profile', 'student/Profile')->name('profile');
