@@ -2,7 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::inertia('/', 'welcome')->name('home');
+// Redirect root / to student dashboard while keeping route name 'home'
+Route::get('/', function () {
+    return redirect()->route('student.dashboard');
+})->name('home');
+
+Route::redirect('/student', '/student/dashboard');
 
 Route::prefix('student')->name('student.')->group(function () {
     Route::inertia('dashboard', 'student/Dashboard')->name('dashboard');

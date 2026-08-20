@@ -140,8 +140,8 @@ export default function ProgrammingTask({ taskId = '1' }: ProgrammingTaskProps) 
                     <div className="flex-1 overflow-auto bg-white p-4 font-mono text-sm">
                         <Editor
                             value={code || ''}
-                            onValueChange={(val) => setCode(val || '')}
-                            highlight={(value) =>
+                            onValueChange={(val: string) => setCode(val || '')}
+                            highlight={(value: string) =>
                                 Prism.highlight(
                                     value || '',
                                     Prism.languages.javascript || Prism.languages.js,
