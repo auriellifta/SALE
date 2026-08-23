@@ -4,10 +4,8 @@ import {
     ArrowRight,
     CheckCircle2,
     Clock,
-    HelpCircle,
 } from 'lucide-react';
 import { useState } from 'react';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import {
@@ -123,7 +121,7 @@ export default function Quiz({ quizId = '2' }: QuizProps) {
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
                         <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground mb-1">
-                            <Link href="/student/assignments" className="hover:text-foreground transition-colors">
+                            <Link href="/student/assignments" className="hover:text-primary transition-colors">
                                 Tugas & Kuis
                             </Link>
                             <span>›</span>
@@ -131,27 +129,27 @@ export default function Quiz({ quizId = '2' }: QuizProps) {
                             <span>›</span>
                             <span>{quizData.module}</span>
                         </div>
-                        <h1 className="text-xl md:text-2xl font-bold tracking-tight text-foreground">
+                        <h1 className="text-xl md:text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
                             {quizData.title}
                         </h1>
                         <p className="text-xs text-muted-foreground mt-1">
-                            Soal {currentQuestion.number} dari {quizData.totalQuestions} • {answeredCount} terjawab
+                            Soal {currentQuestion.number} dari {quizData.totalQuestions} • <span className="font-semibold text-slate-700 dark:text-slate-300">{answeredCount} terjawab</span>
                         </p>
                     </div>
 
-                    <div className="flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground shrink-0 shadow-xs">
-                        <Clock className="size-4" />
+                    <div className="flex items-center gap-2 rounded-xl bg-card px-4 py-2 text-sm font-semibold text-slate-900 dark:text-slate-100 shrink-0 shadow-xs">
+                        <Clock className="size-4 text-slate-700 dark:text-slate-300" />
                         <span>{quizData.timeRemaining}</span>
                     </div>
                 </div>
 
                 {/* Question Card */}
-                <Card className="rounded-xl border border-border bg-card p-6 md:p-8 space-y-6 shadow-xs">
+                <Card className="rounded-2xl bg-card p-6 md:p-8 space-y-6 shadow-sm border-0">
                     <div className="space-y-3">
-                        <Badge variant="outline" className="text-xs font-semibold">
+                        <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
                             SOAL NOMOR {currentQuestion.number}
-                        </Badge>
-                        <p className="text-base md:text-lg font-medium text-foreground leading-relaxed">
+                        </span>
+                        <p className="text-base md:text-lg font-medium text-slate-900 dark:text-slate-100 leading-relaxed">
                             {currentQuestion.question}
                         </p>
                     </div>
@@ -166,18 +164,18 @@ export default function Quiz({ quizId = '2' }: QuizProps) {
                                     type="button"
                                     onClick={() => handleSelectOption(idx)}
                                     className={[
-                                        'flex w-full items-center gap-4 rounded-xl border p-4 text-left text-sm transition-all shadow-2xs hover:shadow-xs',
+                                        'flex w-full items-center gap-4 rounded-xl p-4 text-left text-sm transition-all shadow-2xs',
                                         isSelected
-                                            ? 'border-foreground bg-accent text-foreground font-semibold shadow-xs'
-                                            : 'border-border bg-card text-foreground hover:bg-muted/40 hover:border-foreground/30',
+                                            ? 'bg-blue-50/80 dark:bg-blue-950/60 text-slate-900 dark:text-slate-100 font-semibold'
+                                            : 'bg-slate-50/80 dark:bg-slate-800/50 text-slate-800 dark:text-slate-200 hover:bg-blue-50/40',
                                     ].join(' ')}
                                 >
                                     <span
                                         className={[
-                                            'flex size-7 shrink-0 items-center justify-center rounded-full border text-xs font-bold transition-colors',
+                                            'flex size-7 shrink-0 items-center justify-center rounded-full text-xs font-bold transition-colors',
                                             isSelected
-                                                ? 'border-foreground bg-foreground text-background'
-                                                : 'border-border text-muted-foreground',
+                                                ? 'bg-primary text-white'
+                                                : 'bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-300 shadow-2xs',
                                         ].join(' ')}
                                     >
                                         {String.fromCharCode(65 + idx)}
@@ -195,13 +193,13 @@ export default function Quiz({ quizId = '2' }: QuizProps) {
                         variant="outline"
                         disabled={currentIndex === 0}
                         onClick={() => setCurrentIndex((prev) => prev - 1)}
-                        className="w-full sm:w-auto gap-2 text-xs font-semibold h-10 shadow-2xs"
+                        className="w-full sm:w-auto gap-2 text-xs font-semibold h-10 shadow-xs border-0 bg-card hover:bg-blue-50 hover:text-primary"
                     >
-                        <ArrowLeft className="size-4" />
+                        <ArrowLeft className="size-4 text-slate-800 dark:text-slate-200" />
                         Soal Sebelumnya
                     </Button>
 
-                    {/* Question Number Pills */}
+                    {/* Question Number Buttons */}
                     <div className="flex items-center gap-2">
                         {quizData.questions.map((q, idx) => {
                             const isCurrent = currentIndex === idx;
@@ -213,12 +211,12 @@ export default function Quiz({ quizId = '2' }: QuizProps) {
                                     type="button"
                                     onClick={() => setCurrentIndex(idx)}
                                     className={[
-                                        'flex size-9 items-center justify-center rounded-lg text-xs font-bold transition-all shadow-2xs',
+                                        'flex size-9 items-center justify-center rounded-xl text-xs font-bold transition-all shadow-xs',
                                         isCurrent
-                                            ? 'border-2 border-foreground bg-foreground text-background shadow-xs'
+                                            ? 'bg-primary text-white'
                                             : isAnswered
-                                              ? 'border border-border bg-muted text-foreground'
-                                              : 'border border-border bg-card text-muted-foreground hover:border-foreground/30 hover:bg-accent/40',
+                                              ? 'bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 font-semibold'
+                                              : 'bg-card text-muted-foreground hover:bg-blue-50',
                                     ].join(' ')}
                                 >
                                     {q.number}
@@ -230,7 +228,7 @@ export default function Quiz({ quizId = '2' }: QuizProps) {
                     {currentIndex === quizData.questions.length - 1 ? (
                         <Button
                             onClick={() => setSubmitModalOpen(true)}
-                            className="w-full sm:w-auto gap-2 text-xs font-semibold h-10 shadow-xs"
+                            className="w-full sm:w-auto gap-2 text-xs font-semibold h-10 shadow-xs bg-emerald-600 hover:bg-emerald-700 text-white"
                         >
                             <CheckCircle2 className="size-4" />
                             Kumpulkan Jawaban
@@ -238,19 +236,19 @@ export default function Quiz({ quizId = '2' }: QuizProps) {
                     ) : (
                         <Button
                             onClick={() => setCurrentIndex((prev) => prev + 1)}
-                            className="w-full sm:w-auto gap-2 text-xs font-semibold h-10 shadow-xs"
+                            className="w-full sm:w-auto gap-2 text-xs font-semibold h-10 shadow-xs bg-primary text-white hover:bg-primary/90"
                         >
                             Soal Berikutnya
-                            <ArrowRight className="size-4" />
+                            <ArrowRight className="size-4 text-white" />
                         </Button>
                     )}
                 </div>
 
                 {/* Submit Confirmation Modal */}
                 <Dialog open={submitModalOpen} onOpenChange={setSubmitModalOpen}>
-                    <DialogContent className="max-w-md rounded-xl p-6 space-y-4 shadow-lg">
+                    <DialogContent className="max-w-md rounded-2xl p-6 space-y-4 shadow-xl border-0 bg-card">
                         <DialogHeader>
-                            <DialogTitle className="text-base font-semibold text-foreground">
+                            <DialogTitle className="text-base font-semibold text-slate-900 dark:text-slate-100">
                                 Kumpulkan Jawaban Kuis?
                             </DialogTitle>
                             <DialogDescription className="text-xs text-muted-foreground leading-relaxed">
@@ -258,9 +256,9 @@ export default function Quiz({ quizId = '2' }: QuizProps) {
                             </DialogDescription>
                         </DialogHeader>
 
-                        <div className="rounded-lg bg-muted p-4 text-xs text-muted-foreground space-y-1">
-                            <p>Mata Kuliah: <strong className="text-foreground">{quizData.course}</strong></p>
-                            <p>Sisa Waktu: <strong className="text-foreground">{quizData.timeRemaining}</strong></p>
+                        <div className="rounded-xl bg-slate-50 dark:bg-slate-800 p-4 text-xs text-muted-foreground space-y-1">
+                            <p>Mata Kuliah: <strong className="text-slate-900 dark:text-slate-100">{quizData.course}</strong></p>
+                            <p>Sisa Waktu: <strong className="text-primary font-semibold">{quizData.timeRemaining}</strong></p>
                         </div>
 
                         <DialogFooter className="gap-2 sm:gap-0">
@@ -269,12 +267,12 @@ export default function Quiz({ quizId = '2' }: QuizProps) {
                                 variant="outline"
                                 size="sm"
                                 onClick={() => setSubmitModalOpen(false)}
-                                className="text-xs"
+                                className="text-xs border-0 bg-slate-100 dark:bg-slate-800"
                             >
                                 Periksa Kembali
                             </Button>
                             <Link href="/student/assignments">
-                                <Button size="sm" className="text-xs font-semibold">
+                                <Button size="sm" className="text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white">
                                     Ya, Kumpulkan
                                 </Button>
                             </Link>

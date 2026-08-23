@@ -31,7 +31,7 @@ export default function StudentLayout({ children }: StudentLayoutProps) {
     const { url } = usePage();
 
     return (
-        <div className="min-h-screen bg-background text-foreground">
+        <div className="min-h-screen bg-slate-100/70 dark:bg-slate-950 text-foreground">
             {/* Desktop Sidebar */}
             <StudentSidebar />
 
@@ -42,26 +42,24 @@ export default function StudentLayout({ children }: StudentLayoutProps) {
                         className="fixed inset-0 bg-black/60 backdrop-blur-xs"
                         onClick={() => setMobileOpen(false)}
                     />
-                    <div className="relative z-10 flex w-72 flex-col bg-card border-r border-border p-6 shadow-xl">
-                        <div className="flex h-12 items-center justify-between border-b border-border pb-4">
+                    <div className="relative z-10 flex w-72 flex-col bg-blue-900 text-white p-6 shadow-xl">
+                        <div className="flex h-12 items-center justify-between pb-4">
                             <div className="flex items-center gap-2.5">
-                                <div className="flex size-8 items-center justify-center rounded-lg bg-foreground text-background">
-                                    <GraduationCap className="size-4.5" />
-                                </div>
-                                <span className="font-bold text-base text-foreground tracking-tight">
+                                <GraduationCap className="size-6 text-emerald-400" />
+                                <span className="font-bold text-base text-white tracking-tight">
                                     SALE
                                 </span>
                             </div>
                             <button
                                 type="button"
                                 onClick={() => setMobileOpen(false)}
-                                className="rounded-lg p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground"
+                                className="rounded-lg p-1.5 text-blue-200 hover:bg-blue-800 hover:text-white"
                             >
                                 <X className="size-5" />
                             </button>
                         </div>
 
-                        <nav className="mt-6 flex-1 space-y-1 overflow-y-auto">
+                        <nav className="mt-6 flex-1 space-y-1.5 overflow-y-auto">
                             {mobileNav.map((item) => {
                                 const Icon = item.icon;
                                 const active =
@@ -73,13 +71,13 @@ export default function StudentLayout({ children }: StudentLayoutProps) {
                                         href={item.href}
                                         onClick={() => setMobileOpen(false)}
                                         className={[
-                                            'flex items-center gap-3.5 rounded-lg px-3.5 py-3 text-sm font-medium transition-colors',
+                                            'flex items-center gap-3.5 rounded-lg px-3.5 py-3 text-sm font-medium transition-all',
                                             active
-                                                ? 'bg-accent text-foreground font-semibold'
-                                                : 'text-muted-foreground hover:bg-accent hover:text-foreground',
+                                                ? 'bg-white text-blue-900 font-bold shadow-sm'
+                                                : 'text-blue-100 hover:bg-blue-800/60 hover:text-white',
                                         ].join(' ')}
                                     >
-                                        <Icon className="size-5" />
+                                        <Icon className={`size-5 ${active ? 'text-emerald-600' : 'text-emerald-400'}`} />
                                         <span>{item.label}</span>
                                     </Link>
                                 );

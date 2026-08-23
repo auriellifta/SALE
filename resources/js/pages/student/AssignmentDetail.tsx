@@ -8,7 +8,6 @@ import {
     UploadCloud,
 } from 'lucide-react';
 import { useState } from 'react';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
@@ -64,12 +63,12 @@ export default function AssignmentDetail() {
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Link
                         href="/student/assignments"
-                        className="hover:text-foreground transition-colors"
+                        className="hover:text-primary transition-colors"
                     >
                         Tugas & Kuis
                     </Link>
                     <span>›</span>
-                    <span className="font-medium text-foreground truncate">
+                    <span className="font-semibold text-slate-900 dark:text-slate-100 truncate">
                         {assignment.title}
                     </span>
                 </div>
@@ -78,43 +77,43 @@ export default function AssignmentDetail() {
                     {/* Left Column */}
                     <div className="space-y-6">
                         {/* Header Card */}
-                        <Card className="rounded-xl border border-border bg-card p-6 md:p-8 space-y-4 shadow-xs">
+                        <Card className="rounded-2xl bg-card p-6 md:p-8 space-y-4 shadow-sm border-0">
                             <div className="flex items-start justify-between gap-4">
-                                <Badge variant="outline" className="font-semibold">
+                                <span className="text-xs font-semibold text-muted-foreground">
                                     {assignment.course}
-                                </Badge>
+                                </span>
 
-                                <div className="shrink-0 rounded-lg bg-muted px-4 py-2 text-center">
+                                <div className="shrink-0 text-right">
                                     <p className="text-xs text-muted-foreground font-medium">
                                         Bobot
                                     </p>
-                                    <p className="text-lg font-bold text-foreground">
+                                    <p className="text-base font-bold text-slate-900 dark:text-slate-100">
                                         {assignment.weight}%
                                     </p>
                                 </div>
                             </div>
 
-                            <h1 className="text-xl md:text-2xl font-bold tracking-tight text-foreground leading-snug">
+                            <h1 className="text-xl md:text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100 leading-snug">
                                 {assignment.title}
                             </h1>
 
                             <p className="flex items-center gap-1.5 text-sm text-muted-foreground pt-1">
-                                <Clock className="size-4 text-destructive" />
+                                <Clock className="size-4 text-slate-700 dark:text-slate-300" />
                                 <span>Tenggat:</span>
-                                <span className="font-semibold text-destructive">
+                                <span className="font-semibold text-slate-800 dark:text-slate-200">
                                     {assignment.deadlineLabel}
                                 </span>
                             </p>
                         </Card>
 
                         {/* Instructions Card */}
-                        <Card className="rounded-xl border border-border bg-card p-6 md:p-8 space-y-5 shadow-xs">
-                            <h2 className="flex items-center gap-2 text-base font-semibold text-foreground">
-                                <FileText className="size-4.5" />
+                        <Card className="rounded-2xl bg-card p-6 md:p-8 space-y-5 shadow-sm border-0">
+                            <h2 className="flex items-center gap-2 text-base font-bold text-slate-900 dark:text-slate-100">
+                                <FileText className="size-5 text-slate-800 dark:text-slate-200" />
                                 Instruksi Tugas
                             </h2>
 
-                            <p className="text-sm text-muted-foreground leading-relaxed">
+                            <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
                                 {assignment.instructionIntro}
                             </p>
 
@@ -122,33 +121,33 @@ export default function AssignmentDetail() {
                                 {assignment.instructionPoints.map((point, idx) => (
                                     <li
                                         key={idx}
-                                        className="flex items-start gap-3 text-sm text-foreground"
+                                        className="flex items-start gap-3 text-sm text-slate-700 dark:text-slate-300"
                                     >
-                                        <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-foreground" />
+                                        <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-slate-400" />
                                         <span className="leading-relaxed">{point}</span>
                                     </li>
                                 ))}
                             </ul>
 
-                            <div className="rounded-lg bg-muted/60 p-3.5 text-xs text-muted-foreground font-medium">
+                            <p className="text-xs text-muted-foreground font-medium pt-2">
                                 {assignment.submissionFormat}
-                            </div>
+                            </p>
 
                             {/* Attachments */}
-                            <div className="border-t border-border pt-5 space-y-3">
-                                <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                            <div className="pt-5 space-y-3">
+                                <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">
                                     Lampiran Berkas Dosen
                                 </h3>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     {assignment.attachments.map((file) => (
                                         <div
                                             key={file.name}
-                                            className="flex items-center justify-between p-3.5 rounded-lg border border-border bg-background hover:border-foreground/30 transition-colors"
+                                            className="flex items-center justify-between p-4 rounded-xl bg-slate-50/80 dark:bg-slate-800/60 hover:bg-blue-50/50 transition-colors shadow-2xs"
                                         >
-                                            <div className="flex items-center gap-2.5 min-w-0 pr-2">
-                                                <FileText className="size-4 text-muted-foreground shrink-0" />
+                                            <div className="flex items-center gap-3 min-w-0 pr-2">
+                                                <FileText className="size-5 text-slate-800 dark:text-slate-200 shrink-0" />
                                                 <div className="min-w-0">
-                                                    <p className="truncate text-xs font-semibold text-foreground">
+                                                    <p className="truncate text-xs font-bold text-slate-900 dark:text-slate-100">
                                                         {file.name}
                                                     </p>
                                                     <p className="text-[11px] text-muted-foreground mt-0.5">
@@ -156,7 +155,7 @@ export default function AssignmentDetail() {
                                                     </p>
                                                 </div>
                                             </div>
-                                            <Button size="icon-sm" variant="ghost" className="shrink-0">
+                                            <Button size="icon-sm" variant="ghost" className="shrink-0 text-slate-700 hover:bg-slate-200/50">
                                                 <Download className="size-4" />
                                             </Button>
                                         </div>
@@ -168,22 +167,22 @@ export default function AssignmentDetail() {
 
                     {/* Right Column: Submission Panel */}
                     <div>
-                        <Card className="h-fit rounded-xl border border-border bg-card p-6 space-y-5 shadow-xs">
+                        <Card className="h-fit rounded-2xl bg-card p-6 space-y-5 shadow-sm border-0">
                             <div className="flex items-center justify-between">
-                                <h2 className="text-base font-semibold text-foreground">
+                                <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">
                                     Pengumpulan
                                 </h2>
-                                <Badge variant={isSubmitted ? 'secondary' : 'outline'}>
+                                <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
                                     {isSubmitted ? 'Terkirim' : assignment.submissionStatus}
-                                </Badge>
+                                </span>
                             </div>
 
                             {isSubmitted ? (
-                                <div className="rounded-xl bg-muted p-6 text-center space-y-3">
-                                    <div className="mx-auto flex size-10 items-center justify-center rounded-full bg-foreground text-background">
-                                        <CheckCircle2 className="size-5" />
+                                <div className="rounded-2xl bg-slate-50 dark:bg-slate-800/60 p-6 text-center space-y-3">
+                                    <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-emerald-600 text-white shadow-xs">
+                                        <CheckCircle2 className="size-6" />
                                     </div>
-                                    <h4 className="text-base font-semibold text-foreground">
+                                    <h4 className="text-base font-bold text-slate-900 dark:text-slate-100">
                                         Tugas Berhasil Dikumpulkan!
                                     </h4>
                                     <p className="text-xs text-muted-foreground">
@@ -193,16 +192,16 @@ export default function AssignmentDetail() {
                                         variant="outline"
                                         size="sm"
                                         onClick={() => setIsSubmitted(false)}
-                                        className="text-xs mt-2"
+                                        className="text-xs mt-2 border-0 bg-card shadow-xs"
                                     >
                                         Kirim Ulang Berkas
                                     </Button>
                                 </div>
                             ) : (
                                 <form onSubmit={handleSubmit} className="space-y-4">
-                                    <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-border hover:border-foreground/40 bg-muted/20 px-4 py-8 text-center transition-colors group">
-                                        <UploadCloud className="size-7 text-muted-foreground group-hover:scale-105 transition-transform" />
-                                        <span className="text-sm font-semibold text-foreground">
+                                    <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl bg-slate-50/80 dark:bg-slate-800/50 hover:bg-blue-50/40 px-4 py-8 text-center transition-all group">
+                                        <UploadCloud className="size-8 text-slate-800 dark:text-slate-200 group-hover:scale-110 transition-transform" />
+                                        <span className="text-sm font-bold text-slate-900 dark:text-slate-100">
                                             {selectedFile ? selectedFile.name : 'Pilih file atau seret ke sini'}
                                         </span>
                                         <span className="text-xs text-muted-foreground">
@@ -219,27 +218,27 @@ export default function AssignmentDetail() {
                                     </label>
 
                                     <div className="space-y-1.5">
-                                        <label className="text-xs font-semibold text-foreground">
+                                        <label className="text-xs font-bold text-slate-800 dark:text-slate-200">
                                             Catatan Mahasiswa (Opsional)
                                         </label>
                                         <Textarea
                                             value={note}
                                             onChange={(e) => setNote(e.target.value)}
                                             placeholder="Tambahkan catatan untuk dosen atau asisten..."
-                                            className="min-h-[80px] text-xs resize-none"
+                                            className="min-h-[80px] text-xs resize-none bg-slate-50 dark:bg-slate-800 border-0 rounded-xl"
                                         />
                                     </div>
 
                                     <Button
                                         type="submit"
                                         disabled={!selectedFile}
-                                        className="w-full text-sm font-semibold h-10"
+                                        className="w-full text-sm font-bold h-10 shadow-xs bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl"
                                     >
                                         Kumpulkan Tugas
                                     </Button>
 
                                     <p className="flex items-start gap-1.5 text-[11px] text-muted-foreground">
-                                        <Info className="size-3.5 shrink-0 mt-0.5" />
+                                        <Info className="size-3.5 shrink-0 mt-0.5 text-slate-600 dark:text-slate-400" />
                                         Pastikan berkas telah sesuai dengan format ketentuan sebelum mengumpulkan.
                                     </p>
                                 </form>

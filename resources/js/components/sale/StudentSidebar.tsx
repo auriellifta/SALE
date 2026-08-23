@@ -48,16 +48,16 @@ export default function StudentSidebar() {
     const { url } = usePage();
 
     return (
-        <aside className="fixed inset-y-0 left-0 z-40 hidden w-[280px] flex-col border-r border-border bg-card md:flex">
+        <aside className="fixed inset-y-0 left-0 z-40 hidden w-[280px] flex-col bg-blue-900 text-white md:flex shadow-md">
             {/* Brand Header */}
-            <div className="flex h-16 items-center border-b border-border px-6">
-                <Link href="/student/dashboard" className="flex items-center gap-2.5">
-                    <GraduationCap className="size-5.5 text-foreground" />
+            <div className="flex h-16 items-center px-6 bg-blue-950/30">
+                <Link href="/student/dashboard" className="flex items-center gap-3 group">
+                    <GraduationCap className="size-6 text-emerald-400 transition-transform group-hover:scale-105" />
                     <div>
-                        <div className="text-base font-bold tracking-tight text-foreground leading-none">
+                        <div className="text-base font-bold tracking-tight text-white leading-none">
                             SALE
                         </div>
-                        <div className="mt-1 text-[11px] font-medium text-muted-foreground leading-none">
+                        <div className="mt-1 text-[11px] font-medium text-blue-200 leading-none">
                             Academic Ecosystem
                         </div>
                     </div>
@@ -65,7 +65,7 @@ export default function StudentSidebar() {
             </div>
 
             {/* Navigation */}
-            <nav className="flex-1 px-3.5 py-5 space-y-1 overflow-y-auto">
+            <nav className="flex-1 px-3.5 py-6 space-y-1.5 overflow-y-auto">
                 {navigation.map((item) => {
                     const Icon = item.icon;
                     const active =
@@ -77,15 +77,15 @@ export default function StudentSidebar() {
                             key={item.label}
                             href={item.href}
                             className={[
-                                'flex h-10 items-center gap-3 rounded-md px-3 text-sm font-medium transition-colors',
+                                'flex h-10 items-center gap-3 rounded-lg px-3.5 text-sm font-medium transition-all',
                                 active
-                                    ? 'bg-accent text-foreground font-semibold'
-                                    : 'text-muted-foreground hover:bg-accent/60 hover:text-foreground',
+                                    ? 'bg-white text-blue-900 font-bold shadow-sm'
+                                    : 'text-blue-100 hover:bg-blue-800/60 hover:text-white',
                             ].join(' ')}
                         >
                             <Icon
-                                className="size-4 shrink-0"
-                                strokeWidth={active ? 2.2 : 1.75}
+                                className={`size-4.5 shrink-0 ${active ? 'text-emerald-600' : 'text-emerald-400'}`}
+                                strokeWidth={active ? 2.3 : 1.75}
                             />
                             <span>{item.label}</span>
                         </Link>
@@ -94,17 +94,17 @@ export default function StudentSidebar() {
             </nav>
 
             {/* Footer */}
-            <div className="space-y-1 border-t border-border p-3.5">
+            <div className="p-3.5 space-y-1 bg-blue-950/40">
                 <Link
                     href="/student/profile"
-                    className="flex items-center gap-2.5 rounded-md px-3 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+                    className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-blue-100 hover:bg-blue-800/40 hover:text-white transition-colors"
                 >
-                    <User className="size-4 shrink-0 text-muted-foreground" />
+                    <User className="size-4 shrink-0 text-emerald-400" />
                     <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-foreground truncate leading-none">
+                        <p className="text-sm font-semibold text-white truncate leading-none">
                             Auriel Lifta
                         </p>
-                        <p className="text-xs text-muted-foreground truncate mt-1 leading-none">
+                        <p className="text-xs text-blue-200 truncate mt-1 leading-none">
                             Mahasiswa
                         </p>
                     </div>
@@ -112,7 +112,7 @@ export default function StudentSidebar() {
 
                 <Link
                     href="/login"
-                    className="flex h-9 w-full items-center gap-2.5 rounded-md px-3 text-sm font-medium text-destructive hover:bg-destructive/10 transition-colors"
+                    className="flex h-9 w-full items-center gap-3 rounded-lg px-3 text-sm font-medium text-rose-300 hover:bg-rose-500/20 hover:text-rose-100 transition-colors"
                 >
                     <LogOut className="size-4 shrink-0" />
                     <span>Keluar</span>

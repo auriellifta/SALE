@@ -5,16 +5,15 @@ import 'prismjs/themes/prism.css';
 import 'prismjs/components/prism-javascript';
 import {
     ArrowLeft,
-    Bot,
     CheckCircle2,
     Play,
     RotateCcw,
     Send,
+    Sparkles,
     Terminal,
 } from 'lucide-react';
 import _Editor from 'react-simple-code-editor';
 const Editor = (_Editor as any).default || _Editor;
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import StudentLayout from '@/layouts/student-layout';
 
@@ -159,30 +158,30 @@ export default function ProgrammingTask({ taskId = '1' }: ProgrammingTaskProps) 
 
             <div className="space-y-5">
                 {/* Header Context Bar */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
                     <div className="flex items-center gap-3">
                         <Link href="/student/assignments">
-                            <Button size="icon-sm" variant="outline" className="rounded-lg">
-                                <ArrowLeft className="size-4" />
+                            <Button size="icon-sm" variant="outline" className="rounded-xl border-0 bg-card shadow-xs hover:bg-blue-50 hover:text-primary">
+                                <ArrowLeft className="size-4 text-slate-800 dark:text-slate-200" />
                             </Button>
                         </Link>
                         <div>
                             <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
-                                <span>{currentTask.course}</span>
+                                <span className="font-semibold text-slate-700 dark:text-slate-300">{currentTask.course}</span>
                                 <span>•</span>
                                 <span>{currentTask.courseCode}</span>
                             </div>
-                            <h1 className="text-lg font-bold text-foreground mt-0.5">
+                            <h1 className="text-lg font-bold text-slate-900 dark:text-slate-100 mt-0.5">
                                 {currentTask.title}
                             </h1>
                         </div>
                     </div>
 
                     <div className="flex items-center gap-3">
-                        <Badge variant="outline" className="font-semibold text-xs">
+                        <span className="text-xs font-medium text-muted-foreground">
                             Tenggat: {currentTask.deadlineLabel}
-                        </Badge>
-                        <Button size="sm" className="text-xs font-semibold h-9 px-4">
+                        </span>
+                        <Button size="sm" className="text-xs font-bold h-10 px-5 rounded-xl shadow-xs bg-emerald-600 hover:bg-emerald-700 text-white">
                             Kumpulkan Solusi
                         </Button>
                     </div>
@@ -191,45 +190,45 @@ export default function ProgrammingTask({ taskId = '1' }: ProgrammingTaskProps) 
                 {/* 3-Column IDE Layout */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 min-h-[620px]">
                     {/* Left: Problem Instruction (4 cols) */}
-                    <div className="lg:col-span-4 rounded-xl border border-border bg-card p-5 space-y-4 flex flex-col justify-between overflow-y-auto max-h-[700px] shadow-xs">
+                    <div className="lg:col-span-4 rounded-2xl bg-card p-6 space-y-4 flex flex-col justify-between overflow-y-auto max-h-[700px] shadow-sm border-0">
                         <div className="space-y-4">
-                            <h2 className="text-sm font-semibold text-foreground border-b border-border pb-2.5">
+                            <h2 className="text-sm font-bold text-slate-900 dark:text-slate-100 pb-2">
                                 Instruksi Soal
                             </h2>
 
-                            <p className="text-xs text-muted-foreground leading-relaxed">
+                            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
                                 {currentTask.description}
                             </p>
 
-                            <div className="space-y-2 pt-2 border-t border-border">
-                                <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider">
+                            <div className="space-y-2 pt-4">
+                                <h3 className="text-xs font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wider">
                                     Ketentuan Soal:
                                 </h3>
-                                <ul className="space-y-1.5 text-xs text-muted-foreground">
+                                <ul className="space-y-1.5 text-xs text-slate-700 dark:text-slate-300">
                                     {currentTask.requirements.map((req, idx) => (
                                         <li key={idx} className="flex items-start gap-2">
-                                            <span className="mt-1.5 size-1 shrink-0 rounded-full bg-foreground" />
+                                            <span className="mt-1.5 size-1 shrink-0 rounded-full bg-slate-400" />
                                             <span className="leading-relaxed">{req}</span>
                                         </li>
                                     ))}
                                 </ul>
                             </div>
 
-                            <div className="space-y-2 pt-2 border-t border-border">
-                                <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider">
+                            <div className="space-y-2 pt-4">
+                                <h3 className="text-xs font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wider">
                                     Contoh Input & Output:
                                 </h3>
                                 <div className="space-y-2">
                                     {currentTask.examples.map((ex, idx) => (
                                         <div
                                             key={idx}
-                                            className="rounded-lg bg-muted p-3 font-mono text-xs space-y-1"
+                                            className="rounded-xl bg-slate-50/80 dark:bg-slate-800/60 p-3.5 font-mono text-xs space-y-1"
                                         >
-                                            <p className="text-muted-foreground">
-                                                Input: <strong className="text-foreground">{ex.input}</strong>
+                                            <p className="text-slate-500">
+                                                Input: <strong className="text-slate-900 dark:text-slate-100">{ex.input}</strong>
                                             </p>
-                                            <p className="text-muted-foreground">
-                                                Output: <strong className="text-foreground">{ex.output}</strong>
+                                            <p className="text-slate-500">
+                                                Output: <strong className="text-slate-900 dark:text-slate-100 font-bold">{ex.output}</strong>
                                             </p>
                                         </div>
                                     ))}
@@ -239,14 +238,14 @@ export default function ProgrammingTask({ taskId = '1' }: ProgrammingTaskProps) 
                     </div>
 
                     {/* Middle: Code Editor & Output (5 cols) */}
-                    <div className="lg:col-span-5 rounded-xl border border-border bg-card flex flex-col justify-between overflow-hidden shadow-xs">
+                    <div className="lg:col-span-5 rounded-2xl bg-card flex flex-col justify-between overflow-hidden shadow-sm border-0">
                         {/* Editor Header */}
-                        <div className="flex items-center justify-between p-3.5 border-b border-border bg-card">
+                        <div className="flex items-center justify-between p-4 bg-slate-50/80 dark:bg-slate-800/60">
                             <div className="flex items-center gap-2">
-                                <Badge variant="secondary" className="text-[10px] font-mono">
+                                <span className="font-mono text-xs font-semibold text-muted-foreground">
                                     JS
-                                </Badge>
-                                <span className="font-mono text-xs font-semibold text-foreground">
+                                </span>
+                                <span className="font-mono text-xs font-bold text-slate-900 dark:text-slate-100">
                                     {currentTask.fileName}
                                 </span>
                             </div>
@@ -256,25 +255,25 @@ export default function ProgrammingTask({ taskId = '1' }: ProgrammingTaskProps) 
                                     size="sm"
                                     variant="outline"
                                     onClick={handleReset}
-                                    className="h-8 text-xs gap-1"
+                                    className="h-8 text-xs gap-1 rounded-lg border-0 bg-white dark:bg-slate-700 shadow-2xs"
                                 >
-                                    <RotateCcw className="size-3" />
+                                    <RotateCcw className="size-3 text-slate-700 dark:text-slate-300" />
                                     Reset
                                 </Button>
                                 <Button
                                     size="sm"
                                     disabled={isRunning}
                                     onClick={handleRun}
-                                    className="h-8 text-xs font-semibold gap-1.5"
+                                    className="h-8 text-xs font-bold gap-1.5 shadow-xs bg-primary text-white hover:bg-primary/90 rounded-lg"
                                 >
-                                    <Play className="size-3 fill-foreground text-foreground" />
+                                    <Play className="size-3 fill-white text-white" />
                                     {isRunning ? 'Menjalankan...' : 'Jalankan Kode'}
                                 </Button>
                             </div>
                         </div>
 
                         {/* Editor Body */}
-                        <div className="flex-1 bg-background p-4 font-mono text-xs overflow-auto min-h-[300px]">
+                        <div className="flex-1 bg-card p-4 font-mono text-xs overflow-auto min-h-[300px]">
                             <Editor
                                 value={code || ''}
                                 onValueChange={(val: string) => setCode(val || '')}
@@ -295,37 +294,37 @@ export default function ProgrammingTask({ taskId = '1' }: ProgrammingTaskProps) 
                         </div>
 
                         {/* Console & Test Results Tab */}
-                        <div className="border-t border-border bg-card">
-                            <div className="flex items-center gap-4 px-4 border-b border-border text-xs font-semibold">
+                        <div className="bg-slate-50/80 dark:bg-slate-800/60">
+                            <div className="flex items-center gap-4 px-4 text-xs font-bold">
                                 <button
                                     type="button"
                                     onClick={() => setActiveConsoleTab('console')}
                                     className={[
-                                        'py-2.5 border-b-2 transition-colors flex items-center gap-1.5',
+                                        'py-3 border-b-2 transition-colors flex items-center gap-1.5',
                                         activeConsoleTab === 'console'
-                                            ? 'border-foreground text-foreground'
+                                            ? 'border-primary text-primary font-bold'
                                             : 'border-transparent text-muted-foreground hover:text-foreground',
                                     ].join(' ')}
                                 >
-                                    <Terminal className="size-3.5" />
+                                    <Terminal className="size-3.5 text-slate-700 dark:text-slate-300" />
                                     Console Output
                                 </button>
                                 <button
                                     type="button"
                                     onClick={() => setActiveConsoleTab('tests')}
                                     className={[
-                                        'py-2.5 border-b-2 transition-colors flex items-center gap-1.5',
+                                        'py-3 border-b-2 transition-colors flex items-center gap-1.5',
                                         activeConsoleTab === 'tests'
-                                            ? 'border-foreground text-foreground'
+                                            ? 'border-primary text-primary font-bold'
                                             : 'border-transparent text-muted-foreground hover:text-foreground',
                                     ].join(' ')}
                                 >
-                                    <CheckCircle2 className="size-3.5" />
+                                    <CheckCircle2 className="size-3.5 text-slate-700 dark:text-slate-300" />
                                     Hasil Test Cases {testResults ? `(${testResults.length})` : ''}
                                 </button>
                             </div>
 
-                            <div className="p-4 font-mono text-xs max-h-[160px] overflow-y-auto bg-muted/20">
+                            <div className="p-4 font-mono text-xs max-h-[160px] overflow-y-auto bg-white dark:bg-slate-900">
                                 {activeConsoleTab === 'console' ? (
                                     <pre className="whitespace-pre-wrap text-muted-foreground leading-relaxed">
                                         {consoleOutput}
@@ -336,19 +335,19 @@ export default function ProgrammingTask({ taskId = '1' }: ProgrammingTaskProps) 
                                             testResults.map((t, idx) => (
                                                 <div
                                                     key={idx}
-                                                    className="flex items-start justify-between p-2.5 rounded-lg border border-border bg-background text-xs"
+                                                    className="flex items-start justify-between p-3 rounded-xl bg-slate-50/80 dark:bg-slate-800 text-xs shadow-2xs"
                                                 >
                                                     <div>
-                                                        <span className="font-semibold text-foreground">
+                                                        <span className="font-bold text-slate-900 dark:text-slate-100">
                                                             {t.name}
                                                         </span>
                                                         <p className="text-muted-foreground mt-0.5">
                                                             {t.details}
                                                         </p>
                                                     </div>
-                                                    <Badge variant="secondary" className="text-[10px]">
-                                                        PASSED
-                                                    </Badge>
+                                                    <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                                                        Lolos
+                                                    </span>
                                                 </div>
                                             ))
                                         ) : (
@@ -363,11 +362,11 @@ export default function ProgrammingTask({ taskId = '1' }: ProgrammingTaskProps) 
                     </div>
 
                     {/* Right: AI Assistant Panel (3 cols) */}
-                    <div className="lg:col-span-3 rounded-xl border border-border bg-card p-4 flex flex-col justify-between space-y-4 shadow-xs">
-                        <div className="flex items-center gap-2 border-b border-border pb-3">
-                            <Bot className="size-4.5 text-foreground" />
+                    <div className="lg:col-span-3 rounded-2xl bg-card p-5 flex flex-col justify-between space-y-4 shadow-sm border-0">
+                        <div className="flex items-center gap-2 pb-3 bg-slate-50/80 dark:bg-slate-800/40 -mx-5 -mt-5 p-4 rounded-t-2xl">
+                            <Sparkles className="size-5 text-slate-800 dark:text-slate-200" />
                             <div>
-                                <h3 className="text-xs font-semibold text-foreground">
+                                <h3 className="text-xs font-bold text-slate-900 dark:text-slate-100">
                                     SALE AI Assistant
                                 </h3>
                                 <p className="text-[10px] text-muted-foreground">
@@ -382,10 +381,10 @@ export default function ProgrammingTask({ taskId = '1' }: ProgrammingTaskProps) 
                                 <div
                                     key={msg.id}
                                     className={[
-                                        'rounded-xl p-3 text-xs leading-relaxed',
+                                        'rounded-2xl p-3.5 text-xs leading-relaxed',
                                         msg.from === 'assistant'
-                                            ? 'bg-muted text-foreground'
-                                            : 'bg-foreground text-background ml-4 shadow-xs',
+                                            ? 'bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-200'
+                                            : 'bg-primary text-white ml-4 shadow-xs font-medium',
                                     ].join(' ')}
                                 >
                                     {msg.text}
@@ -394,7 +393,7 @@ export default function ProgrammingTask({ taskId = '1' }: ProgrammingTaskProps) 
 
                             {/* Quick Prompts */}
                             <div className="space-y-1.5 pt-2">
-                                <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground block">
+                                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">
                                     Bantuan Cepat:
                                 </span>
                                 {currentTask.suggestedPrompts.map((prompt) => (
@@ -402,7 +401,7 @@ export default function ProgrammingTask({ taskId = '1' }: ProgrammingTaskProps) 
                                         key={prompt}
                                         type="button"
                                         onClick={() => sendPrompt(prompt)}
-                                        className="w-full text-left p-2.5 rounded-lg border border-border bg-background hover:bg-accent text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
+                                        className="w-full text-left p-3 rounded-xl bg-slate-50 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-950/40 text-xs font-medium text-slate-700 dark:text-slate-300 hover:text-primary transition-all shadow-2xs"
                                     >
                                         {prompt}
                                     </button>
@@ -416,16 +415,16 @@ export default function ProgrammingTask({ taskId = '1' }: ProgrammingTaskProps) 
                                 e.preventDefault();
                                 sendPrompt(chatInput);
                             }}
-                            className="flex items-center gap-2 pt-2 border-t border-border"
+                            className="flex items-center gap-2 pt-2"
                         >
                             <input
                                 type="text"
                                 value={chatInput}
                                 onChange={(e) => setChatInput(e.target.value)}
                                 placeholder="Tanyakan seputar kode..."
-                                className="flex-1 h-9 px-3 text-xs rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground outline-none focus:ring-1 focus:ring-ring"
+                                className="flex-1 h-10 px-3.5 text-xs rounded-xl bg-slate-50 dark:bg-slate-800 text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-primary transition-all border-0"
                             />
-                            <Button size="icon-sm" type="submit" variant="default" className="shrink-0">
+                            <Button size="icon-sm" type="submit" className="shrink-0 rounded-xl bg-primary text-white hover:bg-primary/90">
                                 <Send className="size-3.5" />
                             </Button>
                         </form>

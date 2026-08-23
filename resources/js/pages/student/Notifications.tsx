@@ -8,7 +8,6 @@ import {
     Star,
 } from 'lucide-react';
 import { useState } from 'react';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import StudentLayout from '@/layouts/student-layout';
@@ -48,7 +47,7 @@ const initialTodayNotifications: NotificationItem[] = [
         id: 3,
         variant: 'ai',
         title: 'Rekomendasi Belajar AI',
-        badge: 'SISTEM',
+        badge: 'Sistem',
         description:
             'Berdasarkan hasil kuis terbaru pada Struktur Data, kami merekomendasikan untuk mempelajari kembali modul "Binary Search Trees".',
         time: '06:00',
@@ -84,46 +83,44 @@ const variantIcons: Record<NotificationVariant, typeof Star> = {
     system: Bell,
 };
 
-function NotificationCard({ item }: { item: NotificationItem }) {
+function NotificationRow({ item }: { item: NotificationItem }) {
     const Icon = variantIcons[item.variant];
 
     return (
-        <Card className="rounded-xl border border-border bg-card p-5 shadow-xs transition-colors hover:border-foreground/30">
-            <div className="flex items-start gap-4">
-                <Icon className="size-4.5 text-muted-foreground shrink-0 mt-0.5" />
+        <div className="flex items-start gap-4 p-6 hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
+            <Icon className="size-5 text-slate-800 dark:text-slate-200 shrink-0 mt-0.5" />
 
-                <div className="min-w-0 flex-1">
-                    <div className="flex flex-wrap items-start justify-between gap-2">
-                        <div className="flex flex-wrap items-center gap-2">
-                            <h3 className="text-sm font-semibold text-foreground">
-                                {item.title}
-                            </h3>
-                            {item.badge && (
-                                <Badge variant="secondary" className="text-[10px] font-bold">
-                                    {item.badge}
-                                </Badge>
-                            )}
-                        </div>
-                        <span className="text-xs text-muted-foreground shrink-0">
-                            {item.time}
-                        </span>
+            <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                        <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">
+                            {item.title}
+                        </h3>
+                        {item.badge && (
+                            <span className="text-xs font-semibold text-muted-foreground">
+                                • {item.badge}
+                            </span>
+                        )}
                     </div>
-
-                    <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
-                        {item.description}
-                    </p>
-
-                    {item.action && (
-                        <Link
-                            href={item.action.href}
-                            className="mt-2.5 inline-block text-xs font-semibold text-foreground hover:underline"
-                        >
-                            {item.action.label} →
-                        </Link>
-                    )}
+                    <span className="text-xs text-muted-foreground shrink-0 font-medium">
+                        {item.time}
+                    </span>
                 </div>
+
+                <p className="mt-1 text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                    {item.description}
+                </p>
+
+                {item.action && (
+                    <Link
+                        href={item.action.href}
+                        className="mt-2.5 inline-block text-xs font-bold text-primary hover:underline"
+                    >
+                        {item.action.label} →
+                    </Link>
+                )}
             </div>
-        </Card>
+        </div>
     );
 }
 
@@ -140,54 +137,49 @@ export default function Notifications() {
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <Link
                             href="/student/dashboard"
-                            className="hover:text-foreground transition-colors"
+                            className="hover:text-primary transition-colors"
                         >
                             Dashboard
                         </Link>
                         <span>›</span>
-                        <span className="font-medium text-foreground">
+                        <span className="font-semibold text-slate-900 dark:text-slate-100">
                             Notifikasi
                         </span>
                     </div>
 
                     <Button
                         variant="outline"
-                        className="gap-2 text-xs font-semibold h-9 rounded-lg"
+                        className="gap-2 text-xs font-bold h-10 px-4 rounded-xl border-0 bg-card shadow-xs hover:bg-slate-100 hover:text-primary"
                     >
-                        <CheckCheck className="size-4" />
+                        <CheckCheck className="size-4 text-slate-800 dark:text-slate-200" />
                         Tandai semua sudah dibaca
                     </Button>
                 </div>
 
-                {/* Hari Ini */}
-                <div className="space-y-3.5">
-                    <div className="flex items-center gap-2.5">
-                        <h2 className="text-base font-semibold text-foreground">
-                            Hari Ini
-                        </h2>
-                        <Badge variant="secondary" className="text-xs">
-                            {todayList.length} Baru
-                        </Badge>
-                    </div>
+                {/* Hari Ini Group Card */}
+                <div className="space-y-3">
+                    <h2 className="text-sm font-bold text-slate-900 dark:text-slate-100">
+                        Hari Ini
+                    </h2>
 
-                    <div className="space-y-3">
+                    <Card className="rounded-2xl bg-card overflow-hidden shadow-sm border-0 divide-y divide-slate-100 dark:divide-slate-800/60 p-0">
                         {todayList.map((item) => (
-                            <NotificationCard key={item.id} item={item} />
+                            <NotificationRow key={item.id} item={item} />
                         ))}
-                    </div>
+                    </Card>
                 </div>
 
-                {/* Kemarin */}
-                <div className="space-y-3.5 pt-2">
-                    <h2 className="text-base font-semibold text-foreground">
+                {/* Kemarin Group Card */}
+                <div className="space-y-3 pt-4">
+                    <h2 className="text-sm font-bold text-slate-900 dark:text-slate-100">
                         Kemarin
                     </h2>
 
-                    <div className="space-y-3">
+                    <Card className="rounded-2xl bg-card overflow-hidden shadow-sm border-0 divide-y divide-slate-100 dark:divide-slate-800/60 p-0">
                         {yesterdayList.map((item) => (
-                            <NotificationCard key={item.id} item={item} />
+                            <NotificationRow key={item.id} item={item} />
                         ))}
-                    </div>
+                    </Card>
                 </div>
             </div>
         </StudentLayout>

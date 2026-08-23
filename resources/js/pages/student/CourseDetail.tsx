@@ -1,7 +1,6 @@
 import { Head, Link } from '@inertiajs/react';
 import {
     Calendar,
-    CheckCircle2,
     ChevronDown,
     ExternalLink,
     FileText,
@@ -11,7 +10,6 @@ import {
     PlayCircle,
 } from 'lucide-react';
 import { useState } from 'react';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import {
@@ -232,10 +230,10 @@ function ModuleItemRow({
 
     const content = (
         <>
-            <Icon className="size-4 text-muted-foreground shrink-0" />
+            <Icon className="size-5 text-slate-800 dark:text-slate-200 shrink-0" />
 
             <div className="min-w-0 flex-1">
-                <p className="text-sm font-medium text-foreground truncate">
+                <p className="text-sm font-bold text-slate-900 dark:text-slate-100 truncate">
                     {item.label}
                 </p>
                 <p className="text-xs text-muted-foreground mt-0.5">
@@ -244,27 +242,27 @@ function ModuleItemRow({
             </div>
 
             {item.score && (
-                <span className="text-xs font-semibold text-foreground px-2 py-0.5 rounded bg-muted">
+                <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">
                     {item.score}
                 </span>
             )}
 
             {item.highlighted && (
                 <Link href="/student/assignments/1">
-                    <Button size="sm" className="h-8 text-xs font-semibold px-3.5">
+                    <Button size="sm" className="h-8 text-xs font-bold px-4 shadow-xs bg-primary text-white hover:bg-primary/90">
                         {item.statusText || 'Buka'}
                     </Button>
                 </Link>
             )}
 
             {item.icon === 'link' && (
-                <ExternalLink className="size-3.5 shrink-0 text-muted-foreground" />
+                <ExternalLink className="size-4 shrink-0 text-muted-foreground" />
             )}
         </>
     );
 
     const baseRowClass =
-        'flex w-full items-center gap-3.5 rounded-lg p-3 text-left transition-colors';
+        'flex w-full items-center gap-4 rounded-xl p-3.5 text-left transition-colors';
 
     if (item.icon === 'link') {
         return (
@@ -272,7 +270,7 @@ function ModuleItemRow({
                 href={item.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`${baseRowClass} hover:bg-accent/60`}
+                className={`${baseRowClass} hover:bg-blue-50/50 dark:hover:bg-blue-950/20`}
             >
                 {content}
             </a>
@@ -284,7 +282,7 @@ function ModuleItemRow({
             <button
                 type="button"
                 onClick={() => onOpenViewer(item)}
-                className={`${baseRowClass} hover:bg-accent/60`}
+                className={`${baseRowClass} hover:bg-blue-50/50 dark:hover:bg-blue-950/20`}
             >
                 {content}
             </button>
@@ -310,13 +308,13 @@ export default function CourseDetail() {
             <div className="space-y-8">
                 {/* Breadcrumb */}
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Link href="/student/courses" className="hover:text-foreground transition-colors">
+                    <Link href="/student/courses" className="hover:text-primary transition-colors">
                         Course
                     </Link>
                     <span>›</span>
                     <span>{course.semesterLabel}</span>
                     <span>›</span>
-                    <span className="font-medium text-foreground">
+                    <span className="font-semibold text-slate-900 dark:text-slate-100">
                         {course.title}
                     </span>
                 </div>
@@ -324,17 +322,16 @@ export default function CourseDetail() {
                 {/* Header Profile Course */}
                 <div className="flex flex-wrap items-start justify-between gap-6 pb-2">
                     <div>
-                        <div className="flex items-center gap-2 mb-3">
-                            <Badge variant="outline" className="font-semibold">
+                        <div className="flex items-center gap-3 mb-3">
+                            <span className="text-xs font-semibold text-muted-foreground">
                                 {course.code}
-                            </Badge>
-                            <Badge variant="secondary" className="gap-1 font-medium">
-                                <CheckCircle2 className="size-3.5" />
+                            </span>
+                            <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">
                                 {course.status}
-                            </Badge>
+                            </span>
                         </div>
 
-                        <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground">
+                        <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
                             {course.title}
                         </h1>
 
@@ -345,8 +342,8 @@ export default function CourseDetail() {
 
                     <div className="flex shrink-0 items-center gap-3">
                         <Link href="/student/forum">
-                            <Button variant="outline" className="gap-2 text-sm h-10">
-                                <MessageSquare className="size-4" />
+                            <Button variant="outline" className="gap-2 text-sm h-10 rounded-xl bg-card border-0 shadow-xs hover:bg-blue-50 hover:text-primary">
+                                <MessageSquare className="size-4 text-slate-800 dark:text-slate-200" />
                                 Diskusi Kelas
                             </Button>
                         </Link>
@@ -354,21 +351,21 @@ export default function CourseDetail() {
                 </div>
 
                 {/* Video / Featured Material Card */}
-                <Card className="rounded-xl border border-border bg-card p-6 space-y-4">
-                    <div className="relative aspect-video max-h-[380px] w-full overflow-hidden rounded-lg bg-muted flex items-center justify-center cursor-pointer group">
-                        <PlayCircle className="size-14 text-foreground/80 group-hover:scale-105 transition-transform" />
+                <Card className="rounded-2xl bg-card p-6 sm:p-8 space-y-4 shadow-sm border-0">
+                    <div className="relative aspect-video max-h-[380px] w-full overflow-hidden rounded-xl bg-slate-950 flex items-center justify-center cursor-pointer group shadow-inner">
+                        <PlayCircle className="size-16 text-white/90 group-hover:scale-110 transition-all duration-300" />
                     </div>
 
-                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 pt-1">
+                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 pt-2">
                         <div>
-                            <h2 className="text-base font-semibold text-foreground">
+                            <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">
                                 {video.weekTitle}
                             </h2>
                             <p className="mt-1 text-sm text-muted-foreground leading-relaxed max-w-3xl">
                                 {video.description}
                             </p>
                         </div>
-                        <span className="text-xs text-muted-foreground shrink-0 font-medium">
+                        <span className="text-xs font-medium text-muted-foreground shrink-0">
                             {video.duration}
                         </span>
                     </div>
@@ -376,14 +373,14 @@ export default function CourseDetail() {
 
                 {/* Tabs Section */}
                 <Tabs defaultValue="modules" className="space-y-6">
-                    <TabsList className="bg-muted p-1 h-10">
-                        <TabsTrigger value="modules" className="text-xs sm:text-sm font-medium px-4">
+                    <TabsList className="bg-slate-200/70 dark:bg-slate-800 p-1.5 h-11 rounded-xl">
+                        <TabsTrigger value="modules" className="text-xs sm:text-sm font-bold px-5 rounded-lg data-[state=active]:bg-card data-[state=active]:text-primary data-[state=active]:shadow-xs">
                             Modul Pembelajaran
                         </TabsTrigger>
-                        <TabsTrigger value="rps" className="text-xs sm:text-sm font-medium px-4">
+                        <TabsTrigger value="rps" className="text-xs sm:text-sm font-bold px-5 rounded-lg data-[state=active]:bg-card data-[state=active]:text-primary data-[state=active]:shadow-xs">
                             Informasi Kursus (RPS)
                         </TabsTrigger>
-                        <TabsTrigger value="grading" className="text-xs sm:text-sm font-medium px-4">
+                        <TabsTrigger value="grading" className="text-xs sm:text-sm font-bold px-5 rounded-lg data-[state=active]:bg-card data-[state=active]:text-primary data-[state=active]:shadow-xs">
                             Penilaian & Bobot
                         </TabsTrigger>
                     </TabsList>
@@ -393,12 +390,12 @@ export default function CourseDetail() {
                         {modules.map((week) => (
                             <div
                                 key={week.id}
-                                className="rounded-xl border border-border bg-card overflow-hidden"
+                                className="rounded-2xl bg-card overflow-hidden shadow-sm border-0"
                             >
                                 <Collapsible defaultOpen={week.defaultOpen}>
-                                    <CollapsibleTrigger className="flex w-full items-center justify-between p-5 text-left hover:bg-accent/40 transition-colors">
+                                    <CollapsibleTrigger className="flex w-full items-center justify-between p-5 text-left bg-slate-50/80 dark:bg-slate-800/50 hover:bg-blue-50/40 transition-colors">
                                         <div>
-                                            <h3 className="text-sm md:text-base font-semibold text-foreground">
+                                            <h3 className="text-sm md:text-base font-bold text-slate-900 dark:text-slate-100">
                                                 {week.title}
                                             </h3>
                                             <p className="text-xs text-muted-foreground mt-0.5">
@@ -408,7 +405,7 @@ export default function CourseDetail() {
                                         <ChevronDown className="size-4 text-muted-foreground transition-transform duration-200" />
                                     </CollapsibleTrigger>
 
-                                    <CollapsibleContent className="border-t border-border p-3 space-y-1 bg-background/50">
+                                    <CollapsibleContent className="p-3 space-y-1 bg-card">
                                         {week.items.length > 0 ? (
                                             week.items.map((item) => (
                                                 <ModuleItemRow
@@ -430,44 +427,44 @@ export default function CourseDetail() {
 
                     {/* RPS */}
                     <TabsContent value="rps" className="mt-0">
-                        <Card className="rounded-xl border border-border bg-card p-6 md:p-8 space-y-6">
+                        <Card className="rounded-2xl bg-card p-6 md:p-8 space-y-6 shadow-sm border-0">
                             <div>
-                                <h3 className="text-base font-semibold text-foreground">
+                                <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">
                                     Deskripsi Mata Kuliah
                                 </h3>
-                                <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
+                                <p className="text-sm text-slate-600 dark:text-slate-300 mt-2 leading-relaxed">
                                     {rps.description}
                                 </p>
                             </div>
 
-                            <div className="border-t border-border pt-6 space-y-3">
-                                <h4 className="text-sm font-semibold text-foreground">
+                            <div className="pt-6 space-y-3 bg-slate-50/80 dark:bg-slate-800/40 -mx-6 md:-mx-8 p-6 md:p-8">
+                                <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">
                                     Capaian Pembelajaran Lulusan (CPMK)
                                 </h4>
                                 <div className="space-y-2">
                                     {rps.cpmk.map((item, idx) => (
                                         <div
                                             key={idx}
-                                            className="flex items-start gap-3 text-sm text-muted-foreground"
+                                            className="flex items-start gap-3 text-sm text-slate-700 dark:text-slate-300"
                                         >
-                                            <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-foreground" />
+                                            <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-slate-400" />
                                             <span className="leading-relaxed">{item}</span>
                                         </div>
                                     ))}
                                 </div>
                             </div>
 
-                            <div className="border-t border-border pt-6 space-y-3">
-                                <h4 className="text-sm font-semibold text-foreground">
+                            <div className="pt-6 space-y-3">
+                                <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">
                                     Buku Referensi
                                 </h4>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     {rps.references.map((ref) => (
                                         <div
                                             key={ref.title}
-                                            className="rounded-lg border border-border bg-background p-4"
+                                            className="rounded-xl bg-slate-50/80 dark:bg-slate-800/60 p-4 shadow-2xs"
                                         >
-                                            <p className="text-sm font-semibold text-foreground">
+                                            <p className="text-sm font-bold text-slate-900 dark:text-slate-100">
                                                 {ref.title}
                                             </p>
                                             <p className="text-xs text-muted-foreground mt-1">
@@ -482,27 +479,27 @@ export default function CourseDetail() {
 
                     {/* Grading */}
                     <TabsContent value="grading" className="mt-0">
-                        <Card className="rounded-xl border border-border bg-card p-6 md:p-8 space-y-4">
-                            <h3 className="text-base font-semibold text-foreground">
+                        <Card className="rounded-2xl bg-card p-6 md:p-8 space-y-4 shadow-sm border-0">
+                            <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">
                                 Komponen Penilaian & Bobot
                             </h3>
                             <div className="space-y-3">
                                 {grading.components.map((comp) => (
                                     <div
                                         key={comp.id}
-                                        className="flex items-center justify-between p-4 rounded-lg border border-border bg-background"
+                                        className="flex items-center justify-between p-4 rounded-xl bg-slate-50/80 dark:bg-slate-800/50 shadow-2xs"
                                     >
                                         <div>
-                                            <p className="text-sm font-semibold text-foreground">
+                                            <p className="text-sm font-bold text-slate-900 dark:text-slate-100">
                                                 {comp.label}
                                             </p>
                                             <p className="text-xs text-muted-foreground mt-0.5">
-                                                Bobot: {comp.weight} • {comp.score}
+                                                Bobot: {comp.weight} • Nilai: {comp.score}
                                             </p>
                                         </div>
-                                        <Badge variant="secondary" className="text-xs">
+                                        <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
                                             {comp.status}
-                                        </Badge>
+                                        </span>
                                     </div>
                                 ))}
                             </div>
@@ -512,9 +509,9 @@ export default function CourseDetail() {
 
                 {/* Viewer Dialog */}
                 <Dialog open={viewerOpen} onOpenChange={setViewerOpen}>
-                    <DialogContent className="max-h-[85vh] max-w-4xl p-0 overflow-hidden rounded-xl">
-                        <DialogHeader className="border-b border-border p-5">
-                            <DialogTitle className="text-base font-semibold text-foreground">
+                    <DialogContent className="max-h-[85vh] max-w-4xl p-0 overflow-hidden rounded-2xl shadow-xl border-0 bg-card">
+                        <DialogHeader className="p-5 bg-slate-50 dark:bg-slate-800/80">
+                            <DialogTitle className="text-base font-bold text-slate-900 dark:text-slate-100">
                                 {viewerItem?.label}
                             </DialogTitle>
                         </DialogHeader>
@@ -523,14 +520,14 @@ export default function CourseDetail() {
                                 <iframe
                                     src={viewerItem.url}
                                     title={viewerItem.label}
-                                    className="h-[60vh] w-full rounded-lg border border-border"
+                                    className="h-[60vh] w-full rounded-xl border-0"
                                 />
                             )}
                             {viewerItem?.icon === 'video' && viewerItem.url && (
                                 <video
                                     src={viewerItem.url}
                                     controls
-                                    className="max-h-[60vh] w-full rounded-lg bg-black"
+                                    className="max-h-[60vh] w-full rounded-xl bg-black"
                                 />
                             )}
                         </div>

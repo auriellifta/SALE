@@ -1,6 +1,5 @@
 import { Head, Link } from '@inertiajs/react';
-import { ArrowRight, Clock, Code2, HelpCircle, Layers, User } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
+import { ArrowRight, Clock, Code2, HelpCircle, Sparkles, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import StudentLayout from '@/layouts/student-layout';
 
@@ -81,21 +80,18 @@ const announcements = [
         source: 'Fakultas Teknik',
         time: '2 jam lalu',
         title: 'Perubahan Jadwal Ujian Tengah Semester Ganjil 2023/2024',
-        active: true,
     },
     {
         id: 2,
         source: 'Dasar Pemrograman',
         time: '1 hari lalu',
         title: 'Materi Tambahan: Pointers di C++ telah diunggah ke modul',
-        active: false,
     },
     {
         id: 3,
         source: 'Pusat Komputasi',
         time: '2 hari lalu',
         title: 'Pemeliharaan Server E-Learning Akhir Pekan ini',
-        active: false,
     },
 ];
 
@@ -111,7 +107,7 @@ export default function Dashboard() {
                     <section>
                         <div className="flex items-center justify-between mb-5">
                             <div>
-                                <h1 className="text-2xl font-bold tracking-tight text-foreground">
+                                <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
                                     Mata Kuliah Aktif
                                 </h1>
                                 <p className="text-sm text-muted-foreground mt-0.5">
@@ -121,10 +117,10 @@ export default function Dashboard() {
 
                             <Link
                                 href="/student/courses"
-                                className="text-sm font-semibold text-foreground hover:underline flex items-center gap-1 transition-colors"
+                                className="text-sm font-semibold text-primary hover:underline flex items-center gap-1 transition-colors"
                             >
                                 Lihat Semua
-                                <ArrowRight className="size-4" />
+                                <ArrowRight className="size-4 text-slate-800 dark:text-slate-200" />
                             </Link>
                         </div>
 
@@ -133,29 +129,29 @@ export default function Dashboard() {
                                 <Link
                                     key={course.id}
                                     href={`/student/courses/${course.id}`}
-                                    className="group flex flex-col justify-between rounded-xl border border-border bg-card p-5 shadow-xs hover:shadow-md hover:border-foreground/25 hover:-translate-y-0.5 transition-all duration-200"
+                                    className="group flex flex-col justify-between rounded-2xl bg-card p-6 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
                                 >
                                     <div>
                                         <div className="flex items-center justify-between mb-3">
-                                            <Badge variant="outline" className="font-semibold text-xs">
+                                            <span className="text-xs font-semibold text-muted-foreground">
                                                 {course.classCode}
-                                            </Badge>
+                                            </span>
                                             <span className="text-xs text-muted-foreground">
                                                 {course.semester}
                                             </span>
                                         </div>
 
-                                        <h3 className="text-base font-semibold text-foreground group-hover:underline transition-colors leading-snug">
+                                        <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 group-hover:text-primary transition-colors leading-snug">
                                             {course.title}
                                         </h3>
                                     </div>
 
-                                    <div className="mt-4 pt-3 border-t border-border/60 space-y-1.5 text-xs text-muted-foreground">
+                                    <div className="mt-5 pt-3.5 space-y-1.5 text-xs text-muted-foreground bg-slate-50/80 dark:bg-slate-800/40 -mx-6 -mb-6 p-4 rounded-b-2xl">
                                         <div className="flex items-center gap-1.5">
-                                            <User className="size-3.5 shrink-0" />
-                                            <span className="truncate">{course.lecturer}</span>
+                                            <User className="size-3.5 shrink-0 text-slate-700 dark:text-slate-300" />
+                                            <span className="truncate font-medium text-slate-700 dark:text-slate-300">{course.lecturer}</span>
                                         </div>
-                                        <p className="text-[11px] text-muted-foreground/80">
+                                        <p className="text-[11px] text-muted-foreground">
                                             {course.activity}
                                         </p>
                                     </div>
@@ -165,45 +161,45 @@ export default function Dashboard() {
                     </section>
 
                     {/* Learning Recommendation Section */}
-                    <section className="rounded-xl border border-border bg-card p-6 shadow-xs">
+                    <section className="rounded-2xl bg-card p-6 sm:p-8 shadow-sm">
                         <div>
                             <div className="flex items-center gap-2">
-                                <Layers className="size-4.5 text-foreground" />
-                                <h2 className="text-base font-semibold text-foreground">
+                                <Sparkles className="size-5 text-slate-800 dark:text-slate-200" />
+                                <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">
                                     Rekomendasi Belajar Pintar
                                 </h2>
                             </div>
-                            <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed">
+                            <p className="text-sm text-slate-600 dark:text-slate-300 mt-1.5 leading-relaxed">
                                 Berdasarkan pola belajarmu, fokus pada materi berikut hari ini:
                             </p>
 
-                            <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <Link
                                     href="/student/programming-task/1"
-                                    className="flex items-start gap-3 rounded-lg border border-border bg-background p-4 shadow-2xs hover:shadow-xs hover:border-foreground/25 hover:-translate-y-0.5 transition-all duration-200 group"
+                                    className="flex items-start gap-3.5 rounded-xl bg-slate-50/80 dark:bg-slate-800/60 p-5 hover:bg-slate-100 dark:hover:bg-slate-800 hover:-translate-y-0.5 transition-all duration-200 group"
                                 >
-                                    <Code2 className="size-4 text-muted-foreground shrink-0 mt-0.5" />
+                                    <Code2 className="size-5 text-slate-800 dark:text-slate-200 shrink-0 mt-0.5" />
                                     <div className="min-w-0">
                                         <span className="text-xs text-muted-foreground block truncate">
                                             Dasar Pemrograman
                                         </span>
-                                        <span className="text-sm font-semibold text-foreground group-hover:underline truncate block mt-0.5">
-                                            Lanjutkan Modul 3: Array & Pointer
+                                        <span className="text-sm font-bold text-slate-900 dark:text-slate-100 group-hover:text-primary truncate block mt-0.5">
+                                            Lanjutkan Modul 3: Array
                                         </span>
                                     </div>
                                 </Link>
 
                                 <Link
                                     href="/student/quiz/1"
-                                    className="flex items-start gap-3 rounded-lg border border-border bg-background p-4 shadow-2xs hover:shadow-xs hover:border-foreground/25 hover:-translate-y-0.5 transition-all duration-200 group"
+                                    className="flex items-start gap-3.5 rounded-xl bg-slate-50/80 dark:bg-slate-800/60 p-5 hover:bg-slate-100 dark:hover:bg-slate-800 hover:-translate-y-0.5 transition-all duration-200 group"
                                 >
-                                    <HelpCircle className="size-4 text-muted-foreground shrink-0 mt-0.5" />
+                                    <HelpCircle className="size-5 text-slate-800 dark:text-slate-200 shrink-0 mt-0.5" />
                                     <div className="min-w-0">
                                         <span className="text-xs text-muted-foreground block truncate">
                                             Struktur Data & Algoritma
                                         </span>
-                                        <span className="text-sm font-semibold text-foreground group-hover:underline truncate block mt-0.5">
-                                            Tinjau Kuis Algoritma & Tree
+                                        <span className="text-sm font-bold text-slate-900 dark:text-slate-100 group-hover:text-primary truncate block mt-0.5">
+                                            Tinjau Kuis Algoritma
                                         </span>
                                     </div>
                                 </Link>
@@ -215,29 +211,31 @@ export default function Dashboard() {
                 {/* Right Column: Upcoming Tasks & Announcements (4 cols) */}
                 <div className="lg:col-span-4 space-y-6">
                     {/* Upcoming Tasks */}
-                    <section className="rounded-xl border border-border bg-card shadow-xs overflow-hidden">
-                        <div className="flex items-center justify-between p-5 border-b border-border bg-muted/20">
-                            <h2 className="text-base font-semibold text-foreground">
+                    <section className="rounded-2xl bg-card shadow-sm overflow-hidden">
+                        <div className="flex items-center justify-between p-5 bg-slate-50/80 dark:bg-slate-800/50">
+                            <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">
                                 Tugas Mendatang
                             </h2>
-                            <Badge variant="secondary" className="font-semibold">{upcomingTasks.length}</Badge>
+                            <span className="text-xs font-semibold text-muted-foreground">
+                                ({upcomingTasks.length})
+                            </span>
                         </div>
 
-                        <div className="divide-y divide-border">
+                        <div className="divide-y divide-slate-100 dark:divide-slate-800">
                             {upcomingTasks.map((task) => (
                                 <Link
                                     key={task.id}
                                     href={task.href}
-                                    className="block p-5 hover:bg-accent/40 transition-colors group"
+                                    className="block p-5 hover:bg-blue-50/40 dark:hover:bg-blue-950/20 transition-colors group"
                                 >
                                     <div className="flex items-start justify-between gap-2">
-                                        <h3 className="text-sm font-medium text-foreground leading-snug group-hover:underline">
+                                        <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 leading-snug group-hover:text-primary">
                                             {task.title}
                                         </h3>
                                         {task.urgent && (
-                                            <Badge variant="outline" className="text-[10px] uppercase font-bold shrink-0">
-                                                HARI INI
-                                            </Badge>
+                                            <span className="text-xs font-semibold text-rose-600 dark:text-rose-400 shrink-0">
+                                                Hari ini
+                                            </span>
                                         )}
                                     </div>
 
@@ -245,17 +243,17 @@ export default function Dashboard() {
                                         {task.course}
                                     </p>
 
-                                    <p className="text-xs mt-2 flex items-center gap-1.5 text-muted-foreground">
-                                        <Clock className="size-3.5" />
+                                    <p className="text-xs mt-2 flex items-center gap-1.5 text-slate-500 font-medium">
+                                        <Clock className="size-3.5 text-slate-700 dark:text-slate-300" />
                                         {task.deadline}
                                     </p>
                                 </Link>
                             ))}
                         </div>
 
-                        <div className="p-3.5 border-t border-border bg-muted/20">
+                        <div className="p-4 bg-slate-50/50 dark:bg-slate-800/30">
                             <Link href="/student/assignments">
-                                <Button variant="outline" size="sm" className="w-full text-xs font-semibold h-9 shadow-2xs">
+                                <Button className="w-full text-xs font-bold h-10 shadow-xs bg-primary text-white hover:bg-primary/90">
                                     Lihat Semua Tugas
                                 </Button>
                             </Link>
@@ -263,23 +261,20 @@ export default function Dashboard() {
                     </section>
 
                     {/* Announcements */}
-                    <section className="rounded-xl border border-border bg-card shadow-xs overflow-hidden">
-                        <div className="p-5 border-b border-border bg-muted/20">
-                            <h2 className="text-base font-semibold text-foreground">
+                    <section className="rounded-2xl bg-card shadow-sm overflow-hidden">
+                        <div className="p-5 bg-slate-50/80 dark:bg-slate-800/50">
+                            <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">
                                 Pengumuman
                             </h2>
                         </div>
 
-                        <div className="divide-y divide-border">
+                        <div className="divide-y divide-slate-100 dark:divide-slate-800">
                             {announcements.map((ann) => (
                                 <div key={ann.id} className="p-5">
-                                    <div className="flex items-center gap-2 mb-1.5">
-                                        <span className={`size-2 rounded-full ${ann.active ? 'bg-foreground' : 'bg-muted-foreground/40'}`} />
-                                        <span className="text-xs text-muted-foreground">
-                                            {ann.source} • {ann.time}
-                                        </span>
-                                    </div>
-                                    <p className="text-sm text-foreground leading-snug">
+                                    <p className="text-xs font-medium text-muted-foreground">
+                                        {ann.source} • {ann.time}
+                                    </p>
+                                    <p className="text-sm font-medium text-slate-800 dark:text-slate-200 mt-1 leading-snug">
                                         {ann.title}
                                     </p>
                                 </div>

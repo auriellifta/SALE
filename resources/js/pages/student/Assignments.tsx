@@ -6,9 +6,8 @@ import {
     FileText,
     HelpCircle,
 } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
+import { useState } from 'react';
 import { Card } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { getAssignmentHref } from '@/lib/assignment-routing';
 import type { SubmissionMode } from '@/lib/assignment-routing';
 import StudentLayout from '@/layouts/student-layout';
@@ -80,18 +79,25 @@ const typeIconMap: Record<AssignmentType, typeof FileText> = {
     pemrograman: Code2,
 };
 
-function StatusBadge({ status, label }: { status: AssignmentStatus; label: string }) {
+function StatusText({ status, label }: { status: AssignmentStatus; label: string }) {
     if (status === 'sudah-dikumpulkan') {
         return (
-            <Badge variant="secondary" className="font-medium text-xs">
+            <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">
                 {label}
-            </Badge>
+            </span>
+        );
+    }
+    if (status === 'belum-dimulai') {
+        return (
+            <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                {label}
+            </span>
         );
     }
     return (
-        <Badge variant="outline" className="font-normal text-xs text-muted-foreground border-border">
+        <span className="text-xs text-muted-foreground">
             {label}
-        </Badge>
+        </span>
     );
 }
 
@@ -102,14 +108,14 @@ function AssignmentRow({ item }: { item: Assignment }) {
     return (
         <Link
             href={href}
-            className="flex flex-col md:grid md:grid-cols-12 items-start md:items-center gap-4 px-6 py-4.5 hover:bg-accent/40 transition-colors group text-left"
+            className="flex flex-col md:grid md:grid-cols-12 items-start md:items-center gap-4 px-6 py-5 hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors group text-left"
         >
-            {/* Col 1-5: Detail Penugasan with large icon vertically centered */}
+            {/* Col 1-5: Detail Penugasan */}
             <div className="flex items-center gap-4 min-w-0 md:col-span-5 text-left">
-                <Icon className="size-5 text-muted-foreground shrink-0" />
+                <Icon className="size-5 text-slate-800 dark:text-slate-200 shrink-0" />
 
                 <div className="min-w-0">
-                    <p className="font-semibold text-sm text-foreground truncate group-hover:underline">
+                    <p className="font-bold text-sm text-slate-900 dark:text-slate-100 truncate group-hover:text-primary transition-colors">
                         {item.title}
                     </p>
                     <p className="text-xs text-muted-foreground mt-0.5">
@@ -119,22 +125,22 @@ function AssignmentRow({ item }: { item: Assignment }) {
             </div>
 
             {/* Col 6-8: Mata Kuliah */}
-            <div className="text-xs text-muted-foreground md:col-span-3 truncate text-left">
+            <div className="text-xs text-slate-600 dark:text-slate-400 font-medium md:col-span-3 truncate text-left">
                 <span className="md:hidden font-semibold text-foreground">Mata Kuliah: </span>
                 {item.course}
             </div>
 
             {/* Col 9-10: Batas Waktu */}
-            <div className="flex items-center gap-1.5 text-xs text-muted-foreground md:col-span-2 text-left">
-                <Clock className="size-3.5 shrink-0 text-muted-foreground" />
+            <div className="flex items-center gap-1.5 text-xs text-slate-500 font-medium md:col-span-2 text-left">
+                <Clock className="size-3.5 shrink-0 text-slate-700 dark:text-slate-300" />
                 <span className={item.deadlineStrikethrough ? 'line-through' : ''}>
                     {item.deadlineLabel}
                 </span>
             </div>
 
-            {/* Col 11-12: Status (Clean monochrome badge) */}
+            {/* Col 11-12: Status */}
             <div className="md:col-span-2 text-left">
-                <StatusBadge status={item.status} label={item.statusLabel} />
+                <StatusText status={item.status} label={item.statusLabel} />
             </div>
         </Link>
     );
@@ -143,23 +149,23 @@ function AssignmentRow({ item }: { item: Assignment }) {
 function AssignmentTable({ items }: { items: Assignment[] }) {
     if (items.length === 0) {
         return (
-            <Card className="rounded-xl border border-border bg-card p-10 text-center text-sm text-muted-foreground shadow-xs">
+            <Card className="rounded-2xl bg-card p-10 text-center text-sm text-muted-foreground shadow-sm border-0">
                 Belum ada data riwayat penugasan untuk ditampilkan.
             </Card>
         );
     }
 
     return (
-        <Card className="gap-0 overflow-hidden rounded-xl border border-border bg-card py-0 shadow-xs">
-            {/* Header */}
-            <div className="hidden grid-cols-12 items-center gap-4 px-6 py-3.5 text-xs font-semibold text-muted-foreground uppercase border-b border-border bg-muted/40 md:grid text-left">
+        <Card className="gap-0 overflow-hidden rounded-2xl bg-card py-0 shadow-sm border-0">
+            {/* Header with tonal separation */}
+            <div className="hidden grid-cols-12 items-center gap-4 px-6 py-4 text-xs font-bold text-slate-600 dark:text-slate-300 uppercase bg-slate-100/80 dark:bg-slate-800/80 md:grid text-left tracking-wider">
                 <div className="col-span-5 text-left">Detail Penugasan</div>
                 <div className="col-span-3 text-left">Mata Kuliah</div>
                 <div className="col-span-2 text-left">Batas Waktu</div>
                 <div className="col-span-2 text-left">Status</div>
             </div>
 
-            <div className="divide-y divide-border">
+            <div className="divide-y divide-slate-100 dark:divide-slate-800/60">
                 {items.map((item) => (
                     <AssignmentRow key={item.id} item={item} />
                 ))}
@@ -169,39 +175,64 @@ function AssignmentTable({ items }: { items: Assignment[] }) {
 }
 
 export default function Assignments() {
+    const [activeTab, setActiveTab] = useState<'active' | 'history'>('active');
+
     return (
         <StudentLayout>
             <Head title="Tugas & Kuis — SALE" />
 
             <div className="space-y-6">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Link href="/student/dashboard" className="hover:text-foreground transition-colors">
+                    <Link href="/student/dashboard" className="hover:text-primary transition-colors">
                         Beranda
                     </Link>
                     <span>›</span>
-                    <span className="font-medium text-foreground">
+                    <span className="font-semibold text-slate-900 dark:text-slate-100">
                         Tugas & Kuis
                     </span>
                 </div>
 
-                <Tabs defaultValue="active" className="space-y-6">
-                    <TabsList className="bg-muted p-1 h-10">
-                        <TabsTrigger value="active" className="text-xs sm:text-sm font-medium px-4">
-                            Aktif & Mendatang ({activeAssignments.length})
-                        </TabsTrigger>
-                        <TabsTrigger value="history" className="text-xs sm:text-sm font-medium px-4">
-                            Riwayat ({historyAssignments.length})
-                        </TabsTrigger>
-                    </TabsList>
+                {/* Minimalist Clean Tabs */}
+                <div className="flex items-center gap-8 border-b border-slate-200/80 dark:border-slate-800">
+                    <button
+                        type="button"
+                        onClick={() => setActiveTab('active')}
+                        className={[
+                            'pb-3 text-sm font-bold transition-colors relative',
+                            activeTab === 'active'
+                                ? 'text-primary'
+                                : 'text-muted-foreground hover:text-foreground',
+                        ].join(' ')}
+                    >
+                        Aktif & Mendatang ({activeAssignments.length})
+                        {activeTab === 'active' && (
+                            <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full" />
+                        )}
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => setActiveTab('history')}
+                        className={[
+                            'pb-3 text-sm font-bold transition-colors relative',
+                            activeTab === 'history'
+                                ? 'text-primary'
+                                : 'text-muted-foreground hover:text-foreground',
+                        ].join(' ')}
+                    >
+                        Riwayat ({historyAssignments.length})
+                        {activeTab === 'history' && (
+                            <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full" />
+                        )}
+                    </button>
+                </div>
 
-                    <TabsContent value="active" className="mt-0">
+                <div>
+                    {activeTab === 'active' ? (
                         <AssignmentTable items={activeAssignments} />
-                    </TabsContent>
-
-                    <TabsContent value="history" className="mt-0">
+                    ) : (
                         <AssignmentTable items={historyAssignments} />
-                    </TabsContent>
-                </Tabs>
+                    )}
+                </div>
             </div>
         </StudentLayout>
     );

@@ -10,7 +10,6 @@ import {
     Search,
     User,
 } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import {
@@ -129,7 +128,7 @@ export default function Forum() {
                 {/* Header Context & Action */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
-                        <h1 className="text-2xl font-bold tracking-tight text-foreground">
+                        <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
                             Forum Diskusi
                         </h1>
                         <p className="text-sm text-muted-foreground mt-0.5">
@@ -142,7 +141,7 @@ export default function Forum() {
                             <select
                                 value={selectedCourse}
                                 onChange={(e) => setSelectedCourse(e.target.value)}
-                                className="h-10 appearance-none rounded-lg border border-border bg-card pl-3.5 pr-9 text-sm font-medium text-foreground outline-none focus:border-foreground transition-colors cursor-pointer"
+                                className="h-10 appearance-none rounded-xl bg-card pl-4 pr-10 text-sm font-semibold text-slate-800 dark:text-slate-200 outline-none focus:ring-2 focus:ring-primary shadow-xs cursor-pointer border-0"
                             >
                                 <option value="Semua Mata Kuliah">Semua Mata Kuliah</option>
                                 <option value="Interaksi Manusia & Komputer">
@@ -155,12 +154,12 @@ export default function Forum() {
                                     Desain Antarmuka Pengguna
                                 </option>
                             </select>
-                            <ChevronDown className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                            <ChevronDown className="pointer-events-none absolute right-3.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
                         </div>
 
                         <Button
                             onClick={() => setNewModalOpen(true)}
-                            className="gap-2 text-sm font-semibold h-10 px-4"
+                            className="gap-2 text-sm font-bold h-10 px-5 rounded-xl shadow-xs bg-primary text-white hover:bg-primary/90"
                         >
                             <Plus className="size-4" />
                             Topik Baru
@@ -170,20 +169,20 @@ export default function Forum() {
 
                 {/* Search Bar */}
                 <div className="relative">
-                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 size-4.5 text-muted-foreground" />
                     <input
                         type="text"
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         placeholder="Cari topik diskusi atau nama penulis..."
-                        className="w-full h-10 pl-10 pr-4 text-sm rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground outline-none focus:ring-1 focus:ring-ring transition-all"
+                        className="w-full h-11 pl-11 pr-4 text-sm rounded-xl bg-card text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-primary transition-all shadow-xs border-0"
                     />
                 </div>
 
                 {/* Main Table Card */}
-                <Card className="gap-0 overflow-hidden rounded-xl border border-border bg-card py-0 shadow-xs">
+                <Card className="gap-0 overflow-hidden rounded-2xl bg-card py-0 shadow-sm border-0">
                     {/* Header */}
-                    <div className="hidden grid-cols-12 items-center gap-4 bg-muted/40 px-6 py-3.5 text-xs font-semibold tracking-wider text-muted-foreground uppercase border-b border-border md:grid text-left">
+                    <div className="hidden grid-cols-12 items-center gap-4 bg-slate-100/90 dark:bg-slate-800/80 px-6 py-4 text-xs font-bold tracking-wider text-slate-600 dark:text-slate-300 uppercase md:grid text-left">
                         <div className="col-span-6 text-left">Topik Diskusi</div>
                         <div className="col-span-2 text-left">Kategori</div>
                         <div className="col-span-2 text-left">Balasan</div>
@@ -191,27 +190,27 @@ export default function Forum() {
                     </div>
 
                     {/* Baris Tabel */}
-                    <div className="divide-y divide-border">
+                    <div className="divide-y divide-slate-100 dark:divide-slate-800/60">
                         {filteredTopics.map((topic) => (
                             <div
                                 key={topic.id}
-                                className="flex flex-col md:grid md:grid-cols-12 items-start md:items-center gap-4 px-6 py-4.5 hover:bg-accent/40 transition-colors text-left"
+                                className="flex flex-col md:grid md:grid-cols-12 items-start md:items-center gap-4 px-6 py-5 hover:bg-blue-50/50 dark:hover:bg-blue-950/20 transition-colors text-left"
                             >
-                                {/* Col 1-6: Topik & Penulis with large icon vertically centered */}
+                                {/* Col 1-6: Topik & Penulis with dark icon */}
                                 <div className="col-span-6 flex items-center gap-4 min-w-0 pr-4 text-left">
                                     {topic.isPinned ? (
-                                        <Pin className="size-5 text-foreground fill-foreground shrink-0" />
+                                        <Pin className="size-5 fill-slate-800 text-slate-800 dark:fill-slate-200 dark:text-slate-200 shrink-0" />
                                     ) : (
-                                        <MessageSquare className="size-5 text-muted-foreground shrink-0" />
+                                        <MessageSquare className="size-5 text-slate-800 dark:text-slate-200 shrink-0" />
                                     )}
 
                                     <div className="min-w-0 flex-1">
-                                        <h2 className="text-sm font-semibold text-foreground hover:underline transition-colors leading-snug truncate">
+                                        <h2 className="text-sm font-bold text-slate-900 dark:text-slate-100 hover:text-primary transition-colors leading-snug truncate cursor-pointer">
                                             {topic.title}
                                         </h2>
                                         <div className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground truncate">
-                                            <User className="size-3.5 text-muted-foreground shrink-0" />
-                                            <span className="font-medium text-foreground shrink-0">
+                                            <User className="size-3.5 text-slate-600 dark:text-slate-400 shrink-0" />
+                                            <span className="font-semibold text-slate-700 dark:text-slate-300 shrink-0">
                                                 {topic.author}
                                             </span>
                                             <span>•</span>
@@ -220,23 +219,23 @@ export default function Forum() {
                                     </div>
                                 </div>
 
-                                {/* Col 7-8: Kategori */}
+                                {/* Col 7-8: Kategori (Plain text, no bg) */}
                                 <div className="col-span-2 text-left">
-                                    <Badge variant="outline" className="text-xs font-normal text-muted-foreground">
+                                    <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
                                         {topic.category}
-                                    </Badge>
+                                    </span>
                                 </div>
 
                                 {/* Col 9-10: Balasan */}
-                                <div className="col-span-2 text-left text-xs text-muted-foreground">
+                                <div className="col-span-2 text-left text-xs font-semibold text-slate-700 dark:text-slate-300">
                                     <span className="inline-flex items-center gap-1.5">
-                                        <MessageSquare className="size-3.5 text-muted-foreground" />
+                                        <MessageSquare className="size-3.5 text-slate-600 dark:text-slate-400" />
                                         {topic.replies} Balasan
                                     </span>
                                 </div>
 
                                 {/* Col 11-12: Update Terakhir */}
-                                <div className="col-span-2 text-left text-xs text-muted-foreground">
+                                <div className="col-span-2 text-left text-xs text-muted-foreground font-medium">
                                     {topic.timeAgo}
                                 </div>
                             </div>
@@ -246,16 +245,16 @@ export default function Forum() {
 
                 {/* Pagination Footer */}
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground pt-2">
-                    <div>Menampilkan {filteredTopics.length} dari {topics.length} topik</div>
+                    <div className="font-medium">Menampilkan {filteredTopics.length} dari {topics.length} topik</div>
 
-                    <div className="flex items-center gap-1.5">
-                        <Button variant="outline" size="icon-sm" className="rounded-lg">
+                    <div className="flex items-center gap-2">
+                        <Button variant="outline" size="icon-sm" className="rounded-xl shadow-xs border-0 bg-card hover:bg-blue-50 hover:text-primary">
                             <ChevronLeft className="size-4" />
                         </Button>
-                        <Button size="icon-sm" className="rounded-lg text-xs font-bold">
+                        <Button size="icon-sm" className="rounded-xl text-xs font-bold shadow-xs bg-primary text-white">
                             1
                         </Button>
-                        <Button variant="outline" size="icon-sm" className="rounded-lg">
+                        <Button variant="outline" size="icon-sm" className="rounded-xl shadow-xs border-0 bg-card hover:bg-blue-50 hover:text-primary">
                             <ChevronRight className="size-4" />
                         </Button>
                     </div>
@@ -263,9 +262,9 @@ export default function Forum() {
 
                 {/* Create Topic Modal */}
                 <Dialog open={newModalOpen} onOpenChange={setNewModalOpen}>
-                    <DialogContent className="max-w-lg rounded-xl p-6 space-y-4">
+                    <DialogContent className="max-w-lg rounded-2xl p-6 space-y-4 shadow-xl border-0 bg-card">
                         <DialogHeader>
-                            <DialogTitle className="text-base font-semibold text-foreground">
+                            <DialogTitle className="text-base font-bold text-slate-900 dark:text-slate-100">
                                 Buat Topik Diskusi Baru
                             </DialogTitle>
                             <DialogDescription className="text-xs text-muted-foreground">
@@ -275,7 +274,7 @@ export default function Forum() {
 
                         <form onSubmit={handleCreate} className="space-y-4">
                             <div className="space-y-1.5">
-                                <label className="text-xs font-semibold text-foreground">
+                                <label className="text-xs font-bold text-slate-800 dark:text-slate-200">
                                     Judul Topik
                                 </label>
                                 <Input
@@ -283,18 +282,18 @@ export default function Forum() {
                                     onChange={(e) => setNewTitle(e.target.value)}
                                     placeholder="Tuliskan judul pertanyaan atau diskusi..."
                                     required
-                                    className="text-xs h-10"
+                                    className="text-xs h-10 bg-slate-50 dark:bg-slate-800 border-0 rounded-xl"
                                 />
                             </div>
 
                             <div className="space-y-1.5">
-                                <label className="text-xs font-semibold text-foreground">
+                                <label className="text-xs font-bold text-slate-800 dark:text-slate-200">
                                     Kategori
                                 </label>
                                 <select
                                     value={newCategory}
                                     onChange={(e) => setNewCategory(e.target.value)}
-                                    className="w-full h-10 rounded-lg border border-border bg-card px-3 text-xs text-foreground outline-none focus:border-foreground"
+                                    className="w-full h-10 rounded-xl bg-slate-50 dark:bg-slate-800 px-3 text-xs text-foreground outline-none focus:ring-2 focus:ring-primary border-0"
                                 >
                                     <option value="Praktikum">Praktikum</option>
                                     <option value="Materi">Materi</option>
@@ -304,29 +303,29 @@ export default function Forum() {
                             </div>
 
                             <div className="space-y-1.5">
-                                <label className="text-xs font-semibold text-foreground">
+                                <label className="text-xs font-bold text-slate-800 dark:text-slate-200">
                                     Isi Pesan / Pertanyaan
                                 </label>
                                 <Textarea
                                     value={newContent}
                                     onChange={(e) => setNewContent(e.target.value)}
                                     placeholder="Jelaskan pertanyaan atau topik Anda secara rinci..."
-                                    className="text-xs resize-none h-28"
+                                    className="text-xs resize-none h-28 bg-slate-50 dark:bg-slate-800 border-0 rounded-xl"
                                     required
                                 />
                             </div>
 
-                            <DialogFooter className="gap-2 sm:gap-0">
+                            <DialogFooter className="gap-2 sm:gap-0 pt-2">
                                 <Button
                                     type="button"
                                     variant="outline"
                                     size="sm"
                                     onClick={() => setNewModalOpen(false)}
-                                    className="text-xs"
+                                    className="text-xs border-0 bg-slate-100 dark:bg-slate-800 rounded-xl"
                                 >
                                     Batal
                                 </Button>
-                                <Button type="submit" size="sm" className="text-xs font-semibold">
+                                <Button type="submit" size="sm" className="text-xs font-bold rounded-xl shadow-xs bg-primary text-white hover:bg-primary/90">
                                     Publikasikan Topik
                                 </Button>
                             </DialogFooter>
