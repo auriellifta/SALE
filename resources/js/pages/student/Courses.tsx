@@ -1,6 +1,5 @@
 import { Head, Link } from '@inertiajs/react';
-import { MoreVertical } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { MoreVertical, User } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import {
@@ -23,7 +22,6 @@ type CourseClass = {
     classCode: string;
     title: string;
     lecturer: string;
-    lecturerAvatar?: string;
 };
 
 const courses: CourseClass[] = [
@@ -55,51 +53,43 @@ const courses: CourseClass[] = [
 
 function CourseCard({ course }: { course: CourseClass }) {
     return (
-        <Card className="relative gap-4 overflow-hidden rounded-2xl border-t-4 border-t-sale-blue border-x-sale-border border-b-sale-border bg-sale-white py-0 pb-5 shadow-none transition-shadow hover:shadow-md">
+        <Card className="relative gap-4 overflow-hidden rounded-xl border border-border bg-card p-0 shadow-xs hover:shadow-md hover:border-foreground/25 hover:-translate-y-0.5 transition-all duration-200">
             <Link
                 href={`/student/courses/${course.id}`}
                 className="absolute inset-0 z-0"
                 aria-label={`Buka ${course.title}`}
             />
 
-            <CardHeader className="relative z-10 flex flex-row items-start justify-between pt-5">
-                <Badge className="pointer-events-none rounded-full border-transparent bg-blue-50 font-medium text-sale-blue hover:bg-blue-50">
+            <CardHeader className="relative z-10 flex flex-row items-center justify-between p-5 pb-0">
+                <Badge variant="outline" className="font-semibold pointer-events-none text-xs">
                     {course.classCode}
                 </Badge>
 
                 <DropdownMenu>
-                    <DropdownMenuTrigger className="text-sale-muted hover:text-sale-dark">
+                    <DropdownMenuTrigger className="text-muted-foreground hover:text-foreground p-1 rounded-md transition-colors">
                         <MoreVertical className="size-4" />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuItem asChild>
                             <Link href={`/student/courses/${course.id}`}>
-                                Lihat detail
+                                Lihat Detail
                             </Link>
                         </DropdownMenuItem>
-                        <DropdownMenuItem>Buka forum diskusi</DropdownMenuItem>
-                        <DropdownMenuItem variant="destructive">
-                            Keluar dari kelas
+                        <DropdownMenuItem asChild>
+                            <Link href="/student/forum">Buka Forum Diskusi</Link>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             </CardHeader>
 
-            <CardContent className="relative z-10 flex flex-col gap-4 pointer-events-none">
-                <h3 className="font-poppins leading-snug font-semibold text-sale-dark">
+            <CardContent className="relative z-10 flex flex-col gap-4 p-5 pt-3 pointer-events-none">
+                <h3 className="text-base font-semibold text-foreground leading-snug">
                     {course.title}
                 </h3>
 
-                <div className="flex items-center gap-2">
-                    <Avatar className="size-6">
-                        <AvatarImage src={course.lecturerAvatar} />
-                        <AvatarFallback className="bg-blue-50 text-[10px] text-sale-blue">
-                            {course.lecturer.charAt(0)}
-                        </AvatarFallback>
-                    </Avatar>
-                    <span className="text-sm text-sale-muted">
-                        {course.lecturer}
-                    </span>
+                <div className="flex items-center gap-2 pt-3 border-t border-border/60 text-xs text-muted-foreground">
+                    <User className="size-3.5 shrink-0" />
+                    <span className="truncate">{course.lecturer}</span>
                 </div>
             </CardContent>
         </Card>
@@ -109,16 +99,21 @@ function CourseCard({ course }: { course: CourseClass }) {
 export default function Courses() {
     return (
         <StudentLayout>
-            <Head title="Mata Kuliah" />
+            <Head title="Mata Kuliah — SALE" />
 
-            <div className="min-h-[calc(100vh-80px)] bg-[#F8F9FF] px-16 py-[21px]">
-                <div className="flex items-center justify-between">
-                    <h1 className="font-poppins text-2xl font-semibold leading-[33.6px] text-sale-dark">
-                        Mata Kuliah
-                    </h1>
+            <div className="space-y-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h1 className="text-2xl font-bold tracking-tight text-foreground">
+                            Mata Kuliah
+                        </h1>
+                        <p className="text-sm text-muted-foreground mt-0.5">
+                            Daftar mata kuliah yang Anda ikuti pada semester ini
+                        </p>
+                    </div>
 
                     <Select defaultValue="ganjil-2023">
-                        <SelectTrigger className="w-[180px] border-sale-border bg-sale-white">
+                        <SelectTrigger className="w-[200px] h-10 border-border bg-card text-sm shadow-2xs">
                             <SelectValue placeholder="Pilih semester" />
                         </SelectTrigger>
                         <SelectContent>
@@ -132,7 +127,7 @@ export default function Courses() {
                     </Select>
                 </div>
 
-                <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     {courses.map((course) => (
                         <CourseCard key={course.id} course={course} />
                     ))}

@@ -5,7 +5,7 @@ import {
     ChevronDown,
     ExternalLink,
     FileText,
-    Info,
+    HelpCircle,
     Link as LinkIcon,
     MessageSquare,
     PlayCircle,
@@ -28,35 +28,32 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import StudentLayout from '@/layouts/student-layout';
 
-// ============ Dummy data — nanti diganti props Inertia dari controller ============
-
 const course = {
-    code: 'CS-302',
-    status: 'Aktif',
+    code: 'INF-A',
+    status: 'Sedang Berjalan',
     title: 'Interaksi Manusia & Komputer',
-    lecturer: 'Prof. Dr. Budi Santoso, M.Kom.',
+    lecturer: 'Dr. Budi Santoso, M.Kom',
     className: 'Kelas A',
-    term: 'Semester Genap 2023/2024',
-    semesterLabel: 'Semester 4',
+    term: 'Semester Ganjil 2023',
+    semesterLabel: 'Semester 3',
 };
 
 const video = {
     weekTitle: 'Minggu 04: Evaluasi Heuristik & Usability Testing',
-    duration: '45:20',
+    duration: '42:15 Menit',
     description:
-        'Mempelajari teknik-teknik evaluasi antarmuka pengguna tanpa melibatkan user (Heuristic Evaluation) dan metode pengujian langsung dengan user (Usability Testing) untuk mengidentifikasi masalah desain.',
-    lecturerName: 'Prof. Dr. Aris Setiawan',
-    lecturerRole: 'Academic Lecture',
+        'Memahami 10 prinsip evaluasi heuristik Jakob Nielsen, metodologi pengujian keterpakaian (usability testing), serta penyusunan lembar observasi partisipan.',
 };
 
 type ModuleItem = {
     id: string;
     label: string;
-    icon: 'pdf' | 'video' | 'link' | 'task';
+    icon: 'pdf' | 'video' | 'link' | 'task' | 'code' | 'quiz';
     meta: string;
     url?: string;
     score?: string;
     highlighted?: boolean;
+    statusText?: string;
 };
 
 type ModuleWeek = {
@@ -72,129 +69,150 @@ const modules: ModuleWeek[] = [
     {
         id: 'week-1',
         number: 1,
-        title: 'Pengenalan Graf & Representasinya',
+        title: 'Pengantar Interaksi Manusia & Komputer',
         meta: 'Minggu 1 • Selesai',
         defaultOpen: true,
         items: [
             {
                 id: 'w1-slide',
-                label: 'Slide Kuliah: Representasi Graf.pdf',
+                label: 'Slide Materi 01: Konsep Dasar IMK.pdf',
                 icon: 'pdf',
-                meta: 'Materi • 2.4 MB',
+                meta: 'Dokumen PDF • 3.2 MB',
                 url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
             },
             {
                 id: 'w1-video',
-                label: 'Rekaman Sesi Sinkron',
+                label: 'Video Rekaman Kuliah Sesi 1',
                 icon: 'video',
-                meta: 'Materi • 45 Menit',
+                meta: 'Video HD • 45 Menit',
                 url: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
             },
             {
-                id: 'w1-link',
-                label: 'Artikel Referensi: Graph Theory Basics',
-                icon: 'link',
-                meta: 'Materi • Tautan Eksternal',
-                url: 'https://en.wikipedia.org/wiki/Graph_theory',
-            },
-            {
-                id: 'w1-task',
-                label: 'Tugas Praktikum 1: Adjacency Matrix',
-                icon: 'task',
-                meta: 'Tenggat: 12 Okt 2024',
+                id: 'w1-quiz',
+                label: 'Kuis Evaluasi Konsep Dasar',
+                icon: 'quiz',
+                meta: 'Kuis Selesai • Skor 95/100',
                 score: '95/100',
-                highlighted: true,
             },
         ],
     },
     {
         id: 'week-2',
         number: 2,
-        title: 'Algoritma Pencarian (BFS & DFS)',
-        meta: 'Minggu 2 • Sedang Berlangsung',
+        title: 'User-Centered Design & Persona',
+        meta: 'Minggu 2 • Selesai',
+        defaultOpen: true,
+        items: [
+            {
+                id: 'w2-slide',
+                label: 'Slide Materi 02: UCD & User Persona.pdf',
+                icon: 'pdf',
+                meta: 'Dokumen PDF • 2.8 MB',
+                url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+            },
+            {
+                id: 'w2-task',
+                label: 'Tugas 01: Penyusunan User Persona Aplikasi Edukasi',
+                icon: 'task',
+                meta: 'Nilai: 90/100 • Dinilai oleh Dosen',
+                score: '90/100',
+            },
+        ],
+    },
+    {
+        id: 'week-3',
+        number: 3,
+        title: 'Prototyping & Wireframing Interaktif',
+        meta: 'Minggu 3 • Aktif',
+        defaultOpen: true,
+        items: [
+            {
+                id: 'w3-slide',
+                label: 'Slide Materi 03: Wireframing Tools & Principles.pdf',
+                icon: 'pdf',
+                meta: 'Dokumen PDF • 4.1 MB',
+                url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+            },
+            {
+                id: 'w3-code',
+                label: 'Tugas Pemrograman: Implementasi UI/UX Prototype',
+                icon: 'code',
+                meta: 'Tenggat: Rab, 22 Okt • 23:59 WIB',
+                highlighted: true,
+                statusText: 'Kerjakan Tugas',
+            },
+            {
+                id: 'w3-link',
+                label: 'Referensi Panduan Material Design 3',
+                icon: 'link',
+                meta: 'm3.material.io',
+                url: 'https://m3.material.io',
+            },
+        ],
+    },
+    {
+        id: 'week-4',
+        number: 4,
+        title: 'Evaluasi Heuristik & Analisis Keterpakaian',
+        meta: 'Minggu 4 • Terbuka Pekan Depan',
+        defaultOpen: false,
         items: [],
     },
 ];
 
 const rps = {
     description:
-        'Mata kuliah ini memberikan pemahaman mendalam mengenai interaksi antara manusia dan sistem komputer. Fokus utama meliputi prinsip desain antarmuka, psikologi kognitif dalam komputasi, serta metodologi evaluasi pengalaman pengguna (UX) untuk menciptakan sistem yang efektif, efisien, dan memuaskan.',
+        'Mata kuliah ini membahas teori dasar dan praktik dalam merancang antarmuka pengguna interaktif yang berorientasi pada manusia (human-centered design), mulai dari analisis kebutuhan, prototyping, hingga evaluasi heuristik usability.',
     cpmk: [
-        'CPMK 1: Mampu memahami prinsip dasar dan teori interaksi manusia-komputer dalam pengembangan perangkat lunak.',
-        'CPMK 2: Mampu menerapkan teknik evaluasi heuristik untuk mengidentifikasi masalah kegunaan pada antarmuka.',
-        'CPMK 3: Mampu merancang prototipe antarmuka yang berpusat pada pengguna (User-Centered Design).',
-        'CPMK 4: Mampu melakukan pengujian kegunaan (Usability Testing) secara sistematis.',
+        'Mampu menjelaskan konsep dan paradigma interaksi manusia dan komputer secara komprehensif.',
+        'Mampu merancang antarmuka aplikasi interaktif menggunakan prinsip User-Centered Design.',
+        'Mampu menyusun wireframe dan prototype interaktif berskala fungsional.',
+        'Mampu melakukan evaluasi heuristik dan usability testing terhadap sistem antarmuka.',
     ],
     references: [
         {
-            title: 'Interaction Design: Beyond Human-Computer Interaction',
-            author: 'Preece, Rogers, & Sharp (5th Edition)',
+            title: 'Designing the User Interface: Strategies for Effective HCI (6th Ed)',
+            author: 'Ben Shneiderman, Catherine Plaisant, et al.',
         },
         {
-            title: 'Designing the User Interface',
-            author: 'Ben Shneiderman, et al. (6th Edition)',
+            title: 'The Design of Everyday Things',
+            author: 'Don Norman',
         },
     ],
 };
 
 const grading = {
-    finalPrediction: 88.5,
-    finalGradeLabel: 'Grade A',
     components: [
         {
             id: 'assignments',
-            label: 'Assignments (Avg)',
+            label: 'Tugas & Praktikum Individu/Kelompok',
             score: '92 / 100',
             weight: '30%',
-            contribution: '+ 27.60',
-            status: 'Graded',
-            dotClass: 'bg-sale-blue',
+            status: 'Dinilai',
         },
         {
             id: 'quizzes',
-            label: 'Quizzes (Best 4/5)',
-            score: '85 / 100',
+            label: 'Kuis Berkala',
+            score: '88 / 100',
             weight: '20%',
-            contribution: '+ 17.00',
-            status: 'Graded',
-            dotClass: 'bg-sale-green',
+            status: 'Dinilai',
         },
         {
             id: 'midterm',
-            label: 'Midterm Examination',
-            score: '88 / 100',
+            label: 'Ujian Tengah Semester (UTS)',
+            score: '94 / 100',
             weight: '25%',
-            contribution: '+ 22.00',
-            status: 'Graded',
-            dotClass: 'bg-sale-orange',
+            status: 'Dinilai',
         },
         {
             id: 'final',
-            label: 'Final Examination',
-            score: '- / 100',
+            label: 'Ujian Akhir Semester (UAS / Proyek Akhir)',
+            score: 'Prediksi 90+',
             weight: '25%',
-            contribution: 'Pending',
-            status: 'Upcoming',
-            dotClass: 'bg-muted-foreground',
+            status: 'Mendatang',
         },
     ],
-    currentTotal: 66.6,
 };
-
-// ============ Small building blocks ============
-
-function moduleIcon(icon: ModuleItem['icon']) {
-    switch (icon) {
-        case 'pdf':
-            return <FileText className="size-4" />;
-        case 'video':
-            return <PlayCircle className="size-4" />;
-        case 'link':
-            return <LinkIcon className="size-4" />;
-        case 'task':
-            return <FileText className="size-4" />;
-    }
-}
 
 function ModuleItemRow({
     item,
@@ -203,395 +221,78 @@ function ModuleItemRow({
     item: ModuleItem;
     onOpenViewer: (item: ModuleItem) => void;
 }) {
-    const iconWrapClass =
-        item.icon === 'pdf'
-            ? 'bg-orange-50 text-sale-orange'
-            : item.icon === 'video'
-              ? 'bg-blue-50 text-sale-blue'
-              : item.icon === 'link'
-                ? 'bg-green-50 text-sale-green'
-                : 'bg-blue-50 text-sale-blue';
+    const Icon =
+        item.icon === 'video'
+            ? PlayCircle
+            : item.icon === 'link'
+              ? LinkIcon
+              : item.icon === 'quiz'
+                ? HelpCircle
+                : FileText;
 
     const content = (
         <>
-            <span
-                className={`flex size-9 shrink-0 items-center justify-center rounded-lg ${iconWrapClass}`}
-            >
-                {moduleIcon(item.icon)}
-            </span>
+            <Icon className="size-4 text-muted-foreground shrink-0" />
 
             <div className="min-w-0 flex-1">
-                <p
-                    className={[
-                        'truncate text-sm font-medium',
-                        item.highlighted ? 'text-sale-blue' : 'text-sale-dark',
-                    ].join(' ')}
-                >
+                <p className="text-sm font-medium text-foreground truncate">
                     {item.label}
                 </p>
-                <p
-                    className={[
-                        'text-xs',
-                        item.highlighted ? 'text-sale-danger' : 'text-sale-muted',
-                    ].join(' ')}
-                >
+                <p className="text-xs text-muted-foreground mt-0.5">
                     {item.meta}
                 </p>
             </div>
 
             {item.score && (
-                <span className="text-sm font-semibold text-sale-green">
+                <span className="text-xs font-semibold text-foreground px-2 py-0.5 rounded bg-muted">
                     {item.score}
                 </span>
             )}
 
-            {item.icon === 'link' && (
-                <ExternalLink className="size-4 shrink-0 text-sale-muted" />
+            {item.highlighted && (
+                <Link href="/student/assignments/1">
+                    <Button size="sm" className="h-8 text-xs font-semibold px-3.5">
+                        {item.statusText || 'Buka'}
+                    </Button>
+                </Link>
             )}
 
-            {!item.score && !item.highlighted && item.icon !== 'link' && (
-                <CheckCircle2 className="size-5 shrink-0 text-sale-green" />
+            {item.icon === 'link' && (
+                <ExternalLink className="size-3.5 shrink-0 text-muted-foreground" />
             )}
         </>
     );
 
-    const rowClass = [
-        'flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left',
-        item.highlighted ? 'bg-blue-50' : '',
-        item.icon === 'pdf' || item.icon === 'video' || item.icon === 'link'
-            ? 'hover:bg-muted/50'
-            : '',
-    ].join(' ');
+    const baseRowClass =
+        'flex w-full items-center gap-3.5 rounded-lg p-3 text-left transition-colors';
 
-    // Link materi: buka tab baru langsung, tidak perlu viewer in-app
     if (item.icon === 'link') {
         return (
             <a
                 href={item.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={rowClass}
+                className={`${baseRowClass} hover:bg-accent/60`}
             >
                 {content}
             </a>
         );
     }
 
-    // PDF & video: buka viewer in-app (Dialog)
     if (item.icon === 'pdf' || item.icon === 'video') {
         return (
-            <button type="button" onClick={() => onOpenViewer(item)} className={rowClass}>
+            <button
+                type="button"
+                onClick={() => onOpenViewer(item)}
+                className={`${baseRowClass} hover:bg-accent/60`}
+            >
                 {content}
             </button>
         );
     }
 
-    // Task / lainnya: baris statis, tidak diklik di sini
-    return <div className={rowClass}>{content}</div>;
+    return <div className={baseRowClass}>{content}</div>;
 }
-
-function ModuleWeekCard({
-    week,
-    onOpenViewer,
-}: {
-    week: ModuleWeek;
-    onOpenViewer: (item: ModuleItem) => void;
-}) {
-    const [open, setOpen] = useState(week.defaultOpen ?? false);
-    const hasItems = week.items.length > 0;
-
-    return (
-        <Card className="gap-0 overflow-hidden rounded-2xl border-sale-border bg-sale-white py-0">
-            <Collapsible open={open} onOpenChange={setOpen}>
-                <CollapsibleTrigger
-                    disabled={!hasItems}
-                    className="flex w-full items-center gap-4 px-5 py-4 text-left disabled:cursor-default"
-                >
-                    <span className="flex size-8 shrink-0 items-center justify-center rounded-full border-2 border-sale-blue text-sm font-semibold text-sale-blue">
-                        {week.number}
-                    </span>
-
-                    <span className="min-w-0 flex-1">
-                        <span className="block truncate font-poppins font-semibold text-sale-dark">
-                            {week.title}
-                        </span>
-                        <span className="block text-sm text-sale-muted">
-                            {week.meta}
-                        </span>
-                    </span>
-
-                    {hasItems && (
-                        <ChevronDown
-                            className={[
-                                'size-4 shrink-0 text-sale-muted transition-transform',
-                                open ? 'rotate-180' : '',
-                            ].join(' ')}
-                        />
-                    )}
-                </CollapsibleTrigger>
-
-                {hasItems && (
-                    <CollapsibleContent className="space-y-1 border-t border-sale-border px-3 pb-3">
-                        <div className="pt-2" />
-                        {week.items.map((item) => (
-                            <ModuleItemRow
-                                key={item.id}
-                                item={item}
-                                onOpenViewer={onOpenViewer}
-                            />
-                        ))}
-                    </CollapsibleContent>
-                )}
-            </Collapsible>
-        </Card>
-    );
-}
-
-function GradingTab() {
-    return (
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[320px_1fr]">
-            {/* Final grade prediction */}
-            <Card className="items-start gap-6 rounded-2xl border-sale-border bg-sale-white p-6">
-                <div className="flex w-full items-start justify-between">
-                    <h3 className="font-poppins text-lg font-semibold text-sale-dark">
-                        Final Grade Prediction
-                    </h3>
-                    <Info className="size-4 shrink-0 text-sale-muted" />
-                </div>
-
-                <div className="mx-auto flex size-40 items-center justify-center rounded-full border-8 border-sale-blue">
-                    <div className="text-center">
-                        <p className="font-poppins text-3xl font-bold text-sale-dark">
-                            {grading.finalPrediction}
-                        </p>
-                        <Badge className="mt-1 border-transparent bg-blue-50 text-sale-blue hover:bg-blue-50">
-                            {grading.finalGradeLabel}
-                        </Badge>
-                    </div>
-                </div>
-
-                <div className="grid w-full grid-cols-2 gap-x-4 gap-y-2 text-sm">
-                    {grading.components.map((c) => (
-                        <div key={c.id} className="flex items-center gap-2">
-                            <span
-                                className={`size-2 rounded-full ${c.dotClass}`}
-                            />
-                            <span className="text-sale-muted">
-                                {c.label.replace(/\s*\(.+\)$/, '')} ({c.weight})
-                            </span>
-                        </div>
-                    ))}
-                </div>
-            </Card>
-
-            {/* Component breakdown */}
-            <Card className="gap-0 overflow-hidden rounded-2xl border-sale-border bg-sale-white py-0">
-                <div className="flex items-center justify-between px-6 py-5">
-                    <h3 className="font-poppins text-lg font-semibold text-sale-dark">
-                        Component Breakdown
-                    </h3>
-                    <Badge className="gap-1 border-transparent bg-green-50 text-sale-green hover:bg-green-50">
-                        <CheckCircle2 className="size-3.5" />
-                        On Track
-                    </Badge>
-                </div>
-
-                <div className="overflow-x-auto border-t border-sale-border">
-                    <table className="w-full min-w-[560px] text-left text-sm">
-                        <thead>
-                            <tr className="text-xs text-sale-muted uppercase">
-                                <th className="px-6 py-3 font-medium">
-                                    Component
-                                </th>
-                                <th className="px-3 py-3 font-medium">
-                                    Score
-                                </th>
-                                <th className="px-3 py-3 font-medium">
-                                    Weight
-                                </th>
-                                <th className="px-3 py-3 font-medium">
-                                    Contribution
-                                </th>
-                                <th className="px-3 py-3 font-medium">
-                                    Status
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {grading.components.map((c) => (
-                                <tr
-                                    key={c.id}
-                                    className="border-t border-sale-border"
-                                >
-                                    <td className="px-6 py-4 font-medium text-sale-dark">
-                                        {c.label}
-                                    </td>
-                                    <td className="px-3 py-4 text-sale-dark">
-                                        {c.score}
-                                    </td>
-                                    <td className="px-3 py-4 text-sale-muted">
-                                        {c.weight}
-                                    </td>
-                                    <td
-                                        className={
-                                            c.contribution === 'Pending'
-                                                ? 'px-3 py-4 text-sale-muted'
-                                                : 'px-3 py-4 font-semibold text-sale-blue'
-                                        }
-                                    >
-                                        {c.contribution}
-                                    </td>
-                                    <td className="px-3 py-4">
-                                        <Badge
-                                            className={
-                                                c.status === 'Graded'
-                                                    ? 'border-transparent bg-green-50 text-sale-green hover:bg-green-50'
-                                                    : 'border-transparent bg-blue-50 text-sale-blue hover:bg-blue-50'
-                                            }
-                                        >
-                                            {c.status}
-                                        </Badge>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-
-                <div className="flex items-center justify-between border-t border-sale-border bg-muted/40 px-6 py-4">
-                    <span className="font-poppins font-semibold text-sale-dark">
-                        Current Total Contribution:
-                    </span>
-                    <span className="text-xl font-bold text-sale-blue">
-                        {grading.currentTotal}
-                    </span>
-                </div>
-            </Card>
-
-            <Card className="col-span-1 flex-row items-center justify-between gap-4 rounded-2xl border-transparent bg-sale-blue p-6 text-white lg:col-span-2">
-                <div className="flex items-center gap-4">
-                    <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-white/15">
-                        🎓
-                    </span>
-                    <div>
-                        <p className="font-poppins font-semibold">
-                            View Cumulative GPA & All Courses
-                        </p>
-                        <p className="text-sm text-blue-100">
-                            Review your overall academic standing for{' '}
-                            {course.semesterLabel}.
-                        </p>
-                    </div>
-                </div>
-
-                <Button
-                    variant="secondary"
-                    className="shrink-0 bg-white text-sale-blue hover:bg-blue-50"
-                >
-                    View Full Transcript →
-                </Button>
-            </Card>
-        </div>
-    );
-}
-
-function RpsTab() {
-    return (
-        <Card className="gap-6 rounded-2xl border-sale-border bg-sale-white p-8">
-            <h2 className="font-poppins text-2xl font-bold text-sale-dark">
-                Rencana Pembelajaran Semester (RPS)
-            </h2>
-
-            <div className="space-y-3">
-                <h3 className="font-poppins text-lg font-semibold text-sale-blue">
-                    Deskripsi Mata Kuliah
-                </h3>
-                <p className="leading-relaxed text-sale-muted">
-                    {rps.description}
-                </p>
-            </div>
-
-            <div className="space-y-3">
-                <h3 className="font-poppins text-lg font-semibold text-sale-blue">
-                    Capaian Pembelajaran (CPMK)
-                </h3>
-                <ul className="space-y-2">
-                    {rps.cpmk.map((item) => (
-                        <li key={item} className="flex items-start gap-3">
-                            <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-sale-blue" />
-                            <span className="text-sm font-medium text-sale-dark">
-                                {item}
-                            </span>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-
-            <div className="space-y-3">
-                <h3 className="font-poppins text-lg font-semibold text-sale-blue">
-                    Buku Referensi
-                </h3>
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                    {rps.references.map((ref) => (
-                        <div
-                            key={ref.title}
-                            className="rounded-lg bg-muted/50 p-4"
-                        >
-                            <p className="text-sm font-semibold text-sale-dark">
-                                {ref.title}
-                            </p>
-                            <p className="mt-1 text-sm text-sale-muted">
-                                {ref.author}
-                            </p>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </Card>
-    );
-}
-
-function MaterialViewerDialog({
-    item,
-    open,
-    onOpenChange,
-}: {
-    item: ModuleItem | null;
-    open: boolean;
-    onOpenChange: (open: boolean) => void;
-}) {
-    return (
-        <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="max-h-[85vh] max-w-4xl gap-4 overflow-hidden p-0">
-                <DialogHeader className="border-b border-sale-border px-6 py-4 pr-12">
-                    <DialogTitle className="font-poppins text-sale-dark">
-                        {item?.label}
-                    </DialogTitle>
-                </DialogHeader>
-
-                <div className="px-6 pb-6">
-                    {item?.icon === 'pdf' && item.url && (
-                        <iframe
-                            src={item.url}
-                            title={item.label}
-                            className="h-[65vh] w-full rounded-lg border border-sale-border"
-                        />
-                    )}
-
-                    {item?.icon === 'video' && item.url && (
-                        <video
-                            src={item.url}
-                            controls
-                            className="max-h-[65vh] w-full rounded-lg bg-black"
-                        />
-                    )}
-                </div>
-            </DialogContent>
-        </Dialog>
-    );
-}
-
-// ============ Page ============
 
 export default function CourseDetail() {
     const [viewerItem, setViewerItem] = useState<ModuleItem | null>(null);
@@ -604,121 +305,237 @@ export default function CourseDetail() {
 
     return (
         <StudentLayout>
-            <Head title={course.title} />
+            <Head title={`${course.title} — SALE`} />
 
-            <div className="min-h-[calc(100vh-80px)] bg-[#F8F9FF] px-16 py-[21px]">
+            <div className="space-y-8">
                 {/* Breadcrumb */}
-                <div className="flex items-center gap-2 text-sm text-sale-muted">
-                    <Link href="/student/courses" className="hover:text-sale-dark">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Link href="/student/courses" className="hover:text-foreground transition-colors">
                         Course
                     </Link>
                     <span>›</span>
                     <span>{course.semesterLabel}</span>
                     <span>›</span>
-                    <span className="font-medium text-sale-dark">
+                    <span className="font-medium text-foreground">
                         {course.title}
                     </span>
                 </div>
 
-                {/* Header */}
-                <div className="mt-4 flex flex-wrap items-start justify-between gap-4">
+                {/* Header Profile Course */}
+                <div className="flex flex-wrap items-start justify-between gap-6 pb-2">
                     <div>
-                        <div className="flex items-center gap-2">
-                            <Badge className="rounded-full border-transparent bg-blue-50 font-medium text-sale-blue hover:bg-blue-50">
+                        <div className="flex items-center gap-2 mb-3">
+                            <Badge variant="outline" className="font-semibold">
                                 {course.code}
                             </Badge>
-                            <Badge className="gap-1 rounded-full border-transparent bg-green-50 font-medium text-sale-green hover:bg-green-50">
+                            <Badge variant="secondary" className="gap-1 font-medium">
                                 <CheckCircle2 className="size-3.5" />
                                 {course.status}
                             </Badge>
                         </div>
 
-                        <h1 className="mt-3 font-poppins text-3xl font-bold leading-tight text-sale-dark">
+                        <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground">
                             {course.title}
                         </h1>
 
-                        <p className="mt-2 text-sale-muted">
-                            {course.lecturer} • {course.className} •{' '}
-                            {course.term}
+                        <p className="mt-2 text-sm text-muted-foreground">
+                            {course.lecturer} • {course.className} • {course.term}
                         </p>
                     </div>
 
                     <div className="flex shrink-0 items-center gap-3">
-                        <Button
-                            variant="outline"
-                            className="gap-2 border-sale-border text-sale-dark"
-                        >
-                            <Calendar className="size-4" />
-                            Jadwal
-                        </Button>
-                        <Button className="gap-2 bg-sale-blue text-white hover:bg-blue-600">
-                            <MessageSquare className="size-4" />
-                            Diskusi Kelas
-                        </Button>
+                        <Link href="/student/forum">
+                            <Button variant="outline" className="gap-2 text-sm h-10">
+                                <MessageSquare className="size-4" />
+                                Diskusi Kelas
+                            </Button>
+                        </Link>
                     </div>
                 </div>
 
-                {/* Video card */}
-                <Card className="mt-6 gap-4 rounded-2xl border-sale-border bg-sale-white p-6">
-                    <div className="relative aspect-video overflow-hidden rounded-xl bg-slate-900">
-                        <div className="absolute inset-0 flex items-center justify-center">
-                            <PlayCircle className="size-16 text-white/90" />
-                        </div>
+                {/* Video / Featured Material Card */}
+                <Card className="rounded-xl border border-border bg-card p-6 space-y-4">
+                    <div className="relative aspect-video max-h-[380px] w-full overflow-hidden rounded-lg bg-muted flex items-center justify-center cursor-pointer group">
+                        <PlayCircle className="size-14 text-foreground/80 group-hover:scale-105 transition-transform" />
                     </div>
 
-                    <div className="flex items-start justify-between gap-4">
+                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 pt-1">
                         <div>
-                            <h2 className="font-poppins text-lg font-semibold text-sale-dark">
+                            <h2 className="text-base font-semibold text-foreground">
                                 {video.weekTitle}
                             </h2>
-                            <p className="mt-2 max-w-3xl text-sm leading-relaxed text-sale-muted">
+                            <p className="mt-1 text-sm text-muted-foreground leading-relaxed max-w-3xl">
                                 {video.description}
                             </p>
                         </div>
-                        <span className="shrink-0 text-sm text-sale-muted">
+                        <span className="text-xs text-muted-foreground shrink-0 font-medium">
                             {video.duration}
                         </span>
                     </div>
                 </Card>
 
-                {/* Tabs */}
-                <Tabs defaultValue="modules" className="mt-8">
-                    <TabsList>
-                        <TabsTrigger value="modules">
+                {/* Tabs Section */}
+                <Tabs defaultValue="modules" className="space-y-6">
+                    <TabsList className="bg-muted p-1 h-10">
+                        <TabsTrigger value="modules" className="text-xs sm:text-sm font-medium px-4">
                             Modul Pembelajaran
                         </TabsTrigger>
-                        <TabsTrigger value="rps">
+                        <TabsTrigger value="rps" className="text-xs sm:text-sm font-medium px-4">
                             Informasi Kursus (RPS)
                         </TabsTrigger>
-                        <TabsTrigger value="grading">
+                        <TabsTrigger value="grading" className="text-xs sm:text-sm font-medium px-4">
                             Penilaian & Bobot
                         </TabsTrigger>
                     </TabsList>
 
-                    <TabsContent value="modules" className="mt-6 space-y-4">
+                    {/* Modul Pembelajaran */}
+                    <TabsContent value="modules" className="space-y-4 mt-0">
                         {modules.map((week) => (
-                            <ModuleWeekCard
+                            <div
                                 key={week.id}
-                                week={week}
-                                onOpenViewer={handleOpenViewer}
-                            />
+                                className="rounded-xl border border-border bg-card overflow-hidden"
+                            >
+                                <Collapsible defaultOpen={week.defaultOpen}>
+                                    <CollapsibleTrigger className="flex w-full items-center justify-between p-5 text-left hover:bg-accent/40 transition-colors">
+                                        <div>
+                                            <h3 className="text-sm md:text-base font-semibold text-foreground">
+                                                {week.title}
+                                            </h3>
+                                            <p className="text-xs text-muted-foreground mt-0.5">
+                                                {week.meta}
+                                            </p>
+                                        </div>
+                                        <ChevronDown className="size-4 text-muted-foreground transition-transform duration-200" />
+                                    </CollapsibleTrigger>
+
+                                    <CollapsibleContent className="border-t border-border p-3 space-y-1 bg-background/50">
+                                        {week.items.length > 0 ? (
+                                            week.items.map((item) => (
+                                                <ModuleItemRow
+                                                    key={item.id}
+                                                    item={item}
+                                                    onOpenViewer={handleOpenViewer}
+                                                />
+                                            ))
+                                        ) : (
+                                            <p className="p-4 text-xs text-muted-foreground text-center">
+                                                Materi minggu ini akan dibuka sesuai jadwal perkuliahan.
+                                            </p>
+                                        )}
+                                    </CollapsibleContent>
+                                </Collapsible>
+                            </div>
                         ))}
                     </TabsContent>
 
-                    <TabsContent value="rps" className="mt-6">
-                        <RpsTab />
+                    {/* RPS */}
+                    <TabsContent value="rps" className="mt-0">
+                        <Card className="rounded-xl border border-border bg-card p-6 md:p-8 space-y-6">
+                            <div>
+                                <h3 className="text-base font-semibold text-foreground">
+                                    Deskripsi Mata Kuliah
+                                </h3>
+                                <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
+                                    {rps.description}
+                                </p>
+                            </div>
+
+                            <div className="border-t border-border pt-6 space-y-3">
+                                <h4 className="text-sm font-semibold text-foreground">
+                                    Capaian Pembelajaran Lulusan (CPMK)
+                                </h4>
+                                <div className="space-y-2">
+                                    {rps.cpmk.map((item, idx) => (
+                                        <div
+                                            key={idx}
+                                            className="flex items-start gap-3 text-sm text-muted-foreground"
+                                        >
+                                            <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-foreground" />
+                                            <span className="leading-relaxed">{item}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="border-t border-border pt-6 space-y-3">
+                                <h4 className="text-sm font-semibold text-foreground">
+                                    Buku Referensi
+                                </h4>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    {rps.references.map((ref) => (
+                                        <div
+                                            key={ref.title}
+                                            className="rounded-lg border border-border bg-background p-4"
+                                        >
+                                            <p className="text-sm font-semibold text-foreground">
+                                                {ref.title}
+                                            </p>
+                                            <p className="text-xs text-muted-foreground mt-1">
+                                                {ref.author}
+                                            </p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </Card>
                     </TabsContent>
 
-                    <TabsContent value="grading" className="mt-6">
-                        <GradingTab />
+                    {/* Grading */}
+                    <TabsContent value="grading" className="mt-0">
+                        <Card className="rounded-xl border border-border bg-card p-6 md:p-8 space-y-4">
+                            <h3 className="text-base font-semibold text-foreground">
+                                Komponen Penilaian & Bobot
+                            </h3>
+                            <div className="space-y-3">
+                                {grading.components.map((comp) => (
+                                    <div
+                                        key={comp.id}
+                                        className="flex items-center justify-between p-4 rounded-lg border border-border bg-background"
+                                    >
+                                        <div>
+                                            <p className="text-sm font-semibold text-foreground">
+                                                {comp.label}
+                                            </p>
+                                            <p className="text-xs text-muted-foreground mt-0.5">
+                                                Bobot: {comp.weight} • {comp.score}
+                                            </p>
+                                        </div>
+                                        <Badge variant="secondary" className="text-xs">
+                                            {comp.status}
+                                        </Badge>
+                                    </div>
+                                ))}
+                            </div>
+                        </Card>
                     </TabsContent>
                 </Tabs>
 
-                <MaterialViewerDialog
-                    item={viewerItem}
-                    open={viewerOpen}
-                    onOpenChange={setViewerOpen}
-                />
+                {/* Viewer Dialog */}
+                <Dialog open={viewerOpen} onOpenChange={setViewerOpen}>
+                    <DialogContent className="max-h-[85vh] max-w-4xl p-0 overflow-hidden rounded-xl">
+                        <DialogHeader className="border-b border-border p-5">
+                            <DialogTitle className="text-base font-semibold text-foreground">
+                                {viewerItem?.label}
+                            </DialogTitle>
+                        </DialogHeader>
+                        <div className="p-4">
+                            {viewerItem?.icon === 'pdf' && viewerItem.url && (
+                                <iframe
+                                    src={viewerItem.url}
+                                    title={viewerItem.label}
+                                    className="h-[60vh] w-full rounded-lg border border-border"
+                                />
+                            )}
+                            {viewerItem?.icon === 'video' && viewerItem.url && (
+                                <video
+                                    src={viewerItem.url}
+                                    controls
+                                    className="max-h-[60vh] w-full rounded-lg bg-black"
+                                />
+                            )}
+                        </div>
+                    </DialogContent>
+                </Dialog>
             </div>
         </StudentLayout>
     );

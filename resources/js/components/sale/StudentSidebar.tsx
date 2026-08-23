@@ -2,11 +2,12 @@ import { Link, usePage } from '@inertiajs/react';
 import {
     Bell,
     BookOpen,
-    CircleHelp,
     ClipboardList,
+    GraduationCap,
     LayoutDashboard,
     LogOut,
     MessageSquare,
+    User,
     UserRound,
 } from 'lucide-react';
 
@@ -47,84 +48,75 @@ export default function StudentSidebar() {
     const { url } = usePage();
 
     return (
-        <aside className="fixed inset-y-0 left-0 z-40 flex w-[280px] flex-col border-r border-sale-border bg-sale-white">
-            {/* Brand */}
-            <div className="px-6 py-6">
-                <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-sale-blue text-white">
-                        <span className="text-xl font-extrabold">S</span>
-                    </div>
-
+        <aside className="fixed inset-y-0 left-0 z-40 hidden w-[280px] flex-col border-r border-border bg-card md:flex">
+            {/* Brand Header */}
+            <div className="flex h-16 items-center border-b border-border px-6">
+                <Link href="/student/dashboard" className="flex items-center gap-2.5">
+                    <GraduationCap className="size-5.5 text-foreground" />
                     <div>
-                        <div className="font-poppins text-2xl leading-6 font-extrabold tracking-tight text-sale-blue">
+                        <div className="text-base font-bold tracking-tight text-foreground leading-none">
                             SALE
                         </div>
-
-                        <div className="mt-1 text-xs font-semibold text-sale-orange">
+                        <div className="mt-1 text-[11px] font-medium text-muted-foreground leading-none">
                             Academic Ecosystem
                         </div>
                     </div>
-                </div>
+                </Link>
             </div>
 
             {/* Navigation */}
-            <nav className="flex-1 px-4">
-                <div className="space-y-1">
-                    {navigation.map((item) => {
-                        const Icon = item.icon;
+            <nav className="flex-1 px-3.5 py-5 space-y-1 overflow-y-auto">
+                {navigation.map((item) => {
+                    const Icon = item.icon;
+                    const active =
+                        url === item.href ||
+                        (item.href !== '/student/dashboard' && url.startsWith(`${item.href}/`));
 
-                        const active =
-                            url === item.href ||
-                            url.startsWith(`${item.href}/`);
-
-                        return (
-                            <Link
-                                key={item.label}
-                                href={item.href}
-                                className={[
-                                    'flex h-12 items-center gap-4 rounded-lg px-4 transition-colors',
-                                    active
-                                        ? 'bg-blue-50 text-sale-blue'
-                                        : 'text-sale-muted hover:bg-slate-50 hover:text-sale-dark',
-                                ].join(' ')}
-                            >
-                                <Icon
-                                    className="h-[18px] w-[18px] shrink-0"
-                                    strokeWidth={active ? 2.2 : 1.8}
-                                />
-
-                                <span
-                                    className={
-                                        active
-                                            ? 'text-sm font-semibold'
-                                            : 'text-sm font-medium'
-                                    }
-                                >
-                                    {item.label}
-                                </span>
-                            </Link>
-                        );
-                    })}
-                </div>
+                    return (
+                        <Link
+                            key={item.label}
+                            href={item.href}
+                            className={[
+                                'flex h-10 items-center gap-3 rounded-md px-3 text-sm font-medium transition-colors',
+                                active
+                                    ? 'bg-accent text-foreground font-semibold'
+                                    : 'text-muted-foreground hover:bg-accent/60 hover:text-foreground',
+                            ].join(' ')}
+                        >
+                            <Icon
+                                className="size-4 shrink-0"
+                                strokeWidth={active ? 2.2 : 1.75}
+                            />
+                            <span>{item.label}</span>
+                        </Link>
+                    );
+                })}
             </nav>
 
             {/* Footer */}
-            <div className="space-y-1 border-t border-sale-border px-4 py-4">
-                <button
-                    type="button"
-                    className="flex h-11 w-full items-center gap-4 rounded-lg px-4 text-left text-sm font-medium text-sale-muted transition-colors hover:bg-slate-50 hover:text-sale-dark"
+            <div className="space-y-1 border-t border-border p-3.5">
+                <Link
+                    href="/student/profile"
+                    className="flex items-center gap-2.5 rounded-md px-3 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
                 >
-                    <CircleHelp className="h-5 w-5" strokeWidth={1.8} />
-                    Bantuan
-                </button>
+                    <User className="size-4 shrink-0 text-muted-foreground" />
+                    <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-foreground truncate leading-none">
+                            Auriel Lifta
+                        </p>
+                        <p className="text-xs text-muted-foreground truncate mt-1 leading-none">
+                            Mahasiswa
+                        </p>
+                    </div>
+                </Link>
 
-                <button
-                    type="button"
-                    className="text-sale-danger flex h-11 w-full items-center gap-4 rounded-lg px-4 text-left text-sm font-medium transition-colors hover:bg-red-50"
+                <Link
+                    href="/login"
+                    className="flex h-9 w-full items-center gap-2.5 rounded-md px-3 text-sm font-medium text-destructive hover:bg-destructive/10 transition-colors"
                 >
-                    <LogOut className="h-[18px] w-[18px]" strokeWidth={1.8} />
-                    Keluar
-                </button>
+                    <LogOut className="size-4 shrink-0" />
+                    <span>Keluar</span>
+                </Link>
             </div>
         </aside>
     );

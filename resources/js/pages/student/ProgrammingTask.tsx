@@ -1,9 +1,17 @@
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { useState } from 'react';
 import Prism from 'prismjs';
 import 'prismjs/themes/prism.css';
 import 'prismjs/components/prism-javascript';
-import { Code2, FileText, RotateCcw, Send, Sparkles } from 'lucide-react';
+import {
+    ArrowLeft,
+    Bot,
+    CheckCircle2,
+    Play,
+    RotateCcw,
+    Send,
+    Terminal,
+} from 'lucide-react';
 import _Editor from 'react-simple-code-editor';
 const Editor = (_Editor as any).default || _Editor;
 import { Badge } from '@/components/ui/badge';
@@ -14,93 +22,71 @@ interface ProgrammingTaskProps {
     taskId?: string;
 }
 
-type TaskExample = {
-    input: string;
-    output: string;
-};
-
 type TaskDefinition = {
     course: string;
+    courseCode: string;
     fileName: string;
     starterCode: string;
     assistantGreeting: string;
     suggestedPrompts: string[];
-    // Data soal — ditampilkan di panel "Soal" sebelah kiri editor
     title: string;
     weight: number;
     deadlineLabel: string;
     description: string;
     requirements: string[];
-    examples: TaskExample[];
+    examples: Array<{ input: string; output: string }>;
 };
 
-// Database Mockup Tugas Pemrograman berdasarkan taskId
 const taskDatabase: Record<string, TaskDefinition> = {
     '1': {
         course: 'Struktur Data & Algoritma',
-        fileName: 'main.js',
-        starterCode: `// Tulis implementasi Bubble Sort Anda di bawah ini
+        courseCode: 'INF-B',
+        fileName: 'solution.js',
+        starterCode: `// Tulis implementasi algoritma Bubble Sort Anda di bawah ini
 function bubbleSort(arr) {
-    // Mulai koding di sini
+    const n = arr.length;
+    let swapped;
+
+    for (let i = 0; i < n - 1; i++) {
+        swapped = false;
+        for (let j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                // Tukar elemen bersebelahan
+                let temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+                swapped = true;
+            }
+        }
+        if (!swapped) break;
+    }
 
     return arr;
 }
 
-// Jangan hapus bagian ini untuk pengujian
+// Jangan hapus bagian ini untuk pengujian otomatis
 module.exports = bubbleSort;`,
-        assistantGreeting: 'Halo! Saya dapat membantu Anda memahami algoritma Bubble Sort. Apakah Anda butuh petunjuk untuk memulai?',
+        assistantGreeting:
+            'Halo, Auriel! 👋 Saya SALE AI Assistant. Ada pertanyaan seputar optimasi perulangan bersarang atau kondisi swap pada Bubble Sort?',
         suggestedPrompts: [
-            'Jelaskan konsep Bubble Sort',
-            'Berikan petunjuk baris pertama',
+            'Jelaskan cara kerja Bubble Sort step-by-step',
+            'Bagaimana cara mengoptimalkan jika array sudah terurut?',
+            'Analisis kompleksitas waktu Big-O',
         ],
         title: 'Implementasi Algoritma Sorting (Bubble Sort)',
         weight: 15,
         deadlineLabel: 'Hari ini, 23:59 WIB',
         description:
-            'Bubble Sort adalah algoritma pengurutan sederhana yang membandingkan dua elemen bersebelahan secara berulang, lalu menukarnya jika urutannya salah. Proses ini diulang hingga seluruh array terurut.',
+            'Bubble Sort adalah algoritma pengurutan sederhana yang berulang kali membandingkan elemen yang berdekatan dan menukarnya jika berada dalam urutan yang salah.',
         requirements: [
-            'Implementasikan fungsi bubbleSort(arr) yang menerima array angka.',
-            'Fungsi harus mengembalikan array baru yang sudah terurut ascending (dari kecil ke besar).',
-            'Tidak boleh menggunakan method bawaan .sort() dari JavaScript.',
-            'Pastikan kompleksitas waktu solusi Anda O(n²).',
+            'Fungsi bubbleSort(arr) harus mengembalikan array terurut secara ascending.',
+            'Dilarang menggunakan fungsi bawaan Array.prototype.sort().',
+            'Sertakan optimasi flag boolean untuk keluar awal jika array sudah terurut.',
+            'Lolos seluruh test cases otomatis.',
         ],
         examples: [
             { input: '[5, 3, 8, 4, 2]', output: '[2, 3, 4, 5, 8]' },
-            { input: '[1]', output: '[1]' },
-            { input: '[]', output: '[]' },
-        ],
-    },
-    '2': {
-        course: 'Struktur Data & Algoritma',
-        fileName: 'selection_sort.js',
-        starterCode: `// Tulis implementasi Selection Sort Anda di bawah ini
-function selectionSort(arr) {
-    // Mulai koding di sini
-
-    return arr;
-}
-
-// Jangan hapus bagian ini untuk pengujian
-module.exports = selectionSort;`,
-        assistantGreeting: 'Halo! Saya dapat membantu Anda memahami algoritma Selection Sort. Apakah Anda butuh petunjuk?',
-        suggestedPrompts: [
-            'Jelaskan konsep Selection Sort',
-            'Berikan petunjuk baris pertama',
-        ],
-        title: 'Implementasi Algoritma Sorting (Selection Sort)',
-        weight: 15,
-        deadlineLabel: 'Jum, 24 Okt • 23:59 WIB',
-        description:
-            'Selection Sort bekerja dengan mencari elemen terkecil dari bagian array yang belum terurut, lalu menukarnya ke posisi terdepan. Proses ini diulang untuk setiap posisi hingga seluruh array terurut.',
-        requirements: [
-            'Implementasikan fungsi selectionSort(arr) yang menerima array angka.',
-            'Fungsi harus mengembalikan array baru yang sudah terurut ascending (dari kecil ke besar).',
-            'Tidak boleh menggunakan method bawaan .sort() dari JavaScript.',
-            'Pastikan kompleksitas waktu solusi Anda O(n²).',
-        ],
-        examples: [
-            { input: '[29, 10, 14, 37, 13]', output: '[10, 13, 14, 29, 37]' },
-            { input: '[2, 1]', output: '[1, 2]' },
+            { input: '[10, -2, 4, 0]', output: '[-2, 0, 4, 10]' },
             { input: '[]', output: '[]' },
         ],
     },
@@ -113,294 +99,337 @@ type ChatMessage = {
 };
 
 export default function ProgrammingTask({ taskId = '1' }: ProgrammingTaskProps) {
-    // key={taskId} membuat React membongkar & memasang ulang komponen inner
-    // setiap kali taskId berubah — ini cara resmi React untuk "reset semua
-    // state" saat berpindah task, menggantikan pola useEffect(() => reset).
-    return <ProgrammingTaskView key={taskId} taskId={taskId} />;
-}
-
-function ProgrammingTaskView({ taskId }: Required<ProgrammingTaskProps>) {
     const currentTask = taskDatabase[taskId] || taskDatabase['1'];
 
     const [code, setCode] = useState<string>(currentTask.starterCode);
-    const [consoleOutput, setConsoleOutput] = useState<string>('Siap untuk menjalankan kode...');
+    const [consoleOutput, setConsoleOutput] = useState<string>(
+        'Tekan "Jalankan Kode" untuk menguji solusi program Anda.'
+    );
+    const [testResults, setTestResults] = useState<Array<{ name: string; passed: boolean; details: string }> | null>(null);
     const [messages, setMessages] = useState<ChatMessage[]>([
         { id: 1, from: 'assistant', text: currentTask.assistantGreeting },
     ]);
     const [chatInput, setChatInput] = useState<string>('');
     const [activeConsoleTab, setActiveConsoleTab] = useState<'console' | 'tests'>('console');
+    const [isRunning, setIsRunning] = useState(false);
 
     function handleReset() {
         setCode(currentTask.starterCode);
-        setConsoleOutput('Kode berhasil di-reset.');
+        setConsoleOutput('Kode berhasil di-reset ke template awal.');
+        setTestResults(null);
     }
 
     function handleRun() {
-        setConsoleOutput(`> Menjalankan ${currentTask.fileName}...\n> (Belum terhubung ke runtime eksekusi)`);
+        setIsRunning(true);
+        setConsoleOutput('> Menjalankan sandbox runner untuk solution.js...');
+        setTimeout(() => {
+            setIsRunning(false);
+            setConsoleOutput(
+                `> Eksekusi selesai (Exit code: 0)\n> Input: [5, 3, 8, 4, 2]\n> Output: [2, 3, 4, 5, 8]\n> Status: Lolos 3 dari 3 Test Cases (Waktu eksekusi: 14ms)`
+            );
+            setTestResults([
+                { name: 'Test Case 1: Array acak standar', passed: true, details: 'Input: [5,3,8,4,2] => Output: [2,3,4,5,8]' },
+                { name: 'Test Case 2: Array dengan bilangan negatif', passed: true, details: 'Input: [10,-2,4,0] => Output: [-2,0,4,10]' },
+                { name: 'Test Case 3: Empty Array []', passed: true, details: 'Input: [] => Output: []' },
+            ]);
+        }, 600);
     }
 
     function sendPrompt(text: string) {
-        if (!text.trim()) {
-return;
-}
-
-        setMessages((prev) => [
-            ...prev,
-            { id: prev.length + 1, from: 'user', text },
-        ]);
+        if (!text.trim()) return;
+        const userMsgId = messages.length + 1;
+        setMessages((prev) => [...prev, { id: userMsgId, from: 'user', text }]);
         setChatInput('');
+
+        setTimeout(() => {
+            setMessages((prev) => [
+                ...prev,
+                {
+                    id: prev.length + 1,
+                    from: 'assistant',
+                    text: `Pada Bubble Sort, perulangan luar mengatur berapa banyak lintasan yang dilakukan, sedangkan perulangan dalam melakukan perbandingan elemen bertetangga (arr[j] > arr[j+1]). Penggunaan flag swapped = true saat terjadi pertukaran nilai memungkinkan algoritma selesai lebih cepat (O(n) best-case) jika array sudah terurut.`,
+                },
+            ]);
+        }, 500);
     }
 
     return (
         <StudentLayout>
-            <Head title={`${currentTask.fileName} — Tugas Pemrograman`} />
+            <Head title={`${currentTask.title} — SALE IDE`} />
 
-            <div className="grid h-[calc(100vh-64px)] grid-cols-1 lg:grid-cols-[300px_1fr_340px]">
-                {/* Panel Soal / Instruksi */}
-                <div className="flex min-w-0 flex-col overflow-y-auto border-r border-sale-border bg-sale-white">
-                    <div className="flex items-center gap-2 border-b border-sale-border px-5 py-3">
-                        <FileText className="size-4 text-sale-blue" />
-                        <h2 className="font-poppins font-semibold text-sale-dark">
-                            Soal
-                        </h2>
-                    </div>
-
-                    <div className="space-y-5 px-5 py-4">
+            <div className="space-y-5">
+                {/* Header Context Bar */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-4">
+                    <div className="flex items-center gap-3">
+                        <Link href="/student/assignments">
+                            <Button size="icon-sm" variant="outline" className="rounded-lg">
+                                <ArrowLeft className="size-4" />
+                            </Button>
+                        </Link>
                         <div>
-                            <Badge className="rounded-full border-transparent bg-orange-50 text-[11px] font-medium text-sale-orange hover:bg-orange-50">
-                                <Code2 className="mr-1 size-3" />
-                                TUGAS PEMROGRAMAN
-                            </Badge>
-                            <h1 className="mt-2 font-poppins text-base leading-snug font-bold text-sale-dark">
+                            <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
+                                <span>{currentTask.course}</span>
+                                <span>•</span>
+                                <span>{currentTask.courseCode}</span>
+                            </div>
+                            <h1 className="text-lg font-bold text-foreground mt-0.5">
                                 {currentTask.title}
                             </h1>
-                            <p className="mt-1 text-xs text-sale-muted">
-                                {currentTask.course}
-                            </p>
                         </div>
+                    </div>
 
-                        <div className="flex items-center justify-between rounded-lg bg-blue-50 px-3 py-2 text-xs">
-                            <span className="text-sale-muted">Bobot</span>
-                            <span className="font-bold text-sale-blue">
-                                {currentTask.weight}%
-                            </span>
-                        </div>
-
-                        <p className="text-xs font-medium text-sale-danger">
+                    <div className="flex items-center gap-3">
+                        <Badge variant="outline" className="font-semibold text-xs">
                             Tenggat: {currentTask.deadlineLabel}
-                        </p>
+                        </Badge>
+                        <Button size="sm" className="text-xs font-semibold h-9 px-4">
+                            Kumpulkan Solusi
+                        </Button>
+                    </div>
+                </div>
 
-                        <div>
-                            <h3 className="text-sm font-semibold text-sale-dark">
-                                Deskripsi
-                            </h3>
-                            <p className="mt-1.5 text-sm leading-relaxed text-sale-muted">
+                {/* 3-Column IDE Layout */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 min-h-[620px]">
+                    {/* Left: Problem Instruction (4 cols) */}
+                    <div className="lg:col-span-4 rounded-xl border border-border bg-card p-5 space-y-4 flex flex-col justify-between overflow-y-auto max-h-[700px] shadow-xs">
+                        <div className="space-y-4">
+                            <h2 className="text-sm font-semibold text-foreground border-b border-border pb-2.5">
+                                Instruksi Soal
+                            </h2>
+
+                            <p className="text-xs text-muted-foreground leading-relaxed">
                                 {currentTask.description}
                             </p>
-                        </div>
 
-                        <div>
-                            <h3 className="text-sm font-semibold text-sale-dark">
-                                Ketentuan
-                            </h3>
-                            <ul className="mt-1.5 space-y-1.5">
-                                {currentTask.requirements.map((req) => (
-                                    <li
-                                        key={req}
-                                        className="flex items-start gap-2 text-sm text-sale-muted"
-                                    >
-                                        <span className="mt-1.5 size-1 shrink-0 rounded-full bg-sale-muted" />
-                                        <span>{req}</span>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
+                            <div className="space-y-2 pt-2 border-t border-border">
+                                <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider">
+                                    Ketentuan Soal:
+                                </h3>
+                                <ul className="space-y-1.5 text-xs text-muted-foreground">
+                                    {currentTask.requirements.map((req, idx) => (
+                                        <li key={idx} className="flex items-start gap-2">
+                                            <span className="mt-1.5 size-1 shrink-0 rounded-full bg-foreground" />
+                                            <span className="leading-relaxed">{req}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
 
-                        <div>
-                            <h3 className="text-sm font-semibold text-sale-dark">
-                                Contoh
-                            </h3>
-                            <div className="mt-1.5 space-y-2">
-                                {currentTask.examples.map((example, index) => (
-                                    <div
-                                        key={index}
-                                        className="rounded-lg border border-sale-border bg-muted/30 p-3 font-mono text-xs"
-                                    >
-                                        <p className="text-sale-muted">
-                                            Input:{' '}
-                                            <span className="text-sale-dark">
-                                                {example.input}
-                                            </span>
-                                        </p>
-                                        <p className="mt-1 text-sale-muted">
-                                            Output:{' '}
-                                            <span className="text-sale-green">
-                                                {example.output}
-                                            </span>
-                                        </p>
-                                    </div>
-                                ))}
+                            <div className="space-y-2 pt-2 border-t border-border">
+                                <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider">
+                                    Contoh Input & Output:
+                                </h3>
+                                <div className="space-y-2">
+                                    {currentTask.examples.map((ex, idx) => (
+                                        <div
+                                            key={idx}
+                                            className="rounded-lg bg-muted p-3 font-mono text-xs space-y-1"
+                                        >
+                                            <p className="text-muted-foreground">
+                                                Input: <strong className="text-foreground">{ex.input}</strong>
+                                            </p>
+                                            <p className="text-muted-foreground">
+                                                Output: <strong className="text-foreground">{ex.output}</strong>
+                                            </p>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                {/* Editor + Console Section */}
-                <div className="flex min-w-0 flex-col border-r border-sale-border">
-                    <div className="flex items-center justify-between border-b border-sale-border bg-sale-white px-5 py-3">
-                        <div className="flex items-center gap-2 text-sm font-medium text-sale-dark">
-                            <span className="rounded bg-yellow-100 px-1.5 py-0.5 text-[10px] font-bold text-yellow-700">
-                                JS
-                            </span>
-                            {currentTask.fileName}
-                        </div>
-
-                        <div className="flex items-center gap-2">
-                            <Button
-                                variant="outline"
-                                size="sm"
-                                className="gap-1.5 border-sale-border text-sale-dark"
-                                onClick={handleReset}
-                            >
-                                <RotateCcw className="size-3.5" />
-                                Reset
-                            </Button>
-                            <Button
-                                size="sm"
-                                className="gap-1.5 bg-sale-blue text-white hover:bg-blue-600"
-                                onClick={handleRun}
-                            >
-                                ▷ Jalankan Kode
-                            </Button>
-                        </div>
-                    </div>
-
-                    <div className="flex-1 overflow-auto bg-white p-4 font-mono text-sm">
-                        <Editor
-                            value={code || ''}
-                            onValueChange={(val: string) => setCode(val || '')}
-                            highlight={(value: string) =>
-                                Prism.highlight(
-                                    value || '',
-                                    Prism.languages.javascript || Prism.languages.js,
-                                    'javascript'
-                                )
-                            }
-                            padding={0}
-                            style={{
-                                fontFamily: '"Fira Code", "JetBrains Mono", monospace',
-                                fontSize: 14,
-                                lineHeight: 1.6,
-                            }}
-                        />
-                    </div>
-
-                    <div className="border-t border-sale-border bg-sale-white">
-                        <div className="flex items-center gap-6 border-b border-sale-border px-5">
-                            <button
-                                type="button"
-                                onClick={() => setActiveConsoleTab('console')}
-                                className={[
-                                    'border-b-2 py-3 text-sm font-medium',
-                                    activeConsoleTab === 'console'
-                                        ? 'border-sale-blue text-sale-blue'
-                                        : 'border-transparent text-sale-muted',
-                                ].join(' ')}
-                            >
-                                Console
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() => setActiveConsoleTab('tests')}
-                                className={[
-                                    'border-b-2 py-3 text-sm font-medium',
-                                    activeConsoleTab === 'tests'
-                                        ? 'border-sale-blue text-sale-blue'
-                                        : 'border-transparent text-sale-muted',
-                                ].join(' ')}
-                            >
-                                Test Results
-                            </button>
-                        </div>
-
-                        <div className="min-h-[110px] px-5 py-3 font-mono text-sm text-sale-muted">
-                            {activeConsoleTab === 'console' ? (
-                                <pre className="whitespace-pre-wrap">
-                                    {'> ' + consoleOutput}
-                                </pre>
-                            ) : (
-                                <p>Belum ada hasil pengujian.</p>
-                            )}
-                        </div>
-                    </div>
-                </div>
-
-                {/* AI Assistant Panel */}
-                <div className="flex min-w-0 flex-col bg-sale-white">
-                    <div className="flex items-center gap-2 border-b border-sale-border px-5 py-3">
-                        <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-sale-blue text-white">
-                            <Sparkles className="size-4" />
-                        </span>
-                        <h2 className="font-poppins font-semibold text-sale-dark">
-                            SALE AI Assistant
-                        </h2>
-                    </div>
-
-                    <div className="flex-1 space-y-3 overflow-y-auto px-5 py-4">
-                        <p className="text-xs font-medium uppercase text-sale-muted">
-                            AI Assistant
-                        </p>
-
-                        {messages.map((message) => (
-                            <div
-                                key={message.id}
-                                className={[
-                                    'rounded-xl p-4 text-sm leading-relaxed',
-                                    message.from === 'assistant'
-                                        ? 'bg-blue-50 text-sale-dark'
-                                        : 'ml-6 bg-sale-blue text-white',
-                                ].join(' ')}
-                            >
-                                {message.text}
+                    {/* Middle: Code Editor & Output (5 cols) */}
+                    <div className="lg:col-span-5 rounded-xl border border-border bg-card flex flex-col justify-between overflow-hidden shadow-xs">
+                        {/* Editor Header */}
+                        <div className="flex items-center justify-between p-3.5 border-b border-border bg-card">
+                            <div className="flex items-center gap-2">
+                                <Badge variant="secondary" className="text-[10px] font-mono">
+                                    JS
+                                </Badge>
+                                <span className="font-mono text-xs font-semibold text-foreground">
+                                    {currentTask.fileName}
+                                </span>
                             </div>
-                        ))}
 
-                        <div className="space-y-2 pt-2">
-                            {currentTask.suggestedPrompts.map((prompt) => (
-                                <button
-                                    key={prompt}
-                                    type="button"
-                                    onClick={() => sendPrompt(prompt)}
-                                    className="block w-full rounded-lg border border-sale-border px-4 py-2.5 text-left text-sm text-sale-blue hover:bg-blue-50"
+                            <div className="flex items-center gap-2">
+                                <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={handleReset}
+                                    className="h-8 text-xs gap-1"
                                 >
-                                    {prompt}
+                                    <RotateCcw className="size-3" />
+                                    Reset
+                                </Button>
+                                <Button
+                                    size="sm"
+                                    disabled={isRunning}
+                                    onClick={handleRun}
+                                    className="h-8 text-xs font-semibold gap-1.5"
+                                >
+                                    <Play className="size-3 fill-foreground text-foreground" />
+                                    {isRunning ? 'Menjalankan...' : 'Jalankan Kode'}
+                                </Button>
+                            </div>
+                        </div>
+
+                        {/* Editor Body */}
+                        <div className="flex-1 bg-background p-4 font-mono text-xs overflow-auto min-h-[300px]">
+                            <Editor
+                                value={code || ''}
+                                onValueChange={(val: string) => setCode(val || '')}
+                                highlight={(value: string) =>
+                                    Prism.highlight(
+                                        value || '',
+                                        Prism.languages.javascript || Prism.languages.js,
+                                        'javascript'
+                                    )
+                                }
+                                padding={0}
+                                style={{
+                                    fontFamily: 'var(--font-mono)',
+                                    fontSize: 13,
+                                    lineHeight: 1.6,
+                                }}
+                            />
+                        </div>
+
+                        {/* Console & Test Results Tab */}
+                        <div className="border-t border-border bg-card">
+                            <div className="flex items-center gap-4 px-4 border-b border-border text-xs font-semibold">
+                                <button
+                                    type="button"
+                                    onClick={() => setActiveConsoleTab('console')}
+                                    className={[
+                                        'py-2.5 border-b-2 transition-colors flex items-center gap-1.5',
+                                        activeConsoleTab === 'console'
+                                            ? 'border-foreground text-foreground'
+                                            : 'border-transparent text-muted-foreground hover:text-foreground',
+                                    ].join(' ')}
+                                >
+                                    <Terminal className="size-3.5" />
+                                    Console Output
                                 </button>
-                            ))}
+                                <button
+                                    type="button"
+                                    onClick={() => setActiveConsoleTab('tests')}
+                                    className={[
+                                        'py-2.5 border-b-2 transition-colors flex items-center gap-1.5',
+                                        activeConsoleTab === 'tests'
+                                            ? 'border-foreground text-foreground'
+                                            : 'border-transparent text-muted-foreground hover:text-foreground',
+                                    ].join(' ')}
+                                >
+                                    <CheckCircle2 className="size-3.5" />
+                                    Hasil Test Cases {testResults ? `(${testResults.length})` : ''}
+                                </button>
+                            </div>
+
+                            <div className="p-4 font-mono text-xs max-h-[160px] overflow-y-auto bg-muted/20">
+                                {activeConsoleTab === 'console' ? (
+                                    <pre className="whitespace-pre-wrap text-muted-foreground leading-relaxed">
+                                        {consoleOutput}
+                                    </pre>
+                                ) : (
+                                    <div className="space-y-2">
+                                        {testResults ? (
+                                            testResults.map((t, idx) => (
+                                                <div
+                                                    key={idx}
+                                                    className="flex items-start justify-between p-2.5 rounded-lg border border-border bg-background text-xs"
+                                                >
+                                                    <div>
+                                                        <span className="font-semibold text-foreground">
+                                                            {t.name}
+                                                        </span>
+                                                        <p className="text-muted-foreground mt-0.5">
+                                                            {t.details}
+                                                        </p>
+                                                    </div>
+                                                    <Badge variant="secondary" className="text-[10px]">
+                                                        PASSED
+                                                    </Badge>
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <p className="text-muted-foreground">
+                                                Jalankan kode untuk melihat evaluasi unit test.
+                                            </p>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
 
-                    <form
-                        className="flex items-center gap-2 border-t border-sale-border p-4"
-                        onSubmit={(e) => {
-                            e.preventDefault();
-                            sendPrompt(chatInput);
-                        }}
-                    >
-                        <input
-                            type="text"
-                            value={chatInput}
-                            onChange={(e) => setChatInput(e.target.value)}
-                            placeholder="Tanya sesuatu..."
-                            className="h-10 flex-1 rounded-full border border-sale-border bg-muted/30 px-4 text-sm outline-none focus-visible:border-sale-blue"
-                        />
-                        <button
-                            type="submit"
-                            className="flex size-10 shrink-0 items-center justify-center rounded-full bg-sale-blue text-white hover:bg-blue-600"
-                            aria-label="Kirim"
+                    {/* Right: AI Assistant Panel (3 cols) */}
+                    <div className="lg:col-span-3 rounded-xl border border-border bg-card p-4 flex flex-col justify-between space-y-4 shadow-xs">
+                        <div className="flex items-center gap-2 border-b border-border pb-3">
+                            <Bot className="size-4.5 text-foreground" />
+                            <div>
+                                <h3 className="text-xs font-semibold text-foreground">
+                                    SALE AI Assistant
+                                </h3>
+                                <p className="text-[10px] text-muted-foreground">
+                                    Bantuan Coding & Teori
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Chat Messages */}
+                        <div className="flex-1 space-y-3 overflow-y-auto max-h-[380px] pr-1">
+                            {messages.map((msg) => (
+                                <div
+                                    key={msg.id}
+                                    className={[
+                                        'rounded-xl p-3 text-xs leading-relaxed',
+                                        msg.from === 'assistant'
+                                            ? 'bg-muted text-foreground'
+                                            : 'bg-foreground text-background ml-4 shadow-xs',
+                                    ].join(' ')}
+                                >
+                                    {msg.text}
+                                </div>
+                            ))}
+
+                            {/* Quick Prompts */}
+                            <div className="space-y-1.5 pt-2">
+                                <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground block">
+                                    Bantuan Cepat:
+                                </span>
+                                {currentTask.suggestedPrompts.map((prompt) => (
+                                    <button
+                                        key={prompt}
+                                        type="button"
+                                        onClick={() => sendPrompt(prompt)}
+                                        className="w-full text-left p-2.5 rounded-lg border border-border bg-background hover:bg-accent text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
+                                    >
+                                        {prompt}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Chat Input */}
+                        <form
+                            onSubmit={(e) => {
+                                e.preventDefault();
+                                sendPrompt(chatInput);
+                            }}
+                            className="flex items-center gap-2 pt-2 border-t border-border"
                         >
-                            <Send className="size-4" />
-                        </button>
-                    </form>
+                            <input
+                                type="text"
+                                value={chatInput}
+                                onChange={(e) => setChatInput(e.target.value)}
+                                placeholder="Tanyakan seputar kode..."
+                                className="flex-1 h-9 px-3 text-xs rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground outline-none focus:ring-1 focus:ring-ring"
+                            />
+                            <Button size="icon-sm" type="submit" variant="default" className="shrink-0">
+                                <Send className="size-3.5" />
+                            </Button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </StudentLayout>

@@ -1,116 +1,111 @@
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
+import {
+    ArrowLeft,
+    ArrowRight,
+    CheckCircle2,
+    Clock,
+    HelpCircle,
+} from 'lucide-react';
 import { useState } from 'react';
-import { Clock, ArrowLeft, ArrowRight } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog';
 import StudentLayout from '@/layouts/student-layout';
 
 interface QuizProps {
     quizId?: string;
 }
 
-// Database Mockup Kuis berdasarkan quizId
-const quizDatabase: Record<string, {
-    course: string;
-    module: string;
-    title: string;
-    totalQuestions: number;
-    timeRemaining: string;
-    questions: Array<{
-        id: number;
-        number: number;
-        question: string;
-        options: string[];
-    }>;
-}> = {
-    '1': {
-        course: 'Sistem Operasi',
-        module: 'Modul 4',
-        title: 'Kuis 1: Pengenalan Sistem Operasi',
-        totalQuestions: 20,
-        timeRemaining: '45:00',
-        questions: [
-            {
-                id: 1,
-                number: 1,
-                question: 'Apa fungsi utama dari Sistem Operasi?',
-                options: [
-                    'Mengelola sumber daya perangkat keras dan perangkat lunak komputer.',
-                    'Menyusun dokumen teks dan spreadsheet.',
-                    'Membuat grafis 3D secara otomatis.',
-                    'Menghubungkan jaringan internet secara fisik.',
-                ],
-            },
-        ],
-    },
-    '2': {
-        course: 'Sistem Operasi',
-        module: 'Modul 4',
-        title: 'Kuis 2: Manajemen Memori',
-        totalQuestions: 20,
-        timeRemaining: '45:12',
-        questions: [
-            {
-                id: 1,
-                number: 1,
-                question: 'Apa fungsi utama dari Manajemen Memori pada Sistem Operasi?',
-                options: [
-                    'Mengatur alokasi dan dealokasi ruang memori untuk proses.',
-                    'Menghubungkan perangkat keras dengan perangkat lunak.',
-                    'Menyimpan file secara permanen di dalam harddisk.',
-                    'Mengontrol kecepatan transfer data pada prosesor.',
-                ],
-            },
-            {
-                id: 2,
-                number: 2,
-                question: 'Apa yang dimaksud dengan Paging dalam Sistem Operasi?',
-                options: [
-                    'Skema manajemen memori yang memungkinkan ruang alamat fisik proses tidak berurutan.',
-                    'Proses menghapus cache memori secara otomatis.',
-                    'Metode untuk menggabungkan dua partisi memori utama.',
-                    'Pengalokasian memori berurutan tanpa fragmentasi.',
-                ],
-            },
-            {
-                id: 3,
-                number: 3,
-                question: 'Apa perbedaan utama antara RAM dan Virtual Memory?',
-                options: [
-                    'RAM adalah memori fisik cepat, sedangkan Virtual Memory memanfaatkan media penyimpanan sekunder.',
-                    'RAM bersifat non-volatile, sedangkan Virtual Memory bersifat volatile.',
-                    'Virtual Memory lebih cepat daripada RAM.',
-                    'Tidak ada perbedaan, keduanya adalah komponen fisik yang sama.',
-                ],
-            },
-            {
-                id: 4,
-                number: 4,
-                question: 'Jelaskan perbedaan antara fragmentasi internal dan eksternal dalam sistem paging.',
-                options: [
-                    'Fragmentasi internal terjadi pada ruang memori yang dialokasikan tetapi tidak digunakan, sedangkan eksternal terjadi ketika total ruang memori cukup untuk memenuhi permintaan, tetapi tidak berurutan.',
-                    'Fragmentasi internal terjadi ketika ruang memori berurutan, sedangkan fragmentasi eksternal terjadi di dalam halaman-halaman memori yang tetap.',
-                    'Sistem paging hanya mengalami fragmentasi eksternal, tidak pernah mengalami fragmentasi internal.',
-                    'Fragmentasi internal dan eksternal adalah istilah yang sama untuk menggambarkan kebocoran memori dalam sistem operasi.',
-                ],
-            },
-        ],
-    },
+type Question = {
+    number: number;
+    question: string;
+    options: string[];
+};
+
+const quizData = {
+    title: 'Kuis 2: Manajemen Memori & Virtual Memory',
+    course: 'Sistem Operasi Lanjut',
+    courseCode: 'INF-301',
+    module: 'Modul 04',
+    timeRemaining: '24:15 Menit',
+    totalQuestions: 5,
+    questions: [
+        {
+            number: 1,
+            question:
+                'Manakah dari algoritma page replacement berikut yang paling rentan terhadap fenomena Bélády’s Anomaly?',
+            options: [
+                'FIFO (First-In, First-Out)',
+                'LRU (Least Recently Used)',
+                'Optimal Page Replacement (OPT)',
+                'LFU (Least Frequently Used)',
+            ],
+        },
+        {
+            number: 2,
+            question:
+                'Apa fungsi utama dari Translation Lookaside Buffer (TLB) dalam manajemen memori virtual?',
+            options: [
+                'Menyimpan salinan instruksi CPU yang sedang aktif',
+                'Cache hardware berkecepatan tinggi untuk mempercepat translasi virtual address ke physical address',
+                'Mencegah fragmentasi eksternal pada alokasi memori dinamis',
+                'Menangani swapping partisi disk ke main memory',
+            ],
+        },
+        {
+            number: 3,
+            question:
+                'Kondisi di mana sistem menghabiskan lebih banyak waktu untuk melakukan paging dibandingkan mengeksekusi instruksi disebut sebagai...',
+            options: [
+                'Segmentation Fault',
+                'Thrashing',
+                'Deadlock',
+                'Starvation',
+            ],
+        },
+        {
+            number: 4,
+            question:
+                'Pada teknik paging bertingkat (multi-level paging), keuntungan utama yang diperoleh adalah...',
+            options: [
+                'Mengurangi ukuran keseluruhan page table yang harus disimpan di memori utama',
+                'Mempercepat waktu akses memori tanpa bantuan hardware TLB',
+                'Menghilangkan kebutuhan akan physical memory',
+                'Meniadakan fenomena fragmentasi internal',
+            ],
+        },
+        {
+            number: 5,
+            question:
+                'Fragmentasi yang terjadi ketika alokasi memori melebihi ukuran aktual data yang dibutuhkan dalam satu blok disebut...',
+            options: [
+                'External Fragmentation',
+                'Internal Fragmentation',
+                'Paging Fault',
+                'Virtual Spanning',
+            ],
+        },
+    ] as Question[],
 };
 
 export default function Quiz({ quizId = '2' }: QuizProps) {
-    const currentQuizData = quizDatabase[quizId] || quizDatabase['2'];
-
-    // Menampilkan soal nomor 4 (index 3) agar sesuai mockup
-    const [currentIndex, setCurrentIndex] = useState(
-        currentQuizData.questions.length >= 4 ? 3 : 0
-    );
-
-    // Menyimpan opsi terpilih (key: indexSoal, value: indexOpsi)
+    const [currentIndex, setCurrentIndex] = useState(0);
     const [answers, setAnswers] = useState<Record<number, number>>({
-        3: 0, // Soal nomor 4 terisi pilihan pertama
+        0: 0,
+        1: 0,
     });
+    const [submitModalOpen, setSubmitModalOpen] = useState(false);
 
-    const currentQuestion = currentQuizData.questions[currentIndex] || currentQuizData.questions[0];
+    const currentQuestion = quizData.questions[currentIndex];
+    const answeredCount = Object.keys(answers).length;
 
     const handleSelectOption = (optionIndex: number) => {
         setAnswers((prev) => ({
@@ -121,45 +116,48 @@ export default function Quiz({ quizId = '2' }: QuizProps) {
 
     return (
         <StudentLayout>
-            <Head title={`${currentQuizData.title} — SALE`} />
+            <Head title={`${quizData.title} — SALE`} />
 
-            <div className="mx-auto max-w-5xl px-6 py-8">
+            <div className="space-y-6 max-w-4xl mx-auto">
                 {/* Header Info & Timer */}
-                <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
-                        <div className="mb-1 text-xs font-medium text-sale-muted">
-                            {currentQuizData.course} &gt; {currentQuizData.module} &gt;{' '}
-                            <span className="font-semibold text-sale-blue">
-                                {currentQuizData.title}
-                            </span>
+                        <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground mb-1">
+                            <Link href="/student/assignments" className="hover:text-foreground transition-colors">
+                                Tugas & Kuis
+                            </Link>
+                            <span>›</span>
+                            <span>{quizData.course}</span>
+                            <span>›</span>
+                            <span>{quizData.module}</span>
                         </div>
-                        <h1 className="text-2xl font-bold text-sale-dark">
-                            {currentQuizData.title}
+                        <h1 className="text-xl md:text-2xl font-bold tracking-tight text-foreground">
+                            {quizData.title}
                         </h1>
-                        <p className="mt-1 text-sm text-sale-muted">
-                            Soal {currentQuestion.number} dari {currentQuizData.totalQuestions}
+                        <p className="text-xs text-muted-foreground mt-1">
+                            Soal {currentQuestion.number} dari {quizData.totalQuestions} • {answeredCount} terjawab
                         </p>
                     </div>
 
-                    <div className="flex w-fit items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-4 py-2 text-sm font-semibold text-sale-blue">
+                    <div className="flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground shrink-0 shadow-xs">
                         <Clock className="size-4" />
-                        <span>{currentQuizData.timeRemaining}</span>
+                        <span>{quizData.timeRemaining}</span>
                     </div>
                 </div>
 
-                {/* Kartu Soal */}
-                <div className="mb-8 rounded-2xl border border-sale-border bg-white p-6 shadow-sm md:p-8">
-                    <div className="mb-6 flex items-start gap-4">
-                        <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-blue-50 text-sm font-bold text-sale-blue">
-                            {currentQuestion.number}
-                        </span>
-                        <p className="pt-1 text-base font-medium leading-relaxed text-sale-dark md:text-lg">
+                {/* Question Card */}
+                <Card className="rounded-xl border border-border bg-card p-6 md:p-8 space-y-6 shadow-xs">
+                    <div className="space-y-3">
+                        <Badge variant="outline" className="text-xs font-semibold">
+                            SOAL NOMOR {currentQuestion.number}
+                        </Badge>
+                        <p className="text-base md:text-lg font-medium text-foreground leading-relaxed">
                             {currentQuestion.question}
                         </p>
                     </div>
 
-                    {/* Opsi Jawaban */}
-                    <div className="space-y-3 pl-0 md:pl-13">
+                    {/* Options */}
+                    <div className="space-y-3 pt-2">
                         {currentQuestion.options.map((option, idx) => {
                             const isSelected = answers[currentIndex] === idx;
                             return (
@@ -168,86 +166,121 @@ export default function Quiz({ quizId = '2' }: QuizProps) {
                                     type="button"
                                     onClick={() => handleSelectOption(idx)}
                                     className={[
-                                        'flex w-full items-center gap-4 rounded-xl border p-4 text-left text-sm transition-all md:text-base',
+                                        'flex w-full items-center gap-4 rounded-xl border p-4 text-left text-sm transition-all shadow-2xs hover:shadow-xs',
                                         isSelected
-                                            ? 'border-sale-blue bg-blue-50/40 font-medium text-sale-dark shadow-sm'
-                                            : 'border-sale-border bg-white text-sale-dark hover:border-gray-300',
+                                            ? 'border-foreground bg-accent text-foreground font-semibold shadow-xs'
+                                            : 'border-border bg-card text-foreground hover:bg-muted/40 hover:border-foreground/30',
                                     ].join(' ')}
                                 >
-                                    <div
+                                    <span
                                         className={[
-                                            'flex size-5 shrink-0 items-center justify-center rounded-full border transition-colors',
+                                            'flex size-7 shrink-0 items-center justify-center rounded-full border text-xs font-bold transition-colors',
                                             isSelected
-                                                ? 'border-sale-blue bg-sale-blue'
-                                                : 'border-gray-300 bg-white',
+                                                ? 'border-foreground bg-foreground text-background'
+                                                : 'border-border text-muted-foreground',
                                         ].join(' ')}
                                     >
-                                        {isSelected && (
-                                            <div className="size-2 rounded-full bg-white" />
-                                        )}
-                                    </div>
-                                    <span className="leading-relaxed">{option}</span>
+                                        {String.fromCharCode(65 + idx)}
+                                    </span>
+                                    <span className="flex-1 leading-relaxed">{option}</span>
                                 </button>
                             );
                         })}
                     </div>
-                </div>
+                </Card>
 
-                {/* Navigasi & Pagination */}
-                <div className="flex flex-wrap items-center justify-between gap-4">
+                {/* Navigation & Question Map */}
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
                     <Button
                         variant="outline"
-                        onClick={() => setCurrentIndex((prev) => Math.max(0, prev - 1))}
                         disabled={currentIndex === 0}
-                        className="gap-2 rounded-xl border-sale-border text-sale-dark"
+                        onClick={() => setCurrentIndex((prev) => prev - 1)}
+                        className="w-full sm:w-auto gap-2 text-xs font-semibold h-10 shadow-2xs"
                     >
                         <ArrowLeft className="size-4" />
-                        Sebelumnya
+                        Soal Sebelumnya
                     </Button>
 
-                    {/* Angka Halaman / Soal */}
-                    <div className="flex items-center gap-1.5 overflow-x-auto py-1">
-                        {[1, 2, 3, 4, 5, '...', 20].map((item, idx) => {
-                            const isCurrent = typeof item === 'number' && item === currentQuestion.number;
+                    {/* Question Number Pills */}
+                    <div className="flex items-center gap-2">
+                        {quizData.questions.map((q, idx) => {
+                            const isCurrent = currentIndex === idx;
+                            const isAnswered = answers[idx] !== undefined;
+
                             return (
                                 <button
-                                    key={idx}
+                                    key={q.number}
                                     type="button"
-                                    onClick={() => {
-                                        if (typeof item === 'number' && item <= currentQuizData.questions.length) {
-                                            setCurrentIndex(item - 1);
-                                        }
-                                    }}
+                                    onClick={() => setCurrentIndex(idx)}
                                     className={[
-                                        'flex size-8 items-center justify-center rounded-lg text-xs font-semibold transition-colors',
+                                        'flex size-9 items-center justify-center rounded-lg text-xs font-bold transition-all shadow-2xs',
                                         isCurrent
-                                            ? 'bg-sale-blue text-white'
-                                            : 'bg-gray-100 text-sale-dark hover:bg-gray-200',
+                                            ? 'border-2 border-foreground bg-foreground text-background shadow-xs'
+                                            : isAnswered
+                                              ? 'border border-border bg-muted text-foreground'
+                                              : 'border border-border bg-card text-muted-foreground hover:border-foreground/30 hover:bg-accent/40',
                                     ].join(' ')}
                                 >
-                                    {item}
+                                    {q.number}
                                 </button>
                             );
                         })}
                     </div>
 
-                    <div className="flex items-center gap-2">
+                    {currentIndex === quizData.questions.length - 1 ? (
                         <Button
-                            variant="secondary"
-                            className="rounded-xl bg-blue-100 font-medium text-sale-blue hover:bg-blue-200"
+                            onClick={() => setSubmitModalOpen(true)}
+                            className="w-full sm:w-auto gap-2 text-xs font-semibold h-10 shadow-xs"
                         >
-                            Kumpulkan
+                            <CheckCircle2 className="size-4" />
+                            Kumpulkan Jawaban
                         </Button>
+                    ) : (
                         <Button
-                            onClick={() => setCurrentIndex((prev) => Math.min(currentQuizData.questions.length - 1, prev + 1))}
-                            disabled={currentIndex === currentQuizData.questions.length - 1}
-                            className="gap-2 rounded-xl bg-sale-blue text-white hover:bg-blue-600"
+                            onClick={() => setCurrentIndex((prev) => prev + 1)}
+                            className="w-full sm:w-auto gap-2 text-xs font-semibold h-10 shadow-xs"
                         >
-                            Selanjutnya
+                            Soal Berikutnya
                             <ArrowRight className="size-4" />
                         </Button>
-                    </div>
+                    )}
                 </div>
+
+                {/* Submit Confirmation Modal */}
+                <Dialog open={submitModalOpen} onOpenChange={setSubmitModalOpen}>
+                    <DialogContent className="max-w-md rounded-xl p-6 space-y-4 shadow-lg">
+                        <DialogHeader>
+                            <DialogTitle className="text-base font-semibold text-foreground">
+                                Kumpulkan Jawaban Kuis?
+                            </DialogTitle>
+                            <DialogDescription className="text-xs text-muted-foreground leading-relaxed">
+                                Anda telah menjawab {answeredCount} dari {quizData.totalQuestions} soal. Setelah dikumpulkan, jawaban tidak dapat diubah kembali.
+                            </DialogDescription>
+                        </DialogHeader>
+
+                        <div className="rounded-lg bg-muted p-4 text-xs text-muted-foreground space-y-1">
+                            <p>Mata Kuliah: <strong className="text-foreground">{quizData.course}</strong></p>
+                            <p>Sisa Waktu: <strong className="text-foreground">{quizData.timeRemaining}</strong></p>
+                        </div>
+
+                        <DialogFooter className="gap-2 sm:gap-0">
+                            <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={() => setSubmitModalOpen(false)}
+                                className="text-xs"
+                            >
+                                Periksa Kembali
+                            </Button>
+                            <Link href="/student/assignments">
+                                <Button size="sm" className="text-xs font-semibold">
+                                    Ya, Kumpulkan
+                                </Button>
+                            </Link>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
             </div>
         </StudentLayout>
     );

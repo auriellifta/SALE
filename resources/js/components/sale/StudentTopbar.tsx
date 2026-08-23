@@ -1,54 +1,98 @@
-import { Bell, Moon } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Link, usePage } from '@inertiajs/react';
+import { Bell, Moon, Sun, User } from 'lucide-react';
 
-export default function StudentTopbar() {
+interface StudentTopbarProps {
+    onOpenMobileMenu?: () => void;
+}
+
+export default function StudentTopbar({ onOpenMobileMenu }: StudentTopbarProps) {
+    const { url } = usePage();
+    const [isDark, setIsDark] = useState(false);
+
+    useEffect(() => {
+        setIsDark(document.documentElement.classList.contains('dark'));
+    }, []);
+
+    const toggleTheme = () => {
+        if (document.documentElement.classList.contains('dark')) {
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('appearance', 'light');
+            setIsDark(false);
+        } else {
+            document.documentElement.classList.add('dark');
+            localStorage.setItem('appearance', 'dark');
+            setIsDark(true);
+        }
+    };
+
+    const getPageTitle = () => {
+        if (url.includes('/student/courses')) return 'Course';
+        if (url.includes('/student/assignments')) return 'Tugas & Kuis';
+        if (url.includes('/student/quiz')) return 'Kuis Online';
+        if (url.includes('/student/programming-task')) return 'Tugas Pemrograman';
+        if (url.includes('/student/forum')) return 'Forum Diskusi';
+        if (url.includes('/student/notifications')) return 'Notifikasi';
+        if (url.includes('/student/profile')) return 'Profil';
+        return 'Dashboard';
+    };
+
     return (
-        <header className="bg-sale-surface fixed top-0 right-0 left-[280px] z-30 flex h-16 items-center justify-between border-b border-sale-border px-8">
-            {/* Page Context */}
-            <div className="flex items-center">
-                <span className="text-sm font-medium text-sale-muted">
-                    Dashboard
+        <header className="fixed top-0 right-0 left-0 md:left-[280px] z-30 flex h-16 items-center justify-between border-b border-border bg-card/95 backdrop-blur-md px-6 md:px-10">
+            {/* Left Context */}
+            <div className="flex items-center gap-3">
+                {onOpenMobileMenu && (
+                    <button
+                        type="button"
+                        onClick={onOpenMobileMenu}
+                        className="flex size-9 items-center justify-center rounded-lg text-foreground hover:bg-accent md:hidden transition-colors"
+                        aria-label="Buka Menu"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+                    </button>
+                )}
+                <span className="text-sm font-semibold text-foreground tracking-tight">
+                    {getPageTitle()}
                 </span>
             </div>
 
-            {/* Actions */}
+            {/* Right Actions */}
             <div className="flex items-center gap-2">
-                <button
-                    type="button"
-                    className="relative flex h-10 w-10 items-center justify-center rounded-full text-sale-muted transition-colors hover:bg-slate-100 hover:text-sale-dark"
+                <Link
+                    href="/student/notifications"
+                    className="relative flex size-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
                     aria-label="Notifikasi"
                 >
-                    <Bell className="h-5 w-5" strokeWidth={1.8} />
-
-                    <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-sale-orange" />
-                </button>
+                    <Bell className="size-4.5" />
+                    <span className="absolute top-2 right-2 size-2 rounded-full bg-destructive" />
+                </Link>
 
                 <button
                     type="button"
-                    className="flex h-10 w-10 items-center justify-center rounded-full text-sale-muted transition-colors hover:bg-slate-100 hover:text-sale-dark"
+                    onClick={toggleTheme}
+                    className="flex size-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+                    title={isDark ? 'Mode Terang' : 'Mode Gelap'}
                     aria-label="Ubah tema"
                 >
-                    <Moon className="h-[18px] w-[18px]" strokeWidth={1.8} />
+                    {isDark ? <Sun className="size-4.5" /> : <Moon className="size-4.5" />}
                 </button>
 
-                <div className="ml-2 h-8 w-px bg-sale-border" />
+                <div className="hidden sm:block mx-1 h-6 w-px bg-border" />
 
-                <button
-                    type="button"
-                    className="flex items-center gap-3 rounded-lg px-2 py-1.5 transition-colors hover:bg-slate-50"
-                    aria-label="Profil pengguna"
+                <Link
+                    href="/student/profile"
+                    className="hidden sm:flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 hover:bg-accent transition-colors"
                 >
-                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-50 text-sm font-semibold text-sale-blue">
-                        A
-                    </div>
-
-                    <div className="hidden text-left md:block">
-                        <p className="text-sm font-semibold text-sale-dark">
+                    <User className="size-4 text-muted-foreground shrink-0" />
+                    <div className="text-left">
+                        <p className="text-sm font-semibold text-foreground leading-none">
                             Auriel Lifta
                         </p>
-
-                        <p className="text-xs text-sale-muted">Mahasiswa</p>
+                        <p className="text-[11px] text-muted-foreground mt-1 leading-none">
+                            Mahasiswa
+                        </p>
                     </div>
-                </button>
+                </Link>
             </div>
         </header>
     );

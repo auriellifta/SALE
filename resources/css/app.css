@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
@@ -7,82 +7,29 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* =========================================================
-   SALE — Smart Academic Learning Ecosystem
-   Global Design System
-   ========================================================= */
-
 @theme {
-    --font-sans:
-        'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
-        'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
-    --font-heading: 'Poppins', ui-sans-serif, system-ui, sans-serif;
-
-    --font-poppins: 'Poppins', ui-sans-serif, system-ui, sans-serif;
-    --font-inter: 'Inter', ui-sans-serif, system-ui, sans-serif;
-
-    /* SALE Design Tokens */
-    --sale-blue: #2563eb;
-    --sale-green: #22c55e;
-    --sale-orange: #f97316;
-    --sale-dark: #1f2937;
-    --sale-muted: #64748b;
-    --sale-border: #e2e8f0;
-    --sale-background: #f8fafc;
-    --sale-surface: #ffffff;
-    --sale-danger: #ef4444;
-
-    /* Radius */
-    --radius-lg: 0.75rem;
-    --radius-md: 0.625rem;
-    --radius-sm: 0.5rem;
-
-    /* SALE Colors */
-    --color-sale-blue: #2563eb;
-    --color-sale-green: #22c55e;
-    --color-sale-orange: #f97316;
-    --color-sale-dark: #1f2937;
-    --color-sale-background: #f8fafc;
-    --color-sale-white: #ffffff;
-    --color-sale-muted: #64748b;
-    --color-sale-border: #e2e8f0;
-
-    /* Shadcn semantic colors */
     --color-background: var(--background);
     --color-foreground: var(--foreground);
-
     --color-card: var(--card);
     --color-card-foreground: var(--card-foreground);
-
     --color-popover: var(--popover);
     --color-popover-foreground: var(--popover-foreground);
-
     --color-primary: var(--primary);
     --color-primary-foreground: var(--primary-foreground);
-
     --color-secondary: var(--secondary);
     --color-secondary-foreground: var(--secondary-foreground);
-
     --color-muted: var(--muted);
     --color-muted-foreground: var(--muted-foreground);
-
     --color-accent: var(--accent);
     --color-accent-foreground: var(--accent-foreground);
-
     --color-destructive: var(--destructive);
     --color-destructive-foreground: var(--destructive-foreground);
-
     --color-border: var(--border);
     --color-input: var(--input);
     --color-ring: var(--ring);
-
-    --color-chart-1: var(--chart-1);
-    --color-chart-2: var(--chart-2);
-    --color-chart-3: var(--chart-3);
-    --color-chart-4: var(--chart-4);
-    --color-chart-5: var(--chart-5);
-
     --color-sidebar: var(--sidebar);
     --color-sidebar-foreground: var(--sidebar-foreground);
     --color-sidebar-primary: var(--sidebar-primary);
@@ -92,142 +39,94 @@
     --color-sidebar-ring: var(--sidebar-ring);
 }
 
-/* =========================================================
-   LIGHT MODE
-   ========================================================= */
-
 :root {
-    --background: #f8fafc;
-    --foreground: #1f2937;
-
+    --background: #fafafa;
+    --foreground: #18181b;
     --card: #ffffff;
-    --card-foreground: #1f2937;
-
+    --card-foreground: #18181b;
     --popover: #ffffff;
-    --popover-foreground: #1f2937;
-
-    --primary: #2563eb;
-    --primary-foreground: #ffffff;
-
-    --secondary: #eff6ff;
-    --secondary-foreground: #1e40af;
-
-    --muted: #f1f5f9;
-    --muted-foreground: #64748b;
-
-    --accent: #f8fafc;
-    --accent-foreground: #1f2937;
-
+    --popover-foreground: #18181b;
+    --primary: #18181b;
+    --primary-foreground: #fafafa;
+    --secondary: #f4f4f5;
+    --secondary-foreground: #18181b;
+    --muted: #f4f4f5;
+    --muted-foreground: #71717a;
+    --accent: #f4f4f5;
+    --accent-foreground: #18181b;
     --destructive: #dc2626;
-    --destructive-foreground: #ffffff;
-
-    --border: #e2e8f0;
-    --input: #e2e8f0;
-    --ring: #2563eb;
-
-    /* Charts */
-    --chart-1: #2563eb;
-    --chart-2: #22c55e;
-    --chart-3: #f97316;
-    --chart-4: #60a5fa;
-    --chart-5: #86efac;
-
-    /* Sidebar */
+    --destructive-foreground: #fafafa;
+    --border: #e4e4e7;
+    --input: #e4e4e7;
+    --ring: #18181b;
     --sidebar: #ffffff;
-    --sidebar-foreground: #1f2937;
-
-    --sidebar-primary: #2563eb;
+    --sidebar-foreground: #18181b;
+    --sidebar-primary: #18181b;
     --sidebar-primary-foreground: #ffffff;
-
-    --sidebar-accent: #eff6ff;
-    --sidebar-border: #e2e8f0;
-    --sidebar-ring: #2563eb;
-
-    --radius: 0.75rem;
+    --sidebar-accent: #f4f4f5;
+    --sidebar-border: #e4e4e7;
+    --sidebar-ring: #18181b;
 }
-
-/* =========================================================
-   DARK MODE
-   ========================================================= */
 
 .dark {
-    --background: #0f172a;
-    --foreground: #f8fafc;
-
-    --card: #1e293b;
-    --card-foreground: #f8fafc;
-
-    --popover: #1e293b;
-    --popover-foreground: #f8fafc;
-
-    --primary: #3b82f6;
-    --primary-foreground: #ffffff;
-
-    --secondary: #1e3a8a;
-    --secondary-foreground: #dbeafe;
-
-    --muted: #1e293b;
-    --muted-foreground: #94a3b8;
-
-    --accent: #1e293b;
-    --accent-foreground: #f8fafc;
-
+    --background: #09090b;
+    --foreground: #fafafa;
+    --card: #111113;
+    --card-foreground: #fafafa;
+    --popover: #111113;
+    --popover-foreground: #fafafa;
+    --primary: #fafafa;
+    --primary-foreground: #18181b;
+    --secondary: #27272a;
+    --secondary-foreground: #fafafa;
+    --muted: #27272a;
+    --muted-foreground: #a1a1aa;
+    --accent: #27272a;
+    --accent-foreground: #fafafa;
     --destructive: #ef4444;
-    --destructive-foreground: #ffffff;
-
-    --border: #334155;
-    --input: #334155;
-    --ring: #3b82f6;
-
-    --chart-1: #3b82f6;
-    --chart-2: #22c55e;
-    --chart-3: #f97316;
-    --chart-4: #60a5fa;
-    --chart-5: #86efac;
-
-    --sidebar: #0f172a;
-    --sidebar-foreground: #f8fafc;
-
-    --sidebar-primary: #3b82f6;
-    --sidebar-primary-foreground: #ffffff;
-
-    --sidebar-accent: #1e293b;
-    --sidebar-border: #334155;
-    --sidebar-ring: #3b82f6;
+    --destructive-foreground: #fafafa;
+    --border: #27272a;
+    --input: #27272a;
+    --ring: #d4d4d8;
+    --sidebar: #111113;
+    --sidebar-foreground: #fafafa;
+    --sidebar-primary: #fafafa;
+    --sidebar-primary-foreground: #18181b;
+    --sidebar-accent: #27272a;
+    --sidebar-border: #27272a;
+    --sidebar-ring: #d4d4d8;
 }
-
-/* =========================================================
-   GLOBAL BASE
-   ========================================================= */
 
 @layer base {
     * {
         @apply border-border;
     }
-
     html {
-        font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+        font-family: var(--font-sans);
+        scroll-behavior: smooth;
     }
-
     body {
-        @apply bg-background text-foreground;
-        font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
-        margin: 0;
+        @apply bg-background text-foreground antialiased;
+        font-family: var(--font-sans);
+        min-height: 100vh;
     }
+    code, pre {
+        font-family: var(--font-mono);
+    }
+}
 
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-        font-family: 'Poppins', ui-sans-serif, system-ui, sans-serif;
-    }
-
-    button,
-    input,
-    textarea,
-    select {
-        font-family: inherit;
-    }
+/* Minimal scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(113, 113, 122, 0.25);
+    border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(113, 113, 122, 0.4);
 }

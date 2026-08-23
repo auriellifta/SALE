@@ -1,22 +1,28 @@
 import { Head, Link } from '@inertiajs/react';
-import { AlertTriangle, CheckCircle2, Clock, Code2, HelpCircle } from 'lucide-react';
+import {
+    CheckCircle2,
+    Clock,
+    Code2,
+    FileText,
+    HelpCircle,
+} from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { getAssignmentHref  } from '@/lib/assignment-routing';
-import type {SubmissionMode} from '@/lib/assignment-routing';
+import { getAssignmentHref } from '@/lib/assignment-routing';
+import type { SubmissionMode } from '@/lib/assignment-routing';
 import StudentLayout from '@/layouts/student-layout';
 
-// Kategori tampilan (badge) — bebas ditambah, TIDAK menentukan routing
 type AssignmentType = 'mandiri' | 'kuis' | 'kelompok' | 'pemrograman';
-type AssignmentStatus = 'belum-dikerjakan' | 'belum-dimulai' | 'sudah-dikumpulkan';
+type AssignmentStatus =
+    | 'belum-dikerjakan'
+    | 'belum-dimulai'
+    | 'sudah-dikumpulkan';
 
 type Assignment = {
     id: number;
     type: AssignmentType;
     typeLabel: string;
-    // submissionMode = SATU-SATUNYA sumber kebenaran untuk menentukan halaman
-    // tujuan saat item ini diklik. Lihat lib/assignment-routing.ts.
     submissionMode: SubmissionMode;
     title: string;
     course: string;
@@ -27,9 +33,6 @@ type Assignment = {
     statusLabel: string;
 };
 
-// Dummy data — nanti diganti fetch/props Inertia dari controller.
-// submissionMode idealnya datang langsung dari kolom database (mis. enum
-// `submission_mode` di tabel assignments), bukan disimpulkan di frontend.
 const activeAssignments: Assignment[] = [
     {
         id: 1,
@@ -70,87 +73,68 @@ const activeAssignments: Assignment[] = [
 
 const historyAssignments: Assignment[] = [];
 
-const typeIconMap: Record<
-    AssignmentType,
-    { icon: typeof AlertTriangle; wrapClass: string }
-> = {
-    mandiri: {
-        icon: AlertTriangle,
-        wrapClass: 'bg-red-50 text-sale-danger',
-    },
-    kuis: {
-        icon: HelpCircle,
-        wrapClass: 'bg-blue-50 text-sale-blue',
-    },
-    kelompok: {
-        icon: CheckCircle2,
-        wrapClass: 'bg-green-50 text-sale-green',
-    },
-    pemrograman: {
-        icon: Code2,
-        wrapClass: 'bg-orange-50 text-sale-orange',
-    },
+const typeIconMap: Record<AssignmentType, typeof FileText> = {
+    mandiri: FileText,
+    kuis: HelpCircle,
+    kelompok: CheckCircle2,
+    pemrograman: Code2,
 };
 
-const statusBadgeClass: Record<AssignmentStatus, string> = {
-    'belum-dikerjakan':
-        'border-transparent bg-red-50 text-sale-danger hover:bg-red-50',
-    'belum-dimulai':
-        'border-transparent bg-blue-50 text-sale-blue hover:bg-blue-50',
-    'sudah-dikumpulkan':
-        'border-transparent bg-green-50 text-sale-green hover:bg-green-50',
-};
+function StatusBadge({ status, label }: { status: AssignmentStatus; label: string }) {
+    if (status === 'sudah-dikumpulkan') {
+        return (
+            <Badge variant="secondary" className="font-medium text-xs">
+                {label}
+            </Badge>
+        );
+    }
+    return (
+        <Badge variant="outline" className="font-normal text-xs text-muted-foreground border-border">
+            {label}
+        </Badge>
+    );
+}
 
 function AssignmentRow({ item }: { item: Assignment }) {
-    const { icon: Icon, wrapClass } = typeIconMap[item.type];
+    const Icon = typeIconMap[item.type];
     const href = getAssignmentHref(item.id, item.submissionMode);
 
     return (
         <Link
             href={href}
-            className="flex items-center gap-4 border-t border-sale-border px-6 py-5 first:border-t-0 hover:bg-muted/30"
+            className="flex flex-col md:grid md:grid-cols-12 items-start md:items-center gap-4 px-6 py-4.5 hover:bg-accent/40 transition-colors group text-left"
         >
-            <span
-                className={`flex size-10 shrink-0 items-center justify-center rounded-lg ${wrapClass}`}
-            >
-                <Icon className="size-5" />
-            </span>
+            {/* Col 1-5: Detail Penugasan with large icon vertically centered */}
+            <div className="flex items-center gap-4 min-w-0 md:col-span-5 text-left">
+                <Icon className="size-5 text-muted-foreground shrink-0" />
 
-            <div className="min-w-0 flex-[2]">
-                <Badge className="rounded-full border-transparent bg-blue-50 text-[11px] font-medium text-sale-blue hover:bg-blue-50">
-                    {item.typeLabel.toUpperCase()}
-                </Badge>
-                <p className="mt-1.5 truncate font-poppins font-semibold text-sale-dark">
-                    {item.title}
-                </p>
+                <div className="min-w-0">
+                    <p className="font-semibold text-sm text-foreground truncate group-hover:underline">
+                        {item.title}
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                        {item.typeLabel}
+                    </p>
+                </div>
             </div>
 
-            <div className="hidden flex-1 text-sm text-sale-muted sm:block">
+            {/* Col 6-8: Mata Kuliah */}
+            <div className="text-xs text-muted-foreground md:col-span-3 truncate text-left">
+                <span className="md:hidden font-semibold text-foreground">Mata Kuliah: </span>
                 {item.course}
             </div>
 
-            <div className="hidden flex-1 items-center gap-1.5 text-sm md:flex">
-                <Clock
-                    className={`size-3.5 shrink-0 ${
-                        item.deadlineUrgent ? 'text-sale-danger' : 'text-sale-muted'
-                    }`}
-                />
-                <span
-                    className={[
-                        item.deadlineUrgent
-                            ? 'font-medium text-sale-danger'
-                            : 'text-sale-muted',
-                        item.deadlineStrikethrough ? 'line-through' : '',
-                    ].join(' ')}
-                >
+            {/* Col 9-10: Batas Waktu */}
+            <div className="flex items-center gap-1.5 text-xs text-muted-foreground md:col-span-2 text-left">
+                <Clock className="size-3.5 shrink-0 text-muted-foreground" />
+                <span className={item.deadlineStrikethrough ? 'line-through' : ''}>
                     {item.deadlineLabel}
                 </span>
             </div>
 
-            <div className="shrink-0">
-                <Badge className={`rounded-full font-medium ${statusBadgeClass[item.status]}`}>
-                    {item.statusLabel}
-                </Badge>
+            {/* Col 11-12: Status (Clean monochrome badge) */}
+            <div className="md:col-span-2 text-left">
+                <StatusBadge status={item.status} label={item.statusLabel} />
             </div>
         </Link>
     );
@@ -159,23 +143,23 @@ function AssignmentRow({ item }: { item: Assignment }) {
 function AssignmentTable({ items }: { items: Assignment[] }) {
     if (items.length === 0) {
         return (
-            <Card className="rounded-2xl border-sale-border bg-sale-white p-10 text-center text-sm text-sale-muted">
-                Belum ada data untuk ditampilkan.
+            <Card className="rounded-xl border border-border bg-card p-10 text-center text-sm text-muted-foreground shadow-xs">
+                Belum ada data riwayat penugasan untuk ditampilkan.
             </Card>
         );
     }
 
     return (
-        <Card className="gap-0 overflow-hidden rounded-2xl border-sale-border bg-sale-white py-0">
-            <div className="hidden items-center gap-4 px-6 py-3 text-xs font-medium text-sale-muted uppercase md:flex">
-                <span className="size-10 shrink-0" />
-                <span className="flex-[2]">Detail Penugasan</span>
-                <span className="flex-1">Mata Kuliah</span>
-                <span className="flex-1">Batas Waktu</span>
-                <span className="w-[150px] shrink-0">Status</span>
+        <Card className="gap-0 overflow-hidden rounded-xl border border-border bg-card py-0 shadow-xs">
+            {/* Header */}
+            <div className="hidden grid-cols-12 items-center gap-4 px-6 py-3.5 text-xs font-semibold text-muted-foreground uppercase border-b border-border bg-muted/40 md:grid text-left">
+                <div className="col-span-5 text-left">Detail Penugasan</div>
+                <div className="col-span-3 text-left">Mata Kuliah</div>
+                <div className="col-span-2 text-left">Batas Waktu</div>
+                <div className="col-span-2 text-left">Status</div>
             </div>
 
-            <div>
+            <div className="divide-y divide-border">
                 {items.map((item) => (
                     <AssignmentRow key={item.id} item={item} />
                 ))}
@@ -187,32 +171,34 @@ function AssignmentTable({ items }: { items: Assignment[] }) {
 export default function Assignments() {
     return (
         <StudentLayout>
-            <Head title="Tugas & Kuis" />
+            <Head title="Tugas & Kuis — SALE" />
 
-            <div className="min-h-[calc(100vh-80px)] bg-[#F8F9FF] px-16 py-[21px]">
-                <div className="flex items-center gap-2 text-sm text-sale-muted">
-                    <Link href="/student/dashboard" className="hover:text-sale-dark">
+            <div className="space-y-6">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Link href="/student/dashboard" className="hover:text-foreground transition-colors">
                         Beranda
                     </Link>
                     <span>›</span>
-                    <span className="font-medium text-sale-blue">
+                    <span className="font-medium text-foreground">
                         Tugas & Kuis
                     </span>
                 </div>
 
-                <Tabs defaultValue="active" className="mt-4">
-                    <TabsList>
-                        <TabsTrigger value="active">
-                            Aktif & Mendatang
+                <Tabs defaultValue="active" className="space-y-6">
+                    <TabsList className="bg-muted p-1 h-10">
+                        <TabsTrigger value="active" className="text-xs sm:text-sm font-medium px-4">
+                            Aktif & Mendatang ({activeAssignments.length})
                         </TabsTrigger>
-                        <TabsTrigger value="history">Riwayat</TabsTrigger>
+                        <TabsTrigger value="history" className="text-xs sm:text-sm font-medium px-4">
+                            Riwayat ({historyAssignments.length})
+                        </TabsTrigger>
                     </TabsList>
 
-                    <TabsContent value="active" className="mt-6">
+                    <TabsContent value="active" className="mt-0">
                         <AssignmentTable items={activeAssignments} />
                     </TabsContent>
 
-                    <TabsContent value="history" className="mt-6">
+                    <TabsContent value="history" className="mt-0">
                         <AssignmentTable items={historyAssignments} />
                     </TabsContent>
                 </Tabs>
