@@ -47,10 +47,10 @@ export default function StudentSidebar() {
     const { url } = usePage();
 
     return (
-        <aside className="fixed inset-y-0 left-0 z-40 flex w-[280px] flex-col border-r border-sale-border bg-sale-white">
+        <aside className="fixed inset-y-0 left-0 z-40 hidden w-[280px] flex-col border-r border-sale-border bg-sale-white md:flex">
             {/* Brand */}
             <div className="px-6 py-6">
-                <div className="flex items-center gap-3">
+                <Link href="/student/dashboard" className="flex items-center gap-3">
                     <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-sale-blue text-white">
                         <span className="text-xl font-extrabold">S</span>
                     </div>
@@ -64,48 +64,47 @@ export default function StudentSidebar() {
                             Academic Ecosystem
                         </div>
                     </div>
-                </div>
+                </Link>
             </div>
 
             {/* Navigation */}
-            <nav className="flex-1 px-4">
-                <div className="space-y-1">
-                    {navigation.map((item) => {
-                        const Icon = item.icon;
+            <nav className="flex-1 space-y-1 overflow-y-auto px-4">
+                {navigation.map((item) => {
+                    const Icon = item.icon;
 
-                        const active =
-                            url === item.href ||
-                            url.startsWith(`${item.href}/`);
+                    const active =
+                        url === item.href ||
+                        (item.href !== '/student/dashboard' &&
+                            url.startsWith(`${item.href}/`));
 
-                        return (
-                            <Link
-                                key={item.label}
-                                href={item.href}
-                                className={[
-                                    'flex h-12 items-center gap-4 rounded-lg px-4 transition-colors',
+                    return (
+                        <Link
+                            key={item.label}
+                            href={item.href}
+                            className={[
+                                'flex h-12 items-center gap-4 rounded-lg px-4 transition-colors',
+                                active
+                                    ? 'bg-blue-50 text-sale-blue'
+                                    : 'text-sale-muted hover:bg-slate-50 hover:text-sale-dark',
+                            ].join(' ')}
+                        >
+                            <Icon
+                                className="h-[18px] w-[18px] shrink-0"
+                                strokeWidth={active ? 2.2 : 1.8}
+                            />
+
+                            <span
+                                className={
                                     active
-                                        ? 'bg-blue-50 text-sale-blue'
-                                        : 'text-sale-muted hover:bg-slate-50 hover:text-sale-dark',
-                                ].join(' ')}
+                                        ? 'text-sm font-semibold'
+                                        : 'text-sm font-medium'
+                                }
                             >
-                                <Icon
-                                    className="h-[18px] w-[18px] shrink-0"
-                                    strokeWidth={active ? 2.2 : 1.8}
-                                />
-
-                                <span
-                                    className={
-                                        active
-                                            ? 'text-sm font-semibold'
-                                            : 'text-sm font-medium'
-                                    }
-                                >
-                                    {item.label}
-                                </span>
-                            </Link>
-                        );
-                    })}
-                </div>
+                                {item.label}
+                            </span>
+                        </Link>
+                    );
+                })}
             </nav>
 
             {/* Footer */}

@@ -9,10 +9,10 @@ import { Switch } from '@/components/ui/switch';
 import StudentLayout from '@/layouts/student-layout';
 
 const profile = {
-    fullName: 'Ahmad Mahasiswa',
+    fullName: 'Auriel Lifta',
     studentId: '1234567890',
     studyProgram: 'Teknik Informatika',
-    academicEmail: 'ahmad.m@student.univ.edu',
+    academicEmail: 'aurielimuut.@student.univ.edu',
     photoUrl: undefined as string | undefined,
 };
 
