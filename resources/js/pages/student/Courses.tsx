@@ -55,29 +55,42 @@ const courses: CourseClass[] = [
 
 function CourseCard({ course }: { course: CourseClass }) {
     return (
-        <Card className="relative gap-4 overflow-hidden rounded-2xl border-t-4 border-t-sale-blue border-x-sale-border border-b-sale-border bg-sale-white py-0 pb-5 shadow-none transition-shadow hover:shadow-md">
+        <Card className="group relative gap-0 overflow-hidden rounded-2xl border-t-4 border-t-sale-blue border-x-sale-border border-b-sale-border bg-sale-white py-0 shadow-none transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
             <Link
                 href={`/student/courses/${course.id}`}
                 className="absolute inset-0 z-0"
                 aria-label={`Buka ${course.title}`}
             />
 
-            <CardHeader className="relative z-10 flex flex-row items-start justify-between pt-5">
+            <CardHeader className="relative z-10 flex flex-row items-center justify-between p-6 pb-3">
                 <Badge className="pointer-events-none rounded-full border-transparent bg-blue-50 font-medium text-sale-blue hover:bg-blue-50">
                     {course.classCode}
                 </Badge>
 
                 <DropdownMenu>
-                    <DropdownMenuTrigger className="text-sale-muted hover:text-sale-dark">
+                    <DropdownMenuTrigger
+                        className="rounded-md p-1 text-sale-muted transition-colors hover:bg-blue-50 hover:text-sale-dark focus:outline-none dark:hover:bg-slate-800"
+                        aria-label={`Menu ${course.title}`}
+                    >
                         <MoreVertical className="size-4" />
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
+
+                    <DropdownMenuContent
+                        align="end"
+                        className="rounded-xl border-0 bg-card shadow-md"
+                    >
                         <DropdownMenuItem asChild>
                             <Link href={`/student/courses/${course.id}`}>
                                 Lihat detail
                             </Link>
                         </DropdownMenuItem>
-                        <DropdownMenuItem>Buka forum diskusi</DropdownMenuItem>
+
+                        <DropdownMenuItem asChild>
+                            <Link href="/student/forum">
+                                Buka forum diskusi
+                            </Link>
+                        </DropdownMenuItem>
+
                         <DropdownMenuItem variant="destructive">
                             Keluar dari kelas
                         </DropdownMenuItem>
@@ -85,19 +98,21 @@ function CourseCard({ course }: { course: CourseClass }) {
                 </DropdownMenu>
             </CardHeader>
 
-            <CardContent className="relative z-10 flex flex-col gap-4 pointer-events-none">
-                <h3 className="font-poppins leading-snug font-semibold text-sale-dark">
+            <CardContent className="relative z-10 flex flex-col gap-4 p-6 pt-2 pointer-events-none">
+                <h3 className="font-poppins text-base font-semibold leading-snug text-sale-dark transition-colors group-hover:text-sale-blue">
                     {course.title}
                 </h3>
 
-                <div className="flex items-center gap-2">
+                <div className="-mx-6 -mb-6 flex items-center gap-2 rounded-b-2xl bg-blue-50/50 p-4 text-sm">
                     <Avatar className="size-6">
                         <AvatarImage src={course.lecturerAvatar} />
+
                         <AvatarFallback className="bg-blue-50 text-[10px] text-sale-blue">
                             {course.lecturer.charAt(0)}
                         </AvatarFallback>
                     </Avatar>
-                    <span className="text-sm text-sale-muted">
+
+                    <span className="truncate text-sale-muted">
                         {course.lecturer}
                     </span>
                 </div>
@@ -121,10 +136,12 @@ export default function Courses() {
                         <SelectTrigger className="w-[180px] border-sale-border bg-sale-white">
                             <SelectValue placeholder="Pilih semester" />
                         </SelectTrigger>
+
                         <SelectContent>
                             <SelectItem value="ganjil-2023">
                                 Semester Ganjil 2023
                             </SelectItem>
+
                             <SelectItem value="genap-2023">
                                 Semester Genap 2023
                             </SelectItem>
@@ -134,7 +151,10 @@ export default function Courses() {
 
                 <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     {courses.map((course) => (
-                        <CourseCard key={course.id} course={course} />
+                        <CourseCard
+                            key={course.id}
+                            course={course}
+                        />
                     ))}
                 </div>
             </div>
