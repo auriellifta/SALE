@@ -46,11 +46,33 @@ const navigation = [
 export default function StudentSidebar() {
     const { url } = usePage();
 
+    /*
+     * Semua halaman yang masih termasuk area
+     * "Tugas & Kuis" akan membuat menu tersebut tetap aktif.
+     *
+     * Termasuk:
+     * - Halaman utama Tugas & Kuis
+     * - Detail tugas Classroom
+     * - Quiz
+     * - Programming Task
+     * - Tugas Kelompok
+     */
+    const isAssignmentArea =
+        url === '/student/assignments' ||
+        url.startsWith('/student/assignments/') ||
+        url.startsWith('/student/quiz') ||
+        url.startsWith('/student/programming') ||
+        url.startsWith('/student/group-task') ||
+        url.startsWith('/student/group-tasks');
+
     return (
         <aside className="fixed inset-y-0 left-0 z-40 hidden w-[280px] flex-col border-r border-sale-border bg-sale-white md:flex">
             {/* Brand */}
             <div className="px-6 py-6">
-                <Link href="/student/dashboard" className="flex items-center gap-3">
+                <Link
+                    href="/student/dashboard"
+                    className="flex items-center gap-3"
+                >
                     <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-sale-blue text-white">
                         <span className="text-xl font-extrabold">S</span>
                     </div>
@@ -73,9 +95,11 @@ export default function StudentSidebar() {
                     const Icon = item.icon;
 
                     const active =
-                        url === item.href ||
-                        (item.href !== '/student/dashboard' &&
-                            url.startsWith(`${item.href}/`));
+                        item.label === 'Tugas & Kuis'
+                            ? isAssignmentArea
+                            : url === item.href ||
+                              (item.href !== '/student/dashboard' &&
+                                  url.startsWith(`${item.href}/`));
 
                     return (
                         <Link
@@ -113,7 +137,10 @@ export default function StudentSidebar() {
                     type="button"
                     className="flex h-11 w-full items-center gap-4 rounded-lg px-4 text-left text-sm font-medium text-sale-muted transition-colors hover:bg-slate-50 hover:text-sale-dark"
                 >
-                    <CircleHelp className="h-5 w-5" strokeWidth={1.8} />
+                    <CircleHelp
+                        className="h-5 w-5"
+                        strokeWidth={1.8}
+                    />
                     Bantuan
                 </button>
 
@@ -121,7 +148,10 @@ export default function StudentSidebar() {
                     type="button"
                     className="text-sale-danger flex h-11 w-full items-center gap-4 rounded-lg px-4 text-left text-sm font-medium transition-colors hover:bg-red-50"
                 >
-                    <LogOut className="h-[18px] w-[18px]" strokeWidth={1.8} />
+                    <LogOut
+                        className="h-[18px] w-[18px]"
+                        strokeWidth={1.8}
+                    />
                     Keluar
                 </button>
             </div>
