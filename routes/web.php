@@ -23,17 +23,20 @@ Route::prefix('student')->name('student.')->group(function () {
         return \Inertia\Inertia::render('student/AssignmentDetail', [
             'assignmentId' => $assignment,
         ]);
-    })->name('assignments.show'); // submissionMode: 'classroom'
+    })->name('assignments.show');
+    
     Route::get('quiz/{quiz}', function (string $quiz) {
         return \Inertia\Inertia::render('student/Quiz', [
             'quizId' => $quiz,
         ]);
-    })->name('quiz.show'); // submissionMode: 'quiz'
+    })->name('quiz.show');
+    
     Route::get('programming-task/{task}', function (string $task) {
         return \Inertia\Inertia::render('student/ProgrammingTask', [
             'taskId' => $task,
         ]);
-    })->name('programming-task.show'); // submissionMode: 'programming'
+    })->name('programming-task.show');
+    
     Route::inertia('forum', 'student/Forum')->name('forum');
     Route::inertia('notifications', 'student/Notifications')->name('notifications');
     Route::inertia('profile', 'student/Profile')->name('profile');
@@ -73,7 +76,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::inertia('study-programs', 'Admin/Academic/StudyPrograms')->name('study-programs');
         Route::inertia('courses', 'Admin/Academic/Courses')->name('courses');
         Route::inertia('classes', 'Admin/Academic/Classes')->name('classes');
-        Route::inertia('period', 'Admin/Academic/Period')->name('period');
+        // Diperbarui menyesuaikan nama file komponen AcademicPeriod.tsx
+        Route::inertia('period', 'Admin/Academic/AcademicPeriod')->name('period');
         Route::inertia('import', 'Admin/Academic/Import')->name('import');
     });
 
